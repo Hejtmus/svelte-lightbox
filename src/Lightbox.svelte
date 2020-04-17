@@ -7,12 +7,12 @@
     //exporting classes, for passing classes into wrapper
     export {defaultClasses as class};
     export let style = '';
-    //number that hold which section is active
+    //number that hold which image is active
     export let activeImage = 0;
-    //array with names of section, the most important about this array is that it's hold fullpage's length
+    //array with image desctiptions
     export let gallery = [];
     export let description = '';
-    //exporting duration of animation and scroll cooldown
+    //exporting duration of fade transition
     export let transitionDuration = 500;
     //bool that enables drag n drop protection
     export let protect = false;
@@ -22,11 +22,13 @@
         visible = !visible;
     };
 
-    defaultClasses = `${defaultClasses} svelte-lightbox-overlay`
+    defaultClasses = `${defaultClasses} svelte-lightbox-overlay`;
 </script>
 
 <div on:click={toggle}>
-    <slot />
+    <div class:svelte-lightbox-unselectable={protect}>
+        <slot/>
+    </div>
 </div>
 
 {#if visible}
@@ -37,7 +39,7 @@
                     ×
                 </button>
             </div>
-            <div class="svelte-lightbox-body">
+            <div class="svelte-lightbox-body" class:svelte-lightbox-unselectable={protect}>
                 <slot />
             </div>
             <div class="svelte-lightbox-footer">
@@ -89,6 +91,10 @@
         background-color: transparent;
         width: inherit;
         height: auto;
+    }
+    .svelte-lightbox-unselectable {
+        user-select: none;
+        pointer-events: none;
     }
     button {
         background: transparent;
