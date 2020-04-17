@@ -1,10 +1,12 @@
 # Svelte-lightbox
 
-***In development***
+***In development, stable, tested***
 
-Lightweight Lightbox Svelte component, no vanilla JS or FullPage.js, just pure Svelte component. There is also support for
+Lightweight Lightbox Svelte component, no vanilla JS or jQuery, just pure Svelte component. There is also support for
 mobile devices. Tested on Svelte and Sapper. Note that this component is in development, expect bugs, if you notice some, 
 please report them to this component's GitHub repo to the 'Issues' section.
+
+Gallery feature is on its way, please be patient
 
 ## Instalation
 
@@ -14,15 +16,13 @@ please report them to this component's GitHub repo to the 'Issues' section.
 
 ## How to use
 
-### Static version
-
 1. Make Svelte page
 2. Include `import { Lightbox } from 'svelte-lightbox';` into that file.
-3. Make Lightbox galleries and put them into `<Lightbox>` as prop, image put inside slot (as its child).
-4. Define new array that will contain all descriptions of all images, insert them into Lightbox component, example 
-`<Lightbox gallery={myGallery}`.
-5. You can check if everything is working, if you use Sapper, don't forget to make this component SSR, just include
-it like this `import Fullpage from 'svelte-lightbox/src/Lightbox.svelte'`.
+3. Make Lightbox galleries and put them into `<Lightbox>` as prop, image put inside slot (as its child). You are done.
+4. **Warning, in this version step 4 is redundant, because feature is not implemented**. Define new array that will contain 
+all descriptions of all images, insert them into Lightbox component, example `<Lightbox gallery={myGallery}`.
+5. You can **check if everything is working**, if you use **Sapper**, don't forget to make this component **SSR**, just include
+it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'`.
 
 
 ### Something copyable
@@ -36,6 +36,8 @@ it like this `import Fullpage from 'svelte-lightbox/src/Lightbox.svelte'`.
     //Sapper import
 	import Lightbox from 'svelte-lightbox/src/Lightbox.svelte';
 
+    // NOTE - Gallery feature is NOT implemented in this version
+
     //Include all titles of your images, this is also used as number that indicate count of sections
     const gallery = [
         'Cat is eating mouse',
@@ -43,9 +45,20 @@ it like this `import Fullpage from 'svelte-lightbox/src/Lightbox.svelte'`.
         'JS components are downloaded from npm',
         'This component is being developed'
     ];
-    //Have to set to 0 (or section you wish to display as default), otherwise lightbox will not display
+    //Have to set to 0 (or image you wish to display as default), otherwise lightbox will not display
     let activeImage = 0;
+    //END OF NON EXISTING FEATURE
 </script>
+
+    // THIS WORKS, STABLE, TESTED
+
+    <Lightbox description="Simple lightbox">
+        <img src="path" alt="Simple lightbox">
+    </Lightbox>
+
+    // END OF IMPLEMENTED CODE
+
+    // AS MENTIONED BEFORE, GALLERY FEATURE IS NOT PRESENT, USE UPPER CODE ^^^
 
     <Lightbox {gallery} imageId="0" bind:activeImage>
         <img src="path" alt="Someone is having tough time">
@@ -60,6 +73,7 @@ it like this `import Fullpage from 'svelte-lightbox/src/Lightbox.svelte'`.
         <img src="path" alt="svelte-lightbox is not done yet">
     </Lightbox>
 
+    //END OF NON EXISTING FEATURE
 ```
 
 ### Tweaks
@@ -72,9 +86,13 @@ These props are customizable:
 
 * **class** - `string` - Standard HTML class for lightbox modal.
 * **style** - `string` - Standard HTML style for lightbox modal.
-* **gallery** - `array` - Array containing Lightbox descriptions.
-* **activeImage** - `number` - Number that points set visibility of image.
 * **transitionDuration** - `number` - Duration of lightbox toggle.
+* **protect** - `boolean` - Enable protection of image from being dragged n dropped.
+* **description** - `string` - Description of image that is displayed under under the image (in lightbox).
+
+* **gallery** - `array` - Array containing Lightbox descriptions. **NOT IMPLEMENTED**
+* **activeImage** - `number` - Number that points set visibility of image. **NOT IMPLEMENTED**
+* **imageId** - `number/string` - Number or number in string, says what to display. **NOT IMPLEMENTED**
 
 ## License
 

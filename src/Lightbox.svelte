@@ -7,43 +7,50 @@
     //exporting classes, for passing classes into wrapper
     export {defaultClasses as class};
     export let style = '';
-    //number that hold which section is active
+    //number that hold which image is active
     export let activeImage = 0;
-    //array with names of section, the most important about this array is that it's hold fullpage's length
+    //array with image desctiptions
     export let gallery = [];
     export let description = '';
-    //exporting duration of animation and scroll cooldown
+    //exporting duration of fade transition
     export let transitionDuration = 500;
+    //bool that enables drag n drop protection
+    export let protect = false;
 
     let visible = false;
     const toggle = () => {
         visible = !visible;
     };
-    defaultClasses = `${defaultClasses} svelte-lightbox-overlay`
+
+    defaultClasses = `${defaultClasses} svelte-lightbox-overlay`;
 </script>
 
 <div on:click={toggle}>
-    <slot />
+    <div class:svelte-lightbox-unselectable={protect}>
+        <slot/>
+    </div>
 </div>
 
 {#if visible}
-    <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}}>
-        <div class="svelte-lightbox">
+    <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
+        <div class="svelte-lightbox" on:click={toggle}>
             <div class="svelte-lightbox-header">
                 <button on:click={toggle}>
                     ×
                 </button>
             </div>
-            <div class="svelte-lightbox-body">
+            <div class="svelte-lightbox-body" class:svelte-lightbox-unselectable={protect}>
                 <slot />
             </div>
             <div class="svelte-lightbox-footer">
                 <p>
                     {description}
                 </p>
-                <p>
-                    Image {activeImage+1} of {gallery.length-1}
-                </p>
+                {#if gallery[0]}
+                    <p>
+                        Image {activeImage+1} of {gallery.length-1}
+                    </p>
+                {/if}
             </div>
         </div>
     </div>
@@ -51,7 +58,7 @@
 
 <style>
     .svelte-lightbox-overlay {
-        position: absolute;
+        position: fixed;
         z-index: 999999999;
         top: 0;
         bottom: 0;
@@ -61,18 +68,19 @@
         justify-content: center;
         align-items: center;
         background-color: rgba(44,38,45,0.85);
+        padding: 1rem;
     }
     .svelte-lightbox {
         background-color: transparent;
-        width: 30vw;
+        width: auto;
         height: auto;
     }
     .svelte-lightbox-header {
         width: inherit;
         height: auto;
         display: flex;
-        justify-content: center;
-        align-items: end;
+        justify-content: flex-end;
+        align-items: center;
     }
     .svelte-lightbox-body {
         background-color: transparent;
@@ -83,5 +91,18 @@
         background-color: transparent;
         width: inherit;
         height: auto;
+    }
+    .svelte-lightbox-unselectable {
+        user-select: none;
+        pointer-events: none;
+    }
+    button {
+        background: transparent;
+        font-size: 4rem;
+        border: none;
+        color: white;
+    }
+    button:hover {
+        color: lightgray;
     }
 </style>
