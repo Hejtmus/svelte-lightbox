@@ -43,7 +43,7 @@ it like this `import Fullpage from 'svelte-lightbox/src/Lightbox.svelte'`.
         'JS components are downloaded from npm',
         'This component is being developed'
     ];
-    //Have to set to 0 (or section you wish to display as default), otherwise lightbox will not display
+    //Have to set to 0 (or image you wish to display as default), otherwise lightbox will not display
     let activeImage = 0;
 </script>
 

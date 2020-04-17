@@ -14,11 +14,14 @@
     export let description = '';
     //exporting duration of animation and scroll cooldown
     export let transitionDuration = 500;
+    //bool that enables drag n drop protection
+    export let protect = false;
 
     let visible = false;
     const toggle = () => {
         visible = !visible;
     };
+
     defaultClasses = `${defaultClasses} svelte-lightbox-overlay`
 </script>
 
@@ -27,8 +30,8 @@
 </div>
 
 {#if visible}
-    <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}}>
-        <div class="svelte-lightbox">
+    <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
+        <div class="svelte-lightbox" on:click={toggle}>
             <div class="svelte-lightbox-header">
                 <button on:click={toggle}>
                     ×
@@ -41,9 +44,11 @@
                 <p>
                     {description}
                 </p>
-                <p>
-                    Image {activeImage+1} of {gallery.length-1}
-                </p>
+                {#if gallery[0]}
+                    <p>
+                        Image {activeImage+1} of {gallery.length-1}
+                    </p>
+                {/if}
             </div>
         </div>
     </div>
@@ -51,7 +56,7 @@
 
 <style>
     .svelte-lightbox-overlay {
-        position: absolute;
+        position: fixed;
         z-index: 999999999;
         top: 0;
         bottom: 0;
@@ -61,18 +66,19 @@
         justify-content: center;
         align-items: center;
         background-color: rgba(44,38,45,0.85);
+        padding: 1rem;
     }
     .svelte-lightbox {
         background-color: transparent;
-        width: 30vw;
+        width: auto;
         height: auto;
     }
     .svelte-lightbox-header {
         width: inherit;
         height: auto;
         display: flex;
-        justify-content: center;
-        align-items: end;
+        justify-content: flex-end;
+        align-items: center;
     }
     .svelte-lightbox-body {
         background-color: transparent;
@@ -83,5 +89,14 @@
         background-color: transparent;
         width: inherit;
         height: auto;
+    }
+    button {
+        background: transparent;
+        font-size: 4rem;
+        border: none;
+        color: white;
+    }
+    button:hover {
+        color: lightgray;
     }
 </style>
