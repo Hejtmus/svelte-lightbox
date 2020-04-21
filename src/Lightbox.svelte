@@ -43,9 +43,9 @@
                 <slot />
             </div>
             <div class="svelte-lightbox-footer">
-                <p>
+                <h3>
                     {description}
-                </p>
+                </h3>
                 {#if gallery[0]}
                     <p>
                         Image {activeImage+1} of {gallery.length-1}
@@ -67,7 +67,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(44,38,45,0.85);
+        background-color: rgba(43, 39, 45, 0.87);
         padding: 1rem;
     }
     .svelte-lightbox {
@@ -95,6 +95,9 @@
     .svelte-lightbox-unselectable {
         user-select: none;
         pointer-events: none;
+    }
+    h3 {
+        color: white;
     }
     button {
         background: transparent;
