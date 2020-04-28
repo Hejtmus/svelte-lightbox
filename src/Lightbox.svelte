@@ -22,7 +22,7 @@
     //enables portrait mode
     export let portrait = false;
     //disables scrolling <body>
-    export let noScroll = false;
+    export let noScroll = true;
 
     let visible = false;
     const toggle = () => {
