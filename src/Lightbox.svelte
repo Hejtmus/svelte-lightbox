@@ -38,12 +38,12 @@
 
 
     onMount(()=>{
-        let defaultClass = document.body.style;
+        let defaultOverflow = document.body.style.overflow;
         mountedT = () => {
             if (visible) {
-                document.body.style = 'overflow: hidden'
+                document.body.style.overflow = 'hidden';
             } else {
-                document.body.style = defaultClass;
+                document.body.style.overflow = defaultOverflow;
             }
         };
     })
