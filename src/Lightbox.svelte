@@ -10,7 +10,7 @@
     export let style = '';
     //number that hold which image is active
     export let activeImage = 0;
-    //array with image desctiptions
+    //array with image descriptions
     export let gallery = [];
     export let description = '';
     //exporting duration of fade transition
