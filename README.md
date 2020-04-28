@@ -89,6 +89,8 @@ These props are customizable:
 * **transitionDuration** - `number` - Duration of lightbox toggle.
 * **protect** - `boolean` - Enable protection of image from being dragged n dropped.
 * **description** - `string` - Description of image that is displayed under under the image (in lightbox).
+* **portrait** - `boolean` - Enables improved portrait mode.
+* **noScroll** - `boolean` - Disables body scrolling while in lightbox mode.
 
 * **gallery** - `array` - Array containing Lightbox descriptions. **NOT IMPLEMENTED**
 * **activeImage** - `number` - Number that points set visibility of image. **NOT IMPLEMENTED**
