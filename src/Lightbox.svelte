@@ -124,6 +124,7 @@
         background-color: transparent;
         width: auto;
         height: auto;
+        max-width: ;
         z-index: 1000002;
     }
     .svelte-lightbox-header {

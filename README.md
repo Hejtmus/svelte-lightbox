@@ -88,9 +88,13 @@ These props are customizable:
 * **style** - `string` - Standard HTML style for lightbox modal.
 * **transitionDuration** - `number` - Duration of lightbox toggle.
 * **protect** - `boolean` - Enable protection of image from being dragged n dropped.
-* **description** - `string` - Description of image that is displayed under under the image (in lightbox).
+* **title** - `string/HTML` - Image's title that is displayed below the image (in a lightbox), feel free to use HTML
+ (eg, `<br>`, `<span>`). Everything in a lightbox footer is aligned to the left, but you can override it
+ by putting it into `<span>` which would allow you to apply a different style or a class of your choosing.
+* **description** - `string/HTML` - Image's description that is, similarly to the title, displayed under the image (in a lightbox).
+The difference between those two is that the title is wrapped in `<h2>` and description is wrapped in `<h5>`.
 * **portrait** - `boolean` - Enables improved portrait mode.
-* **noScroll** - `boolean` - Disables body scrolling while in lightbox mode, default true.
+* **noScroll** - `boolean` - Disables body scrolling while in lightbox mode, default `true`.
 
 * **gallery** - `array` - Array containing Lightbox descriptions. **NOT IMPLEMENTED**
 * **activeImage** - `number` - Number that points set visibility of image. **NOT IMPLEMENTED**
