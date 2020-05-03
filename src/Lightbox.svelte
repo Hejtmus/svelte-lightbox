@@ -12,6 +12,7 @@
     export let activeImage = 0;
     //array with image descriptions
     export let gallery = [];
+    export let title = '';
     export let description = '';
     //exporting duration of fade transition
     export let transitionDuration = 500;
@@ -74,9 +75,12 @@
                     {/if}
                 </div>
                 <div class="svelte-lightbox-footer">
-                    <h3>
-                        {description}
-                    </h3>
+                    <h2>
+                        {@html title}
+                    </h2>
+                    <h5>
+                        {@html description}
+                    </h5>
                     {#if gallery[0]}
                         <p>
                             Image {activeImage+1} of {gallery.length-1}
