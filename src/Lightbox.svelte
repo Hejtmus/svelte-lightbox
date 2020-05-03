@@ -144,6 +144,8 @@
     }
     .svelte-lightbox-footer {
         background-color: transparent;
+        color: white;
+        text-align: left;
         width: inherit;
         height: auto;
     }
