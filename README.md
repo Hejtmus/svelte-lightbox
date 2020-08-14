@@ -100,6 +100,11 @@ The difference between those two is that the title is wrapped in `<h2>` and desc
 * **activeImage** - `number` - Number that points set visibility of image. **NOT IMPLEMENTED**
 * **imageId** - `number/string` - Number or number in string, says what to display. **NOT IMPLEMENTED**
 
+### Future
+
+I plan to improve this component in the future, but I don't have much time.
+So feel free to contribute some code if you will.
+
 ## License
 
 ### It's free
