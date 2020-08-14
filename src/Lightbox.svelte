@@ -95,7 +95,8 @@
 <style>
     .cover {
         position: fixed;
-        z-index: 1000000;
+        z-index: 1000000!important;
+        background-color: rgba(43, 39, 45, 0.87);
         top: 0;
         bottom: 0;
         left: 0;
@@ -116,7 +117,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(43, 39, 45, 0.87);
         padding: 1rem;
     }
     .svelte-lightbox {
@@ -124,7 +124,8 @@
         background-color: transparent;
         width: auto;
         height: auto;
-        max-width: ;
+        max-width: 90%;
+        max-height: 90%;
         z-index: 1000002;
     }
     .svelte-lightbox-header {
