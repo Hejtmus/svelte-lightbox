@@ -12,6 +12,7 @@
     export let activeImage = 0;
     //array with image descriptions
     export let gallery = [];
+    export let title = '';
     export let description = '';
     //exporting duration of fade transition
     export let transitionDuration = 500;
@@ -60,7 +61,7 @@
         <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
             <div class="svelte-lightbox" on:click={toggle}>
                 <div class="svelte-lightbox-header">
-                    <button on:click={toggle}>
+                    <button on:click={toggle} size="xs" style="font-size: 3rem">
                         ×
                     </button>
                 </div>
@@ -74,9 +75,12 @@
                     {/if}
                 </div>
                 <div class="svelte-lightbox-footer">
-                    <h3>
-                        {description}
-                    </h3>
+                    <h2>
+                        {@html title}
+                    </h2>
+                    <h5>
+                        {@html description}
+                    </h5>
                     {#if gallery[0]}
                         <p>
                             Image {activeImage+1} of {gallery.length-1}
@@ -91,7 +95,8 @@
 <style>
     .cover {
         position: fixed;
-        z-index: 1000000;
+        z-index: 1000000!important;
+        background-color: rgba(43, 39, 45, 0.87);
         top: 0;
         bottom: 0;
         left: 0;
@@ -112,7 +117,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(43, 39, 45, 0.87);
         padding: 1rem;
     }
     .svelte-lightbox {
@@ -120,11 +124,13 @@
         background-color: transparent;
         width: auto;
         height: auto;
+        max-width: 90%;
+        max-height: 90%;
         z-index: 1000002;
     }
     .svelte-lightbox-header {
-        width: inherit;
-        height: auto;
+        width: auto;
+        height: 3rem;
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -140,6 +146,8 @@
     }
     .svelte-lightbox-footer {
         background-color: transparent;
+        color: white;
+        text-align: left;
         width: inherit;
         height: auto;
     }
