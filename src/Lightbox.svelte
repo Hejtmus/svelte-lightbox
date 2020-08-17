@@ -61,7 +61,7 @@
         <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
             <div class="svelte-lightbox" on:click={toggle}>
                 <div class="svelte-lightbox-header">
-                    <button on:click={toggle}>
+                    <button on:click={toggle} size="xs" style="font-size: 3rem">
                         ×
                     </button>
                 </div>
@@ -129,8 +129,8 @@
         z-index: 1000002;
     }
     .svelte-lightbox-header {
-        width: inherit;
-        height: auto;
+        width: auto;
+        height: 3rem;
         display: flex;
         justify-content: flex-end;
         align-items: center;

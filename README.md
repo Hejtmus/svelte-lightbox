@@ -103,7 +103,7 @@ The difference between those two is that the title is wrapped in `<h2>` and desc
 ### Future
 
 I plan to improve this component in the future, but I don't have much time.
-So feel free to contribute some code if you will.
+So feel free to contribute some code if you will. This component needs CSS rework.
 
 ## License
 
