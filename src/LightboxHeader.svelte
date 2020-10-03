@@ -23,6 +23,12 @@
         align-items: center;
     }
     button {
+        background: transparent;
         font-size: 3rem;
+        border: none;
+        color: white;
+    }
+    button:hover {
+        color: lightgray;
     }
 </style>

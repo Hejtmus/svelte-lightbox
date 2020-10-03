@@ -109,18 +109,6 @@
         max-height: 90%;
         z-index: 1000002;
     }
-    h3 {
-        color: white;
-    }
-    button {
-        background: transparent;
-        font-size: 4rem;
-        border: none;
-        color: white;
-    }
-    button:hover {
-        color: lightgray;
-    }
     .clearfix::after {
         content: "";
         clear: both;
