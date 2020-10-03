@@ -49,10 +49,14 @@
     })
 </script>
 
-<Thumbnail bind:protect={protect} on:click={toggle}/>
+<Thumbnail bind:protect={protect} on:click={toggle}>
+    <slot/>
+</Thumbnail>
 
 {#if visible}
     <Modal bind:modalClasses={defaultClasses} bind:modalStyle={style} bind:transitionDuration bind:image bind:protect
            bind:portrait bind:title bind:description bind:gallery bind:activeImage
-           on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}/>
+           on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}>
+        <slot/>
+    </Modal>
 {/if}

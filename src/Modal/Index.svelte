@@ -30,7 +30,10 @@
 
             <Header on:close={ () => dispatch('close') }/>
 
-            <Body bind:image={image} bind:protect={protect} bind:portrait={portrait}/>
+            <Body bind:image={image} bind:protect={protect} bind:portrait={portrait}>
+                <slot/>
+            </Body>
+
 
             <Footer bind:title={title} bind:description={description} bind:gallery={gallery}
                     bind:activeImage={activeImage}/>
