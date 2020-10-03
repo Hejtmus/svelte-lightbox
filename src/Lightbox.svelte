@@ -3,12 +3,17 @@
     import Modal from './Modal/Index.svelte';
     import {onMount} from 'svelte';
 
+    //defining variable that will hold class value, that will be passed into thumbnail
+    let thumbnailClasses = '';
     //defining variable that will hold class value, that will be passed into this component's wrapper
-    let defaultClasses = '';
+    let modalClasses = '';
 
+    //exporting classes, for passing classes into thumbnail
+    export {thumbnailClasses as class};
+    export let thumbnailStyle = '';
     //exporting classes, for passing classes into wrapper
-    export {defaultClasses as class};
-    export let style = '';
+    export {modalClasses as class};
+    export let modalStyle = '';
     //number that hold which image is active
     export let activeImage = 0;
     //array with image descriptions
@@ -49,12 +54,12 @@
     })
 </script>
 
-<Thumbnail bind:protect={protect} on:click={toggle}>
+<Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
     <slot/>
 </Thumbnail>
 
 {#if visible}
-    <Modal bind:modalClasses={defaultClasses} bind:modalStyle={style} bind:transitionDuration bind:image bind:protect
+    <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
            bind:portrait bind:title bind:description bind:gallery bind:activeImage
            on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}>
         <slot/>
