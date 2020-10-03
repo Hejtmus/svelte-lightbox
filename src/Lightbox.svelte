@@ -1,10 +1,10 @@
 <script>
+    import Thumbnail from './LightboxThumbnail.svelte';
     import Header from './Modal/LightboxHeader.svelte';
     import Body from './Modal/LightboxBody.svelte';
     import Footer from './Modal/LightboxFooter.svelte';
     import {fade} from 'svelte/transition';
     import {onMount} from 'svelte';
-    import LightboxBody from "./Modal/LightboxBody.svelte";
 
     //defining variable that will hold class value, that will be passed into this component's wrapper
     let defaultClasses = '';
@@ -54,18 +54,14 @@
     })
 </script>
 
-<div class="clickable" on:click={toggle}>
-    <div class:svelte-lightbox-unselectable={protect}>
-        <slot/>
-    </div>
-</div>
+<Thumbnail bind:protect={protect} on:click={toggle}/>
 
 {#if visible}
     <div class="cover clearfix">
         <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
             <div class="svelte-lightbox" on:click={toggle}>
                 <Header on:close={toggle}/>
-                <LightboxBody bind:image={image} bind:protect={protect} bind:portrait={portrait}/>
+                <Body bind:image={image} bind:protect={protect} bind:portrait={portrait}/>
                 <Footer bind:title={title} bind:description={defaultClasses} bind:gallery={gallery}
                         bind:activeImage={activeImage}/>
             </div>
@@ -85,10 +81,6 @@
         overflow: hidden;
         width: 100%;
         height: 100%;
-    }
-    .clickable {
-        position: static;
-        cursor: zoom-in;
     }
     .svelte-lightbox-overlay {
         position: relative;
