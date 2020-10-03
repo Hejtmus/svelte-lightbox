@@ -50,13 +50,13 @@
 </script>
 
 <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
-    <slot/>
+    <slot name="thumbnail"/>
 </Thumbnail>
 
 {#if visible}
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
            bind:portrait bind:title bind:description bind:gallery bind:activeImage
            on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}>
-        <slot/>
+        <slot name="image"/>
     </Modal>
 {/if}
