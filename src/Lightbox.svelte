@@ -1,10 +1,10 @@
 <script>
-    import Header from './LightboxHeader.svelte';
-    import Body from './LightboxBody.svelte';
-    import Footer from './LightboxFooter.svelte';
+    import Header from './Modal/LightboxHeader.svelte';
+    import Body from './Modal/LightboxBody.svelte';
+    import Footer from './Modal/LightboxFooter.svelte';
     import {fade} from 'svelte/transition';
     import {onMount} from 'svelte';
-    import LightboxBody from "./LightboxBody.svelte";
+    import LightboxBody from "./Modal/LightboxBody.svelte";
 
     //defining variable that will hold class value, that will be passed into this component's wrapper
     let defaultClasses = '';
