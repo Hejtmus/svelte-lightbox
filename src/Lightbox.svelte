@@ -3,16 +3,11 @@
     import Modal from './Modal/Index.svelte';
     import {onMount} from 'svelte';
 
-    //defining variable that will hold class value, that will be passed into thumbnail
-    let thumbnailClasses = '';
-    //defining variable that will hold class value, that will be passed into this component's wrapper
-    let modalClasses = '';
-
     //exporting classes, for passing classes into thumbnail
-    export {thumbnailClasses as class};
+    export let thumbnailClasses = '';
     export let thumbnailStyle = '';
     //exporting classes, for passing classes into wrapper
-    export {modalClasses as class};
+    export let modalClasses = '';
     export let modalStyle = '';
     //number that hold which image is active
     export let activeImage = 0;
