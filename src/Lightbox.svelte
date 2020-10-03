@@ -1,9 +1,6 @@
 <script>
     import Thumbnail from './LightboxThumbnail.svelte';
-    import Header from './Modal/LightboxHeader.svelte';
-    import Body from './Modal/LightboxBody.svelte';
-    import Footer from './Modal/LightboxFooter.svelte';
-    import {fade} from 'svelte/transition';
+    import Modal from './Modal/Index.svelte';
     import {onMount} from 'svelte';
 
     //defining variable that will hold class value, that will be passed into this component's wrapper
@@ -30,6 +27,7 @@
     export let noScroll = true;
 
     let visible = false;
+
     const toggle = () => {
         visible = !visible;
         if (noScroll) {
@@ -38,9 +36,6 @@
     };
     let mountedT = () => {
     };
-
-    defaultClasses = `${defaultClasses} svelte-lightbox-overlay clearfix`;
-
 
     onMount(() => {
         let defaultOverflow = document.body.style.overflow;
@@ -57,53 +52,7 @@
 <Thumbnail bind:protect={protect} on:click={toggle}/>
 
 {#if visible}
-    <div class="cover clearfix">
-        <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
-            <div class="svelte-lightbox" on:click={toggle}>
-                <Header on:close={toggle}/>
-                <Body bind:image={image} bind:protect={protect} bind:portrait={portrait}/>
-                <Footer bind:title={title} bind:description={defaultClasses} bind:gallery={gallery}
-                        bind:activeImage={activeImage}/>
-            </div>
-        </div>
-    </div>
+    <Modal bind:modalClasses={defaultClasses} bind:modalStyle={style} bind:transitionDuration bind:image bind:protect
+           bind:portrait bind:title bind:description bind:gallery bind:activeImage
+           on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}/>
 {/if}
-
-<style>
-    .cover {
-        position: fixed;
-        z-index: 1000000!important;
-        background-color: rgba(43, 39, 45, 0.87);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-    }
-    .svelte-lightbox-overlay {
-        position: relative;
-        z-index: 1000001;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 1rem;
-    }
-    .svelte-lightbox {
-        position: absolute;
-        background-color: transparent;
-        width: auto;
-        height: auto;
-        max-width: 90%;
-        max-height: 90%;
-        z-index: 1000002;
-    }
-    .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-</style>
