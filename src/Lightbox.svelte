@@ -1,4 +1,5 @@
 <script>
+    import Header from 'LightboxHeader.svelte';
     import { fade } from 'svelte/transition';
     import { onMount } from 'svelte';
 
@@ -60,11 +61,7 @@
     <div class="cover clearfix">
         <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
             <div class="svelte-lightbox" on:click={toggle}>
-                <div class="svelte-lightbox-header">
-                    <button on:click={toggle} size="xs" style="font-size: 3rem">
-                        ×
-                    </button>
-                </div>
+                <Header/>
                 <div class="svelte-lightbox-body" class:svelte-lightbox-unselectable={protect}>
                     {#if image.src}
                         <img src={image.src} alt={image.alt} style={image.style} class={image.class}>
@@ -127,13 +124,6 @@
         max-width: 90%;
         max-height: 90%;
         z-index: 1000002;
-    }
-    .svelte-lightbox-header {
-        width: auto;
-        height: 3rem;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
     }
     .svelte-lightbox-body {
         background-color: transparent;
