@@ -61,7 +61,7 @@
     <div class="cover clearfix">
         <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
             <div class="svelte-lightbox" on:click={toggle}>
-                <Header/>
+                <Header on:close={toggle}/>
                 <div class="svelte-lightbox-body" class:svelte-lightbox-unselectable={protect}>
                     {#if image.src}
                         <img src={image.src} alt={image.alt} style={image.style} class={image.class}>
