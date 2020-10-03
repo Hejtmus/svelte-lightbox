@@ -56,6 +56,11 @@ it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'`.
         <img src="path" alt="Simple lightbox">
     </Lightbox>
 
+    <Lightbox description="Lightbox with thumbnail and image">
+        <img slot="thumbnail" src="path/thumbnail.png" alt="Thumbnail">
+        <img slot="image" src="path/image.png" alt="Lightbox image">
+    </Lightbox>
+
     // END OF IMPLEMENTED CODE
 
     // AS MENTIONED BEFORE, GALLERY FEATURE IS NOT PRESENT, USE UPPER CODE ^^^
@@ -84,8 +89,11 @@ So, there are options for customizing your Lightbox component.
 
 These props are customizable:
 
-* **class** - `string` - Standard HTML class for lightbox modal.
-* **style** - `string` - Standard HTML style for lightbox modal.
+* **thumbnail** - `boolean` - Enables thumbnail to be different from an actual image.
+* **thumbnailClasses** - `string` - Standard HTML "class" for lightbox thumbnail.
+* **thumbnailStyle** - `string` - Standard HTML "style" for lightbox thumbnail.
+* **modalClasses** - `string` - Standard HTML "class" for lightbox modal.
+* **modalStyle** - `string` - Standard HTML "style" for lightbox modal.
 * **transitionDuration** - `number` - Duration of lightbox toggle.
 * **protect** - `boolean` - Enable protection of image from being dragged n dropped.
 * **title** - `string/HTML` - Image's title that is displayed below the image (in a lightbox), feel free to use HTML
