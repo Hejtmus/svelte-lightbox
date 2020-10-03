@@ -19,6 +19,6 @@ export default {
 		terser(),
 		svelte(),
 		resolve(),
-		//gzipPlugin()
+		gzipPlugin()
 	]
 };
