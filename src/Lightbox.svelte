@@ -72,7 +72,8 @@
                         </div>
                     {/if}
                 </div>
-                <Footer/>
+                <Footer bind:title={title} bind:description={defaultClasses} bind:gallery={gallery}
+                        bind:activeImage={activeImage}/>
             </div>
         </div>
     </div>
