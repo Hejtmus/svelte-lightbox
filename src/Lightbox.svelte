@@ -1,5 +1,6 @@
 <script>
-    import Header from 'LightboxHeader.svelte';
+    import Header from './LightboxHeader.svelte';
+    import Footer from './LightboxFooter.svelte';
     import { fade } from 'svelte/transition';
     import { onMount } from 'svelte';
 
@@ -71,19 +72,7 @@
                         </div>
                     {/if}
                 </div>
-                <div class="svelte-lightbox-footer">
-                    <h2>
-                        {@html title}
-                    </h2>
-                    <h5>
-                        {@html description}
-                    </h5>
-                    {#if gallery[0]}
-                        <p>
-                            Image {activeImage+1} of {gallery.length-1}
-                        </p>
-                    {/if}
-                </div>
+                <Footer/>
             </div>
         </div>
     </div>
@@ -133,13 +122,6 @@
     }
     .svelte-lightbox-image-portrait{
         max-width: 90vh;
-    }
-    .svelte-lightbox-footer {
-        background-color: transparent;
-        color: white;
-        text-align: left;
-        width: inherit;
-        height: auto;
     }
     .svelte-lightbox-unselectable {
         user-select: none;
