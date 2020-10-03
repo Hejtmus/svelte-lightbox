@@ -1,13 +1,14 @@
 <script>
-    import { fade } from 'svelte/transition';
-    import { onMount } from 'svelte';
+    import Thumbnail from './LightboxThumbnail.svelte';
+    import Modal from './Modal/Index.svelte';
+    import {onMount} from 'svelte';
 
-    //defining variable that will hold class value, that will be passed into this component's wrapper
-    let defaultClasses = '';
-
+    //exporting classes, for passing classes into thumbnail
+    export let thumbnailClasses = '';
+    export let thumbnailStyle = '';
     //exporting classes, for passing classes into wrapper
-    export {defaultClasses as class};
-    export let style = '';
+    export let modalClasses = '';
+    export let modalStyle = '';
     //number that hold which image is active
     export let activeImage = 0;
     //array with image descriptions
@@ -24,8 +25,10 @@
     export let portrait = false;
     //disables scrolling <body>
     export let noScroll = true;
+    export let thumbnail = false;
 
     let visible = false;
+
     const toggle = () => {
         visible = !visible;
         if (noScroll) {
@@ -35,10 +38,7 @@
     let mountedT = () => {
     };
 
-    defaultClasses = `${defaultClasses} svelte-lightbox-overlay clearfix`;
-
-
-    onMount(()=>{
+    onMount(() => {
         let defaultOverflow = document.body.style.overflow;
         mountedT = () => {
             if (visible) {
@@ -50,126 +50,22 @@
     })
 </script>
 
-<div class="clickable" on:click={toggle}>
-    <div class:svelte-lightbox-unselectable={protect}>
+<Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
+    {#if thumbnail}
+        <slot name="thumbnail"/>
+    {:else}
         <slot/>
-    </div>
-</div>
+    {/if}
+</Thumbnail>
 
 {#if visible}
-    <div class="cover clearfix">
-        <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
-            <div class="svelte-lightbox" on:click={toggle}>
-                <div class="svelte-lightbox-header">
-                    <button on:click={toggle} size="xs" style="font-size: 3rem">
-                        ×
-                    </button>
-                </div>
-                <div class="svelte-lightbox-body" class:svelte-lightbox-unselectable={protect}>
-                    {#if image.src}
-                        <img src={image.src} alt={image.alt} style={image.style} class={image.class}>
-                    {:else}
-                        <div class:svelte-lightbox-image-portrait={portrait}>
-                            <slot />
-                        </div>
-                    {/if}
-                </div>
-                <div class="svelte-lightbox-footer">
-                    <h2>
-                        {@html title}
-                    </h2>
-                    <h5>
-                        {@html description}
-                    </h5>
-                    {#if gallery[0]}
-                        <p>
-                            Image {activeImage+1} of {gallery.length-1}
-                        </p>
-                    {/if}
-                </div>
-            </div>
-        </div>
-    </div>
+    <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
+           bind:portrait bind:title bind:description bind:gallery bind:activeImage
+           on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}>
+        {#if thumbnail}
+            <slot name="image"/>
+        {:else}
+            <slot/>
+        {/if}
+    </Modal>
 {/if}
-
-<style>
-    .cover {
-        position: fixed;
-        z-index: 1000000!important;
-        background-color: rgba(43, 39, 45, 0.87);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-    }
-    .clickable {
-        position: static;
-        cursor: zoom-in;
-    }
-    .svelte-lightbox-overlay {
-        position: relative;
-        z-index: 1000001;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 1rem;
-    }
-    .svelte-lightbox {
-        position: absolute;
-        background-color: transparent;
-        width: auto;
-        height: auto;
-        max-width: 90%;
-        max-height: 90%;
-        z-index: 1000002;
-    }
-    .svelte-lightbox-header {
-        width: auto;
-        height: 3rem;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
-    .svelte-lightbox-body {
-        background-color: transparent;
-        width: auto;
-        height: auto;
-        max-height: 80vh;
-    }
-    .svelte-lightbox-image-portrait{
-        max-width: 90vh;
-    }
-    .svelte-lightbox-footer {
-        background-color: transparent;
-        color: white;
-        text-align: left;
-        width: inherit;
-        height: auto;
-    }
-    .svelte-lightbox-unselectable {
-        user-select: none;
-        pointer-events: none;
-    }
-    h3 {
-        color: white;
-    }
-    button {
-        background: transparent;
-        font-size: 4rem;
-        border: none;
-        color: white;
-    }
-    button:hover {
-        color: lightgray;
-    }
-    .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-</style>
