@@ -1,8 +1,10 @@
 <script>
     import Header from './LightboxHeader.svelte';
+    import Body from './LightboxBody.svelte';
     import Footer from './LightboxFooter.svelte';
-    import { fade } from 'svelte/transition';
-    import { onMount } from 'svelte';
+    import {fade} from 'svelte/transition';
+    import {onMount} from 'svelte';
+    import LightboxBody from "./LightboxBody.svelte";
 
     //defining variable that will hold class value, that will be passed into this component's wrapper
     let defaultClasses = '';
@@ -40,7 +42,7 @@
     defaultClasses = `${defaultClasses} svelte-lightbox-overlay clearfix`;
 
 
-    onMount(()=>{
+    onMount(() => {
         let defaultOverflow = document.body.style.overflow;
         mountedT = () => {
             if (visible) {
@@ -63,15 +65,7 @@
         <div class={defaultClasses} style={style} transition:fade={{duration:transitionDuration}} on:click={toggle}>
             <div class="svelte-lightbox" on:click={toggle}>
                 <Header on:close={toggle}/>
-                <div class="svelte-lightbox-body" class:svelte-lightbox-unselectable={protect}>
-                    {#if image.src}
-                        <img src={image.src} alt={image.alt} style={image.style} class={image.class}>
-                    {:else}
-                        <div class:svelte-lightbox-image-portrait={portrait}>
-                            <slot />
-                        </div>
-                    {/if}
-                </div>
+                <LightboxBody bind:image={image} bind:protect={protect} bind:portrait={portrait}/>
                 <Footer bind:title={title} bind:description={defaultClasses} bind:gallery={gallery}
                         bind:activeImage={activeImage}/>
             </div>
@@ -114,19 +108,6 @@
         max-width: 90%;
         max-height: 90%;
         z-index: 1000002;
-    }
-    .svelte-lightbox-body {
-        background-color: transparent;
-        width: auto;
-        height: auto;
-        max-height: 80vh;
-    }
-    .svelte-lightbox-image-portrait{
-        max-width: 90vh;
-    }
-    .svelte-lightbox-unselectable {
-        user-select: none;
-        pointer-events: none;
     }
     h3 {
         color: white;
