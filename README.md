@@ -56,7 +56,7 @@ it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'`.
         <img src="path" alt="Simple lightbox">
     </Lightbox>
 
-    <Lightbox description="Lightbox with thumbnail and image">
+    <Lightbox thumbnail description="Lightbox with thumbnail and image">
         <img slot="thumbnail" src="path/thumbnail.png" alt="Thumbnail">
         <img slot="image" src="path/image.png" alt="Lightbox image">
     </Lightbox>
