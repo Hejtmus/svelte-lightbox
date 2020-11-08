@@ -12,7 +12,8 @@
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rollup -c",
+    "release": "rollup -c --environment BUILD:false",
+    "build": "rm ./dist/index.js.gz ./dist/index.mjs.gz && rollup -c",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
