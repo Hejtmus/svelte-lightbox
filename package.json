@@ -1,6 +1,6 @@
 {
   "name": "svelte-lightbox",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "author": {
     "name": "Filip Holčík",
@@ -12,7 +12,8 @@
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rollup -c",
+    "release": "rollup -c --environment BUILD:false",
+    "build": "rm -f ./dist/index.js.gz ./dist/index.mjs.gz && rollup -c",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {

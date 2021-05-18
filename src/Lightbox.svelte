@@ -1,7 +1,10 @@
 <script>
     import Thumbnail from './LightboxThumbnail.svelte';
     import Modal from './Modal/Index.svelte';
+    import InternalGallery from './Gallery/InternalGallery.svelte';
     import {onMount} from 'svelte';
+    import {writable} from "svelte/store";
+    import ExternalGallery from "./Gallery/ExternalGallery.svelte";
 
     //exporting classes, for passing classes into thumbnail
     export let thumbnailClasses = '';
@@ -12,7 +15,7 @@
     //number that hold which image is active
     export let activeImage = 0;
     //array with image descriptions
-    export let gallery = [];
+    export let gallery = false;
     export let title = '';
     export let description = '';
     //exporting duration of fade transition
@@ -48,10 +51,11 @@
             }
         };
     })
+
 </script>
 
 <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
-    {#if thumbnail}
+    {#if thumbnail || gallery}
         <slot name="thumbnail"/>
     {:else}
         <slot/>
@@ -64,6 +68,12 @@
            on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}>
         {#if thumbnail}
             <slot name="image"/>
+        {:else if gallery}
+            <InternalGallery bind:activeImage>
+                <slot name="thumbnail"/>
+                <slot>
+                </slot>
+            </InternalGallery>
         {:else}
             <slot/>
         {/if}
