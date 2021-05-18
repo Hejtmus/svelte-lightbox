@@ -17,7 +17,7 @@
     </h5>
     {#if gallery[0]}
         <p>
-            Image {activeImage+1} of {gallery.length-1}
+            Image {activeImage+1} of {gallery.length}
         </p>
     {/if}
 </div>

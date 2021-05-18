@@ -16,8 +16,6 @@
     export let activeImage = 0;
     //array with image descriptions
     export let gallery = false;
-    let galleryThumbnail;
-    let galleryThumbnailStore = writable(galleryThumbnail);
     export let title = '';
     export let description = '';
     //exporting duration of fade transition
@@ -53,17 +51,12 @@
             }
         };
     })
-    $: galleryThumbnailStore.set(galleryThumbnail)
 
 </script>
 
 <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
-    {#if thumbnail}
+    {#if thumbnail || gallery}
         <slot name="thumbnail"/>
-    {:else if gallery}
-        <div bind:this={galleryThumbnail}>
-            <slot name="thumbnail"/>
-        </div>
     {:else}
         <slot/>
     {/if}
