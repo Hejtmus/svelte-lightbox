@@ -17,9 +17,19 @@
     export let description = '';
     export let gallery;
     export let activeImage;
+    let actualTitle;
+    let actualDescription;
 
     //let allModalClasses = modalClasses;
     $: allModalClasses = `${modalClasses} svelte-lightbox-overlay clearfix`;
+    $: actualTitle = title;
+    $: actualDescription = description;
+
+    $: if (gallery && !title && !description) {
+            actualTitle = gallery[activeImage].title;
+            actualDescription = gallery[activeImage].description;
+    }
+
 </script>
 
 <div class="cover clearfix">
@@ -35,7 +45,7 @@
             </Body>
 
 
-            <Footer bind:title={title} bind:description={description} bind:gallery={gallery}
+            <Footer bind:title={actualTitle} bind:description={actualDescription} bind:galleryLength={gallery.length}
                     bind:activeImage={activeImage}/>
 
         </div>
@@ -68,6 +78,13 @@
         align-items: center;
         padding: 1rem;
     }
+    .cover:before {
+         content: '';
+         position: absolute;
+         top: 0; bottom: 0; left: 0; right: 0;
+         opacity: 0;
+         z-index: -1;
+     }
     .svelte-lightbox {
         position: absolute;
         background-color: transparent;
@@ -82,5 +99,6 @@
         clear: both;
         display: table;
     }
+
     /* I need help with styling this */
 </style>
