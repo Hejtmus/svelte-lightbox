@@ -45,7 +45,7 @@
             </Body>
 
 
-            <Footer bind:title={actualTitle} bind:description={actualDescription} bind:gallery={gallery[activeImage]}
+            <Footer bind:title={actualTitle} bind:description={actualDescription} bind:galleryLength={gallery.length}
                     bind:activeImage={activeImage}/>
 
         </div>
