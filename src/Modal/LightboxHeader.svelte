@@ -30,5 +30,6 @@
     }
     button:hover {
         color: lightgray;
+        cursor: pointer;
     }
 </style>
