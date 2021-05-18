@@ -1,1 +1,2863 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t=t||self).Lightbox={})}(this,(function(t){"use strict";function e(){}const n=t=>t;function l(t){return t()}function o(){return Object.create(null)}function i(t){t.forEach(l)}function s(t){return"function"==typeof t}function c(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function r(t,e,n,l){if(t){const o=a(t,e,n,l);return t[0](o)}}function a(t,e,n,l){return t[1]&&l?function(t,e){for(const n in e)t[n]=e[n];return t}(n.ctx.slice(),t[1](l(e))):n.ctx}function u(t,e,n,l,o,i,s){const c=function(t,e,n,l){if(t[2]&&l){const o=t[2](l(n));if(void 0===e.dirty)return o;if("object"==typeof o){const t=[],n=Math.max(e.dirty.length,o.length);for(let l=0;l<n;l+=1)t[l]=e.dirty[l]|o[l];return t}return e.dirty|o}return e.dirty}(e,l,o,i);if(c){const o=a(e,n,l,s);t.p(o,c)}}function d(t){return null==t?"":t}const f="undefined"!=typeof window;let p=f?()=>window.performance.now():()=>Date.now(),m=f?t=>requestAnimationFrame(t):e;const h=new Set;function g(t){h.forEach(e=>{e.c(t)||(h.delete(e),e.f())}),0!==h.size&&m(g)}function $(t,e){t.appendChild(e)}function v(t,e,n){t.insertBefore(e,n||null)}function y(t){t.parentNode.removeChild(t)}function b(t){return document.createElement(t)}function x(t){return document.createTextNode(t)}function C(){return x(" ")}function w(){return x("")}function _(t,e,n,l){return t.addEventListener(e,n,l),()=>t.removeEventListener(e,n,l)}function S(t,e,n){null==n?t.removeAttribute(e):t.getAttribute(e)!==n&&t.setAttribute(e,n)}function k(t,e){e=""+e,t.wholeText!==e&&(t.data=e)}function I(t,e,n){t.classList[n?"add":"remove"](e)}function z(t,e){const n=document.createEvent("CustomEvent");return n.initCustomEvent(t,!1,!1,e),n}const E=new Set;let D,L=0;function M(t,e,n,l,o,i,s,c=0){const r=16.666/l;let a="{\n";for(let t=0;t<=1;t+=r){const l=e+(n-e)*i(t);a+=100*t+`%{${s(l,1-l)}}\n`}const u=a+`100% {${s(n,1-n)}}\n}`,d=`__svelte_${function(t){let e=5381,n=t.length;for(;n--;)e=(e<<5)-e^t.charCodeAt(n);return e>>>0}(u)}_${c}`,f=t.ownerDocument;E.add(f);const p=f.__svelte_stylesheet||(f.__svelte_stylesheet=f.head.appendChild(b("style")).sheet),m=f.__svelte_rules||(f.__svelte_rules={});m[d]||(m[d]=!0,p.insertRule(`@keyframes ${d} ${u}`,p.cssRules.length));const h=t.style.animation||"";return t.style.animation=`${h?h+", ":""}${d} ${l}ms linear ${o}ms 1 both`,L+=1,d}function j(t,e){const n=(t.style.animation||"").split(", "),l=n.filter(e?t=>t.indexOf(e)<0:t=>-1===t.indexOf("__svelte")),o=n.length-l.length;o&&(t.style.animation=l.join(", "),L-=o,L||m(()=>{L||(E.forEach(t=>{const e=t.__svelte_stylesheet;let n=e.cssRules.length;for(;n--;)e.deleteRule(n);t.__svelte_rules={}}),E.clear())}))}function A(t){D=t}function B(){if(!D)throw new Error("Function called outside component initialization");return D}function N(){const t=B();return(e,n)=>{const l=t.$$.callbacks[e];if(l){const o=z(e,n);l.slice().forEach(e=>{e.call(t,o)})}}}const O=[],T=[],H=[],P=[],R=Promise.resolve();let q=!1;function F(t){H.push(t)}function G(t){P.push(t)}let J=!1;const K=new Set;function Q(){if(!J){J=!0;do{for(let t=0;t<O.length;t+=1){const e=O[t];A(e),U(e.$$)}for(O.length=0;T.length;)T.pop()();for(let t=0;t<H.length;t+=1){const e=H[t];K.has(e)||(K.add(e),e())}H.length=0}while(O.length);for(;P.length;)P.pop()();q=!1,J=!1,K.clear()}}function U(t){if(null!==t.fragment){t.update(),i(t.before_update);const e=t.dirty;t.dirty=[-1],t.fragment&&t.fragment.p(t.ctx,e),t.after_update.forEach(F)}}let V;function W(t,e,n){t.dispatchEvent(z(`${e?"intro":"outro"}${n}`))}const X=new Set;let Y;function Z(){Y={r:0,c:[],p:Y}}function tt(){Y.r||i(Y.c),Y=Y.p}function et(t,e){t&&t.i&&(X.delete(t),t.i(e))}function nt(t,e,n,l){if(t&&t.o){if(X.has(t))return;X.add(t),Y.c.push(()=>{X.delete(t),l&&(n&&t.d(1),l())}),t.o(e)}}const lt={duration:0};function ot(t,l,o,c){let r=l(t,o),a=c?0:1,u=null,d=null,f=null;function $(){f&&j(t,f)}function v(t,e){const n=t.b-a;return e*=Math.abs(n),{a:a,b:t.b,d:n,duration:e,start:t.start,end:t.start+e,group:t.group}}function y(l){const{delay:o=0,duration:s=300,easing:c=n,tick:y=e,css:b}=r||lt,x={start:p()+o,b:l};l||(x.group=Y,Y.r+=1),u?d=x:(b&&($(),f=M(t,a,l,s,o,c,b)),l&&y(0,1),u=v(x,s),F(()=>W(t,l,"start")),function(t){let e;0===h.size&&m(g),new Promise(n=>{h.add(e={c:t,f:n})})}(e=>{if(d&&e>d.start&&(u=v(d,s),d=null,W(t,u.b,"start"),b&&($(),f=M(t,a,u.b,u.duration,0,c,r.css))),u)if(e>=u.end)y(a=u.b,1-a),W(t,u.b,"end"),d||(u.b?$():--u.group.r||i(u.group.c)),u=null;else if(e>=u.start){const t=e-u.start;a=u.a+u.d*c(t/u.duration),y(a,1-a)}return!(!u&&!d)}))}return{run(t){s(r)?(V||(V=Promise.resolve(),V.then(()=>{V=null})),V).then(()=>{r=r(),y(t)}):y(t)},end(){$(),u=d=null}}}function it(t,e,n){const l=t.$$.props[e];void 0!==l&&(t.$$.bound[l]=n,n(t.$$.ctx[l]))}function st(t){t&&t.c()}function ct(t,e,n){const{fragment:o,on_mount:c,on_destroy:r,after_update:a}=t.$$;o&&o.m(e,n),F(()=>{const e=c.map(l).filter(s);r?r.push(...e):i(e),t.$$.on_mount=[]}),a.forEach(F)}function rt(t,e){const n=t.$$;null!==n.fragment&&(i(n.on_destroy),n.fragment&&n.fragment.d(e),n.on_destroy=n.fragment=null,n.ctx=[])}function at(t,e){-1===t.$$.dirty[0]&&(O.push(t),q||(q=!0,R.then(Q)),t.$$.dirty.fill(0)),t.$$.dirty[e/31|0]|=1<<e%31}function ut(t,n,l,s,c,r,a=[-1]){const u=D;A(t);const d=n.props||{},f=t.$$={fragment:null,ctx:null,props:r,update:e,not_equal:c,bound:o(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(u?u.$$.context:[]),callbacks:o(),dirty:a,skip_bound:!1};let p=!1;if(f.ctx=l?l(t,d,(e,n,...l)=>{const o=l.length?l[0]:n;return f.ctx&&c(f.ctx[e],f.ctx[e]=o)&&(!f.skip_bound&&f.bound[e]&&f.bound[e](o),p&&at(t,e)),n}):[],f.update(),p=!0,i(f.before_update),f.fragment=!!s&&s(f.ctx),n.target){if(n.hydrate){const t=function(t){return Array.from(t.childNodes)}(n.target);f.fragment&&f.fragment.l(t),t.forEach(y)}else f.fragment&&f.fragment.c();n.intro&&et(t.$$.fragment),ct(t,n.target,n.anchor),Q()}A(u)}class dt{$destroy(){rt(this,1),this.$destroy=e}$on(t,e){const n=this.$$.callbacks[t]||(this.$$.callbacks[t]=[]);return n.push(e),()=>{const t=n.indexOf(e);-1!==t&&n.splice(t,1)}}$set(t){var e;this.$$set&&(e=t,0!==Object.keys(e).length)&&(this.$$.skip_bound=!0,this.$$set(t),this.$$.skip_bound=!1)}}function ft(t){let e,n,l,o,i,s;const c=t[5].default,a=r(c,t,t[4],null);return{c(){e=b("div"),n=b("div"),a&&a.c(),S(n,"class",l=d(t[0])+" svelte-1u332e1"),S(n,"style",t[1]),I(n,"svelte-lightbox-unselectable",t[2]),S(e,"class","clickable svelte-1u332e1")},m(l,c){v(l,e,c),$(e,n),a&&a.m(n,null),o=!0,i||(s=_(e,"click",t[6]),i=!0)},p(t,[e]){a&&a.p&&16&e&&u(a,c,t,t[4],e,null,null),(!o||1&e&&l!==(l=d(t[0])+" svelte-1u332e1"))&&S(n,"class",l),(!o||2&e)&&S(n,"style",t[1]),5&e&&I(n,"svelte-lightbox-unselectable",t[2])},i(t){o||(et(a,t),o=!0)},o(t){nt(a,t),o=!1},d(t){t&&y(e),a&&a.d(t),i=!1,s()}}}function pt(t,e,n){const l=N();let{thumbnailClasses:o=""}=e,{thumbnailStyle:i=""}=e,{protect:s=!1}=e,{$$slots:c={},$$scope:r}=e;return t.$$set=t=>{"thumbnailClasses"in t&&n(0,o=t.thumbnailClasses),"thumbnailStyle"in t&&n(1,i=t.thumbnailStyle),"protect"in t&&n(2,s=t.protect),"$$scope"in t&&n(4,r=t.$$scope)},[o,i,s,l,r,c,()=>l("click")]}class mt extends dt{constructor(t){var e;super(),document.getElementById("svelte-1u332e1-style")||((e=b("style")).id="svelte-1u332e1-style",e.textContent="div.clickable.svelte-1u332e1{position:static;cursor:zoom-in}div.svelte-lightbox-unselectable.svelte-1u332e1{user-select:none;pointer-events:none}",$(document.head,e)),ut(this,t,pt,ft,c,{thumbnailClasses:0,thumbnailStyle:1,protect:2})}}function ht(t,{delay:e=0,duration:l=400,easing:o=n}){const i=+getComputedStyle(t).opacity;return{delay:e,duration:l,easing:o,css:t=>"opacity: "+t*i}}function gt(t){let n,l,o,i,s,c,r;return{c(){n=b("div"),l=b("button"),o=x("×"),S(l,"size",t[0]),S(l,"style",t[1]),S(l,"class",i=d(t[3])+" svelte-19gvo37"),S(n,"class",s=d("svelte-lightbox-header "+t[2])+" svelte-19gvo37")},m(e,i){v(e,n,i),$(n,l),$(l,o),c||(r=_(l,"click",t[5]),c=!0)},p(t,[e]){1&e&&S(l,"size",t[0]),2&e&&S(l,"style",t[1]),8&e&&i!==(i=d(t[3])+" svelte-19gvo37")&&S(l,"class",i),4&e&&s!==(s=d("svelte-lightbox-header "+t[2])+" svelte-19gvo37")&&S(n,"class",s)},i:e,o:e,d(t){t&&y(n),c=!1,r()}}}function $t(t,e,n){const l=N();let{size:o="xs"}=e,{style:i=""}=e,{headerClasses:s=""}=e,{buttonClasses:c=""}=e;return t.$$set=t=>{"size"in t&&n(0,o=t.size),"style"in t&&n(1,i=t.style),"headerClasses"in t&&n(2,s=t.headerClasses),"buttonClasses"in t&&n(3,c=t.buttonClasses)},[o,i,s,c,l,()=>l("close")]}class vt extends dt{constructor(t){var e;super(),document.getElementById("svelte-19gvo37-style")||((e=b("style")).id="svelte-19gvo37-style",e.textContent="div.svelte-lightbox-header.svelte-19gvo37{width:auto;height:3rem;display:flex;justify-content:flex-end;align-items:center}button.svelte-19gvo37{background:transparent;font-size:3rem;border:none;color:white}button.svelte-19gvo37:hover{color:lightgray}",$(document.head,e)),ut(this,t,$t,gt,c,{size:0,style:1,headerClasses:2,buttonClasses:3})}}function yt(t){let e,n;const l=t[4].default,o=r(l,t,t[3],null);return{c(){e=b("div"),o&&o.c(),S(e,"class","svelte-x9zrc7"),I(e,"svelte-lightbox-image-portrait",t[2])},m(t,l){v(t,e,l),o&&o.m(e,null),n=!0},p(t,n){o&&o.p&&8&n&&u(o,l,t,t[3],n,null,null),4&n&&I(e,"svelte-lightbox-image-portrait",t[2])},i(t){n||(et(o,t),n=!0)},o(t){nt(o,t),n=!1},d(t){t&&y(e),o&&o.d(t)}}}function bt(t){let n,l,o,i,s;return{c(){n=b("img"),n.src!==(l=t[0].src)&&S(n,"src",l),S(n,"alt",o=t[0].alt),S(n,"style",i=t[0].style),S(n,"class",s=t[0].class)},m(t,e){v(t,n,e)},p(t,e){1&e&&n.src!==(l=t[0].src)&&S(n,"src",l),1&e&&o!==(o=t[0].alt)&&S(n,"alt",o),1&e&&i!==(i=t[0].style)&&S(n,"style",i),1&e&&s!==(s=t[0].class)&&S(n,"class",s)},i:e,o:e,d(t){t&&y(n)}}}function xt(t){let e,n,l,o;const i=[bt,yt],s=[];function c(t,e){return t[0].src?0:1}return n=c(t),l=s[n]=i[n](t),{c(){e=b("div"),l.c(),S(e,"class","svelte-lightbox-body svelte-x9zrc7"),I(e,"svelte-lightbox-unselectable",t[1])},m(t,l){v(t,e,l),s[n].m(e,null),o=!0},p(t,[o]){let r=n;n=c(t),n===r?s[n].p(t,o):(Z(),nt(s[r],1,1,()=>{s[r]=null}),tt(),l=s[n],l||(l=s[n]=i[n](t),l.c()),et(l,1),l.m(e,null)),2&o&&I(e,"svelte-lightbox-unselectable",t[1])},i(t){o||(et(l),o=!0)},o(t){nt(l),o=!1},d(t){t&&y(e),s[n].d()}}}function Ct(t,e,n){let{image:l={}}=e,{protect:o=!1}=e,{portrait:i=!1}=e,{$$slots:s={},$$scope:c}=e;return t.$$set=t=>{"image"in t&&n(0,l=t.image),"protect"in t&&n(1,o=t.protect),"portrait"in t&&n(2,i=t.portrait),"$$scope"in t&&n(3,c=t.$$scope)},[l,o,i,c,s]}class wt extends dt{constructor(t){var e;super(),document.getElementById("svelte-x9zrc7-style")||((e=b("style")).id="svelte-x9zrc7-style",e.textContent="div.svelte-lightbox-body.svelte-x9zrc7{background-color:transparent;width:auto;height:auto;max-height:80vh}div.svelte-lightbox-unselectable.svelte-x9zrc7{user-select:none;pointer-events:none}div.svelte-lightbox-image-portrait.svelte-x9zrc7{max-width:90vh}",$(document.head,e)),ut(this,t,Ct,xt,c,{image:0,protect:1,portrait:2})}}function _t(t){let e,n,l,o,i,s=t[3]+1+"",c=t[2].length-1+"";return{c(){e=b("p"),n=x("Image "),l=x(s),o=x(" of "),i=x(c)},m(t,s){v(t,e,s),$(e,n),$(e,l),$(e,o),$(e,i)},p(t,e){8&e&&s!==(s=t[3]+1+"")&&k(l,s),4&e&&c!==(c=t[2].length-1+"")&&k(i,c)},d(t){t&&y(e)}}}function St(t){let n,l,o,i,s,c,r=t[2][0]&&_t(t);return{c(){n=b("div"),l=b("h2"),o=C(),i=b("h5"),s=C(),r&&r.c(),S(n,"class",c=d("svelte-lightbox-footer "+t[4])+" svelte-1u8lh7d"),S(n,"style",t[5])},m(e,c){v(e,n,c),$(n,l),l.innerHTML=t[0],$(n,o),$(n,i),i.innerHTML=t[1],$(n,s),r&&r.m(n,null)},p(t,[e]){1&e&&(l.innerHTML=t[0]),2&e&&(i.innerHTML=t[1]),t[2][0]?r?r.p(t,e):(r=_t(t),r.c(),r.m(n,null)):r&&(r.d(1),r=null),16&e&&c!==(c=d("svelte-lightbox-footer "+t[4])+" svelte-1u8lh7d")&&S(n,"class",c),32&e&&S(n,"style",t[5])},i:e,o:e,d(t){t&&y(n),r&&r.d()}}}function kt(t,e,n){let{title:l=""}=e,{description:o=""}=e,{gallery:i}=e,{activeImage:s}=e,{classes:c=""}=e,{style:r=""}=e;return t.$$set=t=>{"title"in t&&n(0,l=t.title),"description"in t&&n(1,o=t.description),"gallery"in t&&n(2,i=t.gallery),"activeImage"in t&&n(3,s=t.activeImage),"classes"in t&&n(4,c=t.classes),"style"in t&&n(5,r=t.style)},[l,o,i,s,c,r]}class It extends dt{constructor(t){var e;super(),document.getElementById("svelte-1u8lh7d-style")||((e=b("style")).id="svelte-1u8lh7d-style",e.textContent="div.svelte-lightbox-footer.svelte-1u8lh7d{background-color:transparent;color:white;text-align:left;width:inherit;height:auto}",$(document.head,e)),ut(this,t,kt,St,c,{title:0,description:1,gallery:2,activeImage:3,classes:4,style:5})}}function zt(t){let e;const n=t[12].default,l=r(n,t,t[23],null);return{c(){l&&l.c()},m(t,n){l&&l.m(t,n),e=!0},p(t,e){l&&l.p&&8388608&e&&u(l,n,t,t[23],e,null,null)},i(t){e||(et(l,t),e=!0)},o(t){nt(l,t),e=!1},d(t){l&&l.d(t)}}}function Et(t){let e,n,l,o,s,c,r,a,u,f,p,m,h,g,x,w,k,I,z,E;function D(e){t[14].call(null,e)}function L(e){t[15].call(null,e)}function M(e){t[16].call(null,e)}o=new vt({}),o.$on("close",t[13]);let j={$$slots:{default:[zt]},$$scope:{ctx:t}};function A(e){t[17].call(null,e)}function B(e){t[18].call(null,e)}function N(e){t[19].call(null,e)}function O(e){t[20].call(null,e)}void 0!==t[0]&&(j.image=t[0]),void 0!==t[1]&&(j.protect=t[1]),void 0!==t[2]&&(j.portrait=t[2]),c=new wt({props:j}),T.push(()=>it(c,"image",D)),T.push(()=>it(c,"protect",L)),T.push(()=>it(c,"portrait",M));let H={};return void 0!==t[3]&&(H.title=t[3]),void 0!==t[4]&&(H.description=t[4]),void 0!==t[5]&&(H.gallery=t[5]),void 0!==t[6]&&(H.activeImage=t[6]),p=new It({props:H}),T.push(()=>it(p,"title",A)),T.push(()=>it(p,"description",B)),T.push(()=>it(p,"gallery",N)),T.push(()=>it(p,"activeImage",O)),{c(){e=b("div"),n=b("div"),l=b("div"),st(o.$$.fragment),s=C(),st(c.$$.fragment),f=C(),st(p.$$.fragment),S(l,"class","svelte-lightbox svelte-1nywnxo"),S(n,"class",w=d(t[9])+" svelte-1nywnxo"),S(n,"style",t[7]),S(e,"class","cover clearfix svelte-1nywnxo")},m(i,r){v(i,e,r),$(e,n),$(n,l),ct(o,l,null),$(l,s),ct(c,l,null),$(l,f),ct(p,l,null),I=!0,z||(E=[_(l,"click",t[21]),_(n,"click",t[22])],z=!0)},p(t,[e]){const l={};8388608&e&&(l.$$scope={dirty:e,ctx:t}),!r&&1&e&&(r=!0,l.image=t[0],G(()=>r=!1)),!a&&2&e&&(a=!0,l.protect=t[1],G(()=>a=!1)),!u&&4&e&&(u=!0,l.portrait=t[2],G(()=>u=!1)),c.$set(l);const o={};!m&&8&e&&(m=!0,o.title=t[3],G(()=>m=!1)),!h&&16&e&&(h=!0,o.description=t[4],G(()=>h=!1)),!g&&32&e&&(g=!0,o.gallery=t[5],G(()=>g=!1)),!x&&64&e&&(x=!0,o.activeImage=t[6],G(()=>x=!1)),p.$set(o),(!I||512&e&&w!==(w=d(t[9])+" svelte-1nywnxo"))&&S(n,"class",w),(!I||128&e)&&S(n,"style",t[7])},i(e){I||(et(o.$$.fragment,e),et(c.$$.fragment,e),et(p.$$.fragment,e),F(()=>{k||(k=ot(n,ht,{duration:t[8]},!0)),k.run(1)}),I=!0)},o(e){nt(o.$$.fragment,e),nt(c.$$.fragment,e),nt(p.$$.fragment,e),k||(k=ot(n,ht,{duration:t[8]},!1)),k.run(0),I=!1},d(t){t&&y(e),rt(o),rt(c),rt(p),t&&k&&k.end(),z=!1,i(E)}}}function Dt(t,e,n){const l=N();let{modalClasses:o=""}=e,{modalStyle:i=""}=e,{transitionDuration:s=500}=e,{image:c={}}=e,{protect:r=!1}=e,{portrait:a=!1}=e,{title:u=""}=e,{description:d=""}=e,{gallery:f}=e,{activeImage:p}=e,{$$slots:m={},$$scope:h}=e;let g;return t.$$set=t=>{"modalClasses"in t&&n(11,o=t.modalClasses),"modalStyle"in t&&n(7,i=t.modalStyle),"transitionDuration"in t&&n(8,s=t.transitionDuration),"image"in t&&n(0,c=t.image),"protect"in t&&n(1,r=t.protect),"portrait"in t&&n(2,a=t.portrait),"title"in t&&n(3,u=t.title),"description"in t&&n(4,d=t.description),"gallery"in t&&n(5,f=t.gallery),"activeImage"in t&&n(6,p=t.activeImage),"$$scope"in t&&n(23,h=t.$$scope)},t.$$.update=()=>{2048&t.$$.dirty&&n(9,g=o+" svelte-lightbox-overlay clearfix")},[c,r,a,u,d,f,p,i,s,g,l,o,m,()=>l("close"),function(t){c=t,n(0,c)},function(t){r=t,n(1,r)},function(t){a=t,n(2,a)},function(t){u=t,n(3,u)},function(t){d=t,n(4,d)},function(t){f=t,n(5,f)},function(t){p=t,n(6,p)},()=>l("modalClick"),()=>l("topModalClick"),h]}class Lt extends dt{constructor(t){var e;super(),document.getElementById("svelte-1nywnxo-style")||((e=b("style")).id="svelte-1nywnxo-style",e.textContent='.cover.svelte-1nywnxo{position:fixed;z-index:1000000!important;background-color:rgba(43, 39, 45, 0.87);top:0;bottom:0;left:0;right:0;overflow:hidden;width:100%;height:100%}.svelte-lightbox-overlay.svelte-1nywnxo{position:relative;z-index:1000001;height:100%;width:100%;display:flex;justify-content:center;align-items:center;padding:1rem}.svelte-lightbox.svelte-1nywnxo{position:absolute;background-color:transparent;width:auto;height:auto;max-width:90%;max-height:90%;z-index:1000002}.clearfix.svelte-1nywnxo::after{content:"";clear:both;display:table}',$(document.head,e)),ut(this,t,Dt,Et,c,{modalClasses:11,modalStyle:7,transitionDuration:8,image:0,protect:1,portrait:2,title:3,description:4,gallery:5,activeImage:6})}}const Mt=t=>({}),jt=t=>({}),At=t=>({}),Bt=t=>({});function Nt(t){let e;const n=t[16].default,l=r(n,t,t[30],null);return{c(){l&&l.c()},m(t,n){l&&l.m(t,n),e=!0},p(t,e){l&&l.p&&1073741824&e[0]&&u(l,n,t,t[30],e,null,null)},i(t){e||(et(l,t),e=!0)},o(t){nt(l,t),e=!1},d(t){l&&l.d(t)}}}function Ot(t){let e;const n=t[16].thumbnail,l=r(n,t,t[30],Bt);return{c(){l&&l.c()},m(t,n){l&&l.m(t,n),e=!0},p(t,e){l&&l.p&&1073741824&e[0]&&u(l,n,t,t[30],e,At,Bt)},i(t){e||(et(l,t),e=!0)},o(t){nt(l,t),e=!1},d(t){l&&l.d(t)}}}function Tt(t){let e,n,l,o;const i=[Ot,Nt],s=[];function c(t,e){return t[12]?0:1}return e=c(t),n=s[e]=i[e](t),{c(){n.c(),l=w()},m(t,n){s[e].m(t,n),v(t,l,n),o=!0},p(t,o){let r=e;e=c(t),e===r?s[e].p(t,o):(Z(),nt(s[r],1,1,()=>{s[r]=null}),tt(),n=s[e],n||(n=s[e]=i[e](t),n.c()),et(n,1),n.m(l.parentNode,l))},i(t){o||(et(n),o=!0)},o(t){nt(n),o=!1},d(t){s[e].d(t),t&&y(l)}}}function Ht(t){let e,n,l,o,i,s,c,r,a,u,d,f;function p(e){t[20].call(null,e)}function m(e){t[21].call(null,e)}function h(e){t[22].call(null,e)}function g(e){t[23].call(null,e)}function $(e){t[24].call(null,e)}function v(e){t[25].call(null,e)}function y(e){t[26].call(null,e)}function b(e){t[27].call(null,e)}function x(e){t[28].call(null,e)}function C(e){t[29].call(null,e)}let w={$$slots:{default:[qt]},$$scope:{ctx:t}};return void 0!==t[2]&&(w.modalClasses=t[2]),void 0!==t[3]&&(w.modalStyle=t[3]),void 0!==t[8]&&(w.transitionDuration=t[8]),void 0!==t[10]&&(w.image=t[10]),void 0!==t[9]&&(w.protect=t[9]),void 0!==t[11]&&(w.portrait=t[11]),void 0!==t[6]&&(w.title=t[6]),void 0!==t[7]&&(w.description=t[7]),void 0!==t[5]&&(w.gallery=t[5]),void 0!==t[4]&&(w.activeImage=t[4]),e=new Lt({props:w}),T.push(()=>it(e,"modalClasses",p)),T.push(()=>it(e,"modalStyle",m)),T.push(()=>it(e,"transitionDuration",h)),T.push(()=>it(e,"image",g)),T.push(()=>it(e,"protect",$)),T.push(()=>it(e,"portrait",v)),T.push(()=>it(e,"title",y)),T.push(()=>it(e,"description",b)),T.push(()=>it(e,"gallery",x)),T.push(()=>it(e,"activeImage",C)),e.$on("close",t[14]),e.$on("topModalClick",t[14]),e.$on("modalClick",t[14]),{c(){st(e.$$.fragment)},m(t,n){ct(e,t,n),f=!0},p(t,f){const p={};1073745920&f[0]&&(p.$$scope={dirty:f,ctx:t}),!n&&4&f[0]&&(n=!0,p.modalClasses=t[2],G(()=>n=!1)),!l&&8&f[0]&&(l=!0,p.modalStyle=t[3],G(()=>l=!1)),!o&&256&f[0]&&(o=!0,p.transitionDuration=t[8],G(()=>o=!1)),!i&&1024&f[0]&&(i=!0,p.image=t[10],G(()=>i=!1)),!s&&512&f[0]&&(s=!0,p.protect=t[9],G(()=>s=!1)),!c&&2048&f[0]&&(c=!0,p.portrait=t[11],G(()=>c=!1)),!r&&64&f[0]&&(r=!0,p.title=t[6],G(()=>r=!1)),!a&&128&f[0]&&(a=!0,p.description=t[7],G(()=>a=!1)),!u&&32&f[0]&&(u=!0,p.gallery=t[5],G(()=>u=!1)),!d&&16&f[0]&&(d=!0,p.activeImage=t[4],G(()=>d=!1)),e.$set(p)},i(t){f||(et(e.$$.fragment,t),f=!0)},o(t){nt(e.$$.fragment,t),f=!1},d(t){rt(e,t)}}}function Pt(t){let e;const n=t[16].default,l=r(n,t,t[30],null);return{c(){l&&l.c()},m(t,n){l&&l.m(t,n),e=!0},p(t,e){l&&l.p&&1073741824&e[0]&&u(l,n,t,t[30],e,null,null)},i(t){e||(et(l,t),e=!0)},o(t){nt(l,t),e=!1},d(t){l&&l.d(t)}}}function Rt(t){let e;const n=t[16].image,l=r(n,t,t[30],jt);return{c(){l&&l.c()},m(t,n){l&&l.m(t,n),e=!0},p(t,e){l&&l.p&&1073741824&e[0]&&u(l,n,t,t[30],e,Mt,jt)},i(t){e||(et(l,t),e=!0)},o(t){nt(l,t),e=!1},d(t){l&&l.d(t)}}}function qt(t){let e,n,l,o;const i=[Rt,Pt],s=[];function c(t,e){return t[12]?0:1}return e=c(t),n=s[e]=i[e](t),{c(){n.c(),l=w()},m(t,n){s[e].m(t,n),v(t,l,n),o=!0},p(t,o){let r=e;e=c(t),e===r?s[e].p(t,o):(Z(),nt(s[r],1,1,()=>{s[r]=null}),tt(),n=s[e],n||(n=s[e]=i[e](t),n.c()),et(n,1),n.m(l.parentNode,l))},i(t){o||(et(n),o=!0)},o(t){nt(n),o=!1},d(t){s[e].d(t),t&&y(l)}}}function Ft(t){let e,n,l,o,i,s,c;function r(e){t[17].call(null,e)}function a(e){t[18].call(null,e)}function u(e){t[19].call(null,e)}let d={$$slots:{default:[Tt]},$$scope:{ctx:t}};void 0!==t[0]&&(d.thumbnailClasses=t[0]),void 0!==t[1]&&(d.thumbnailStyle=t[1]),void 0!==t[9]&&(d.protect=t[9]),e=new mt({props:d}),T.push(()=>it(e,"thumbnailClasses",r)),T.push(()=>it(e,"thumbnailStyle",a)),T.push(()=>it(e,"protect",u)),e.$on("click",t[14]);let f=t[13]&&Ht(t);return{c(){st(e.$$.fragment),i=C(),f&&f.c(),s=w()},m(t,n){ct(e,t,n),v(t,i,n),f&&f.m(t,n),v(t,s,n),c=!0},p(t,i){const c={};1073745920&i[0]&&(c.$$scope={dirty:i,ctx:t}),!n&&1&i[0]&&(n=!0,c.thumbnailClasses=t[0],G(()=>n=!1)),!l&&2&i[0]&&(l=!0,c.thumbnailStyle=t[1],G(()=>l=!1)),!o&&512&i[0]&&(o=!0,c.protect=t[9],G(()=>o=!1)),e.$set(c),t[13]?f?(f.p(t,i),8192&i[0]&&et(f,1)):(f=Ht(t),f.c(),et(f,1),f.m(s.parentNode,s)):f&&(Z(),nt(f,1,1,()=>{f=null}),tt())},i(t){c||(et(e.$$.fragment,t),et(f),c=!0)},o(t){nt(e.$$.fragment,t),nt(f),c=!1},d(t){rt(e,t),t&&y(i),f&&f.d(t),t&&y(s)}}}function Gt(t,e,n){let{thumbnailClasses:l=""}=e,{thumbnailStyle:o=""}=e,{modalClasses:i=""}=e,{modalStyle:s=""}=e,{activeImage:c=0}=e,{gallery:r=[]}=e,{title:a=""}=e,{description:u=""}=e,{transitionDuration:d=500}=e,{protect:f=!1}=e,{image:p={}}=e,{portrait:m=!1}=e,{noScroll:h=!0}=e,{thumbnail:g=!1}=e,$=!1;let v=()=>{};var y;y=()=>{let t=document.body.style.overflow;v=()=>{document.body.style.overflow=$?"hidden":t}},B().$$.on_mount.push(y);let{$$slots:b={},$$scope:x}=e;return t.$$set=t=>{"thumbnailClasses"in t&&n(0,l=t.thumbnailClasses),"thumbnailStyle"in t&&n(1,o=t.thumbnailStyle),"modalClasses"in t&&n(2,i=t.modalClasses),"modalStyle"in t&&n(3,s=t.modalStyle),"activeImage"in t&&n(4,c=t.activeImage),"gallery"in t&&n(5,r=t.gallery),"title"in t&&n(6,a=t.title),"description"in t&&n(7,u=t.description),"transitionDuration"in t&&n(8,d=t.transitionDuration),"protect"in t&&n(9,f=t.protect),"image"in t&&n(10,p=t.image),"portrait"in t&&n(11,m=t.portrait),"noScroll"in t&&n(15,h=t.noScroll),"thumbnail"in t&&n(12,g=t.thumbnail),"$$scope"in t&&n(30,x=t.$$scope)},[l,o,i,s,c,r,a,u,d,f,p,m,g,$,()=>{n(13,$=!$),h&&v()},h,b,function(t){l=t,n(0,l)},function(t){o=t,n(1,o)},function(t){f=t,n(9,f)},function(t){i=t,n(2,i)},function(t){s=t,n(3,s)},function(t){d=t,n(8,d)},function(t){p=t,n(10,p)},function(t){f=t,n(9,f)},function(t){m=t,n(11,m)},function(t){a=t,n(6,a)},function(t){u=t,n(7,u)},function(t){r=t,n(5,r)},function(t){c=t,n(4,c)},x]}function Jt(t){let e;const n=t[1].default,l=r(n,t,t[0],null);return{c(){l&&l.c()},m(t,n){l&&l.m(t,n),e=!0},p(t,[e]){l&&l.p&&1&e&&u(l,n,t,t[0],e,null,null)},i(t){e||(et(l,t),e=!0)},o(t){nt(l,t),e=!1},d(t){l&&l.d(t)}}}function Kt(t,e,n){let{$$slots:l={},$$scope:o}=e;return t.$$set=t=>{"$$scope"in t&&n(0,o=t.$$scope)},[o,l]}t.Lightbox=class extends dt{constructor(t){super(),ut(this,t,Gt,Ft,c,{thumbnailClasses:0,thumbnailStyle:1,modalClasses:2,modalStyle:3,activeImage:4,gallery:5,title:6,description:7,transitionDuration:8,protect:9,image:10,portrait:11,noScroll:15,thumbnail:12},[-1,-1])}},t.LightboxImage=class extends dt{constructor(t){super(),ut(this,t,Kt,Jt,c,{})}},Object.defineProperty(t,"__esModule",{value:!0})}));
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Lightbox = {}));
+}(this, (function (exports) { 'use strict';
+
+    function noop() { }
+    const identity = x => x;
+    function assign(tar, src) {
+        // @ts-ignore
+        for (const k in src)
+            tar[k] = src[k];
+        return tar;
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === 'function';
+    }
+    function safe_not_equal(a, b) {
+        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    }
+    function is_empty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    function create_slot(definition, ctx, $$scope, fn) {
+        if (definition) {
+            const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+            return definition[0](slot_ctx);
+        }
+    }
+    function get_slot_context(definition, ctx, $$scope, fn) {
+        return definition[1] && fn
+            ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+            : $$scope.ctx;
+    }
+    function get_slot_changes(definition, $$scope, dirty, fn) {
+        if (definition[2] && fn) {
+            const lets = definition[2](fn(dirty));
+            if ($$scope.dirty === undefined) {
+                return lets;
+            }
+            if (typeof lets === 'object') {
+                const merged = [];
+                const len = Math.max($$scope.dirty.length, lets.length);
+                for (let i = 0; i < len; i += 1) {
+                    merged[i] = $$scope.dirty[i] | lets[i];
+                }
+                return merged;
+            }
+            return $$scope.dirty | lets;
+        }
+        return $$scope.dirty;
+    }
+    function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
+        const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+        if (slot_changes) {
+            const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+            slot.p(slot_context, slot_changes);
+        }
+    }
+    function null_to_empty(value) {
+        return value == null ? '' : value;
+    }
+
+    const is_client = typeof window !== 'undefined';
+    let now = is_client
+        ? () => window.performance.now()
+        : () => Date.now();
+    let raf = is_client ? cb => requestAnimationFrame(cb) : noop;
+
+    const tasks = new Set();
+    function run_tasks(now) {
+        tasks.forEach(task => {
+            if (!task.c(now)) {
+                tasks.delete(task);
+                task.f();
+            }
+        });
+        if (tasks.size !== 0)
+            raf(run_tasks);
+    }
+    /**
+     * Creates a new task that runs on each raf frame
+     * until it returns a falsy value or is aborted
+     */
+    function loop(callback) {
+        let task;
+        if (tasks.size === 0)
+            raf(run_tasks);
+        return {
+            promise: new Promise(fulfill => {
+                tasks.add(task = { c: callback, f: fulfill });
+            }),
+            abort() {
+                tasks.delete(task);
+            }
+        };
+    }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
+    }
+    function empty() {
+        return text('');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else if (node.getAttribute(attribute) !== value)
+            node.setAttribute(attribute, value);
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function set_data(text, data) {
+        data = '' + data;
+        if (text.wholeText !== data)
+            text.data = data;
+    }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
+    }
+    function custom_event(type, detail) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, false, false, detail);
+        return e;
+    }
+
+    const active_docs = new Set();
+    let active = 0;
+    // https://github.com/darkskyapp/string-hash/blob/master/index.js
+    function hash(str) {
+        let hash = 5381;
+        let i = str.length;
+        while (i--)
+            hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+        return hash >>> 0;
+    }
+    function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+        const step = 16.666 / duration;
+        let keyframes = '{\n';
+        for (let p = 0; p <= 1; p += step) {
+            const t = a + (b - a) * ease(p);
+            keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+        }
+        const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+        const name = `__svelte_${hash(rule)}_${uid}`;
+        const doc = node.ownerDocument;
+        active_docs.add(doc);
+        const stylesheet = doc.__svelte_stylesheet || (doc.__svelte_stylesheet = doc.head.appendChild(element('style')).sheet);
+        const current_rules = doc.__svelte_rules || (doc.__svelte_rules = {});
+        if (!current_rules[name]) {
+            current_rules[name] = true;
+            stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+        }
+        const animation = node.style.animation || '';
+        node.style.animation = `${animation ? `${animation}, ` : ``}${name} ${duration}ms linear ${delay}ms 1 both`;
+        active += 1;
+        return name;
+    }
+    function delete_rule(node, name) {
+        const previous = (node.style.animation || '').split(', ');
+        const next = previous.filter(name
+            ? anim => anim.indexOf(name) < 0 // remove specific animation
+            : anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
+        );
+        const deleted = previous.length - next.length;
+        if (deleted) {
+            node.style.animation = next.join(', ');
+            active -= deleted;
+            if (!active)
+                clear_rules();
+        }
+    }
+    function clear_rules() {
+        raf(() => {
+            if (active)
+                return;
+            active_docs.forEach(doc => {
+                const stylesheet = doc.__svelte_stylesheet;
+                let i = stylesheet.cssRules.length;
+                while (i--)
+                    stylesheet.deleteRule(i);
+                doc.__svelte_rules = {};
+            });
+            active_docs.clear();
+        });
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error(`Function called outside component initialization`);
+        return current_component;
+    }
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
+    function createEventDispatcher() {
+        const component = get_current_component();
+        return (type, detail) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail);
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+            }
+        };
+    }
+
+    const dirty_components = [];
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    function add_flush_callback(fn) {
+        flush_callbacks.push(fn);
+    }
+    let flushing = false;
+    const seen_callbacks = new Set();
+    function flush() {
+        if (flushing)
+            return;
+        flushing = true;
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            for (let i = 0; i < dirty_components.length; i += 1) {
+                const component = dirty_components[i];
+                set_current_component(component);
+                update(component.$$);
+            }
+            dirty_components.length = 0;
+            while (binding_callbacks.length)
+                binding_callbacks.pop()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            for (let i = 0; i < render_callbacks.length; i += 1) {
+                const callback = render_callbacks[i];
+                if (!seen_callbacks.has(callback)) {
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                    callback();
+                }
+            }
+            render_callbacks.length = 0;
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+        flushing = false;
+        seen_callbacks.clear();
+    }
+    function update($$) {
+        if ($$.fragment !== null) {
+            $$.update();
+            run_all($$.before_update);
+            const dirty = $$.dirty;
+            $$.dirty = [-1];
+            $$.fragment && $$.fragment.p($$.ctx, dirty);
+            $$.after_update.forEach(add_render_callback);
+        }
+    }
+
+    let promise;
+    function wait() {
+        if (!promise) {
+            promise = Promise.resolve();
+            promise.then(() => {
+                promise = null;
+            });
+        }
+        return promise;
+    }
+    function dispatch(node, direction, kind) {
+        node.dispatchEvent(custom_event(`${direction ? 'intro' : 'outro'}${kind}`));
+    }
+    const outroing = new Set();
+    let outros;
+    function group_outros() {
+        outros = {
+            r: 0,
+            c: [],
+            p: outros // parent group
+        };
+    }
+    function check_outros() {
+        if (!outros.r) {
+            run_all(outros.c);
+        }
+        outros = outros.p;
+    }
+    function transition_in(block, local) {
+        if (block && block.i) {
+            outroing.delete(block);
+            block.i(local);
+        }
+    }
+    function transition_out(block, local, detach, callback) {
+        if (block && block.o) {
+            if (outroing.has(block))
+                return;
+            outroing.add(block);
+            outros.c.push(() => {
+                outroing.delete(block);
+                if (callback) {
+                    if (detach)
+                        block.d(1);
+                    callback();
+                }
+            });
+            block.o(local);
+        }
+    }
+    const null_transition = { duration: 0 };
+    function create_bidirectional_transition(node, fn, params, intro) {
+        let config = fn(node, params);
+        let t = intro ? 0 : 1;
+        let running_program = null;
+        let pending_program = null;
+        let animation_name = null;
+        function clear_animation() {
+            if (animation_name)
+                delete_rule(node, animation_name);
+        }
+        function init(program, duration) {
+            const d = program.b - t;
+            duration *= Math.abs(d);
+            return {
+                a: t,
+                b: program.b,
+                d,
+                duration,
+                start: program.start,
+                end: program.start + duration,
+                group: program.group
+            };
+        }
+        function go(b) {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            const program = {
+                start: now() + delay,
+                b
+            };
+            if (!b) {
+                // @ts-ignore todo: improve typings
+                program.group = outros;
+                outros.r += 1;
+            }
+            if (running_program) {
+                pending_program = program;
+            }
+            else {
+                // if this is an intro, and there's a delay, we need to do
+                // an initial tick and/or apply CSS animation immediately
+                if (css) {
+                    clear_animation();
+                    animation_name = create_rule(node, t, b, duration, delay, easing, css);
+                }
+                if (b)
+                    tick(0, 1);
+                running_program = init(program, duration);
+                add_render_callback(() => dispatch(node, b, 'start'));
+                loop(now => {
+                    if (pending_program && now > pending_program.start) {
+                        running_program = init(pending_program, duration);
+                        pending_program = null;
+                        dispatch(node, running_program.b, 'start');
+                        if (css) {
+                            clear_animation();
+                            animation_name = create_rule(node, t, running_program.b, running_program.duration, 0, easing, config.css);
+                        }
+                    }
+                    if (running_program) {
+                        if (now >= running_program.end) {
+                            tick(t = running_program.b, 1 - t);
+                            dispatch(node, running_program.b, 'end');
+                            if (!pending_program) {
+                                // we're done
+                                if (running_program.b) {
+                                    // intro — we can tidy up immediately
+                                    clear_animation();
+                                }
+                                else {
+                                    // outro — needs to be coordinated
+                                    if (!--running_program.group.r)
+                                        run_all(running_program.group.c);
+                                }
+                            }
+                            running_program = null;
+                        }
+                        else if (now >= running_program.start) {
+                            const p = now - running_program.start;
+                            t = running_program.a + running_program.d * easing(p / running_program.duration);
+                            tick(t, 1 - t);
+                        }
+                    }
+                    return !!(running_program || pending_program);
+                });
+            }
+        }
+        return {
+            run(b) {
+                if (is_function(config)) {
+                    wait().then(() => {
+                        // @ts-ignore
+                        config = config();
+                        go(b);
+                    });
+                }
+                else {
+                    go(b);
+                }
+            },
+            end() {
+                clear_animation();
+                running_program = pending_program = null;
+            }
+        };
+    }
+
+    function bind(component, name, callback) {
+        const index = component.$$.props[name];
+        if (index !== undefined) {
+            component.$$.bound[index] = callback;
+            callback(component.$$.ctx[index]);
+        }
+    }
+    function create_component(block) {
+        block && block.c();
+    }
+    function mount_component(component, target, anchor) {
+        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        fragment && fragment.m(target, anchor);
+        // onMount happens before the initial afterUpdate
+        add_render_callback(() => {
+            const new_on_destroy = on_mount.map(run).filter(is_function);
+            if (on_destroy) {
+                on_destroy.push(...new_on_destroy);
+            }
+            else {
+                // Edge case - component was destroyed immediately,
+                // most likely as a result of a binding initialising
+                run_all(new_on_destroy);
+            }
+            component.$$.on_mount = [];
+        });
+        after_update.forEach(add_render_callback);
+    }
+    function destroy_component(component, detaching) {
+        const $$ = component.$$;
+        if ($$.fragment !== null) {
+            run_all($$.on_destroy);
+            $$.fragment && $$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            $$.on_destroy = $$.fragment = null;
+            $$.ctx = [];
+        }
+    }
+    function make_dirty(component, i) {
+        if (component.$$.dirty[0] === -1) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty.fill(0);
+        }
+        component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+    }
+    function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const prop_values = options.props || {};
+        const $$ = component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props,
+            update: noop,
+            not_equal,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            before_update: [],
+            after_update: [],
+            context: new Map(parent_component ? parent_component.$$.context : []),
+            // everything else
+            callbacks: blank_object(),
+            dirty,
+            skip_bound: false
+        };
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, prop_values, (i, ret, ...rest) => {
+                const value = rest.length ? rest[0] : ret;
+                if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+                    if (!$$.skip_bound && $$.bound[i])
+                        $$.bound[i](value);
+                    if (ready)
+                        make_dirty(component, i);
+                }
+                return ret;
+            })
+            : [];
+        $$.update();
+        ready = true;
+        run_all($$.before_update);
+        // `false` as a special case of no DOM component
+        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+        if (options.target) {
+            if (options.hydrate) {
+                const nodes = children(options.target);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.l(nodes);
+                nodes.forEach(detach);
+            }
+            else {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.c();
+            }
+            if (options.intro)
+                transition_in(component.$$.fragment);
+            mount_component(component, options.target, options.anchor);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    class SvelteComponent {
+        $destroy() {
+            destroy_component(this, 1);
+            this.$destroy = noop;
+        }
+        $on(type, callback) {
+            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1)
+                    callbacks.splice(index, 1);
+            };
+        }
+        $set($$props) {
+            if (this.$$set && !is_empty($$props)) {
+                this.$$.skip_bound = true;
+                this.$$set($$props);
+                this.$$.skip_bound = false;
+            }
+        }
+    }
+
+    /* src/LightboxThumbnail.svelte generated by Svelte v3.24.1 */
+
+    function add_css$5() {
+    	var style = element("style");
+    	style.id = "svelte-1u332e1-style";
+    	style.textContent = "div.clickable.svelte-1u332e1{position:static;cursor:zoom-in}div.svelte-lightbox-unselectable.svelte-1u332e1{user-select:none;pointer-events:none}";
+    	append(document.head, style);
+    }
+
+    function create_fragment$8(ctx) {
+    	let div1;
+    	let div0;
+    	let div0_class_value;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	const default_slot_template = /*$$slots*/ ctx[5].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[4], null);
+
+    	return {
+    		c() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			if (default_slot) default_slot.c();
+    			attr(div0, "class", div0_class_value = "" + (null_to_empty(/*thumbnailClasses*/ ctx[0]) + " svelte-1u332e1"));
+    			attr(div0, "style", /*thumbnailStyle*/ ctx[1]);
+    			toggle_class(div0, "svelte-lightbox-unselectable", /*protect*/ ctx[2]);
+    			attr(div1, "class", "clickable svelte-1u332e1");
+    		},
+    		m(target, anchor) {
+    			insert(target, div1, anchor);
+    			append(div1, div0);
+
+    			if (default_slot) {
+    				default_slot.m(div0, null);
+    			}
+
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = listen(div1, "click", /*click_handler*/ ctx[6]);
+    				mounted = true;
+    			}
+    		},
+    		p(ctx, [dirty]) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty & /*$$scope*/ 16) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[4], dirty, null, null);
+    				}
+    			}
+
+    			if (!current || dirty & /*thumbnailClasses*/ 1 && div0_class_value !== (div0_class_value = "" + (null_to_empty(/*thumbnailClasses*/ ctx[0]) + " svelte-1u332e1"))) {
+    				attr(div0, "class", div0_class_value);
+    			}
+
+    			if (!current || dirty & /*thumbnailStyle*/ 2) {
+    				attr(div0, "style", /*thumbnailStyle*/ ctx[1]);
+    			}
+
+    			if (dirty & /*thumbnailClasses, protect*/ 5) {
+    				toggle_class(div0, "svelte-lightbox-unselectable", /*protect*/ ctx[2]);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div1);
+    			if (default_slot) default_slot.d(detaching);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+    }
+
+    function instance$8($$self, $$props, $$invalidate) {
+    	const dispatch = createEventDispatcher();
+    	let { thumbnailClasses = "" } = $$props;
+    	let { thumbnailStyle = "" } = $$props;
+    	let { protect = false } = $$props;
+    	let { $$slots = {}, $$scope } = $$props;
+    	const click_handler = () => dispatch("click");
+
+    	$$self.$$set = $$props => {
+    		if ("thumbnailClasses" in $$props) $$invalidate(0, thumbnailClasses = $$props.thumbnailClasses);
+    		if ("thumbnailStyle" in $$props) $$invalidate(1, thumbnailStyle = $$props.thumbnailStyle);
+    		if ("protect" in $$props) $$invalidate(2, protect = $$props.protect);
+    		if ("$$scope" in $$props) $$invalidate(4, $$scope = $$props.$$scope);
+    	};
+
+    	return [
+    		thumbnailClasses,
+    		thumbnailStyle,
+    		protect,
+    		dispatch,
+    		$$scope,
+    		$$slots,
+    		click_handler
+    	];
+    }
+
+    class LightboxThumbnail extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		if (!document.getElementById("svelte-1u332e1-style")) add_css$5();
+
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {
+    			thumbnailClasses: 0,
+    			thumbnailStyle: 1,
+    			protect: 2
+    		});
+    	}
+    }
+
+    function fade(node, { delay = 0, duration = 400, easing = identity }) {
+        const o = +getComputedStyle(node).opacity;
+        return {
+            delay,
+            duration,
+            easing,
+            css: t => `opacity: ${t * o}`
+        };
+    }
+
+    /* src/Modal/LightboxHeader.svelte generated by Svelte v3.24.1 */
+
+    function add_css$4() {
+    	var style = element("style");
+    	style.id = "svelte-12yipzn-style";
+    	style.textContent = "div.svelte-lightbox-header.svelte-12yipzn{width:auto;height:3rem;display:flex;justify-content:flex-end;align-items:center}button.svelte-12yipzn{background:transparent;font-size:3rem;border:none;color:white}button.svelte-12yipzn:hover{color:lightgray;cursor:pointer}";
+    	append(document.head, style);
+    }
+
+    function create_fragment$7(ctx) {
+    	let div;
+    	let button;
+    	let t;
+    	let button_class_value;
+    	let div_class_value;
+    	let mounted;
+    	let dispose;
+
+    	return {
+    		c() {
+    			div = element("div");
+    			button = element("button");
+    			t = text("×");
+    			attr(button, "size", /*size*/ ctx[0]);
+    			attr(button, "style", /*style*/ ctx[1]);
+    			attr(button, "class", button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-12yipzn"));
+    			attr(div, "class", div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-12yipzn"));
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+    			append(div, button);
+    			append(button, t);
+
+    			if (!mounted) {
+    				dispose = listen(button, "click", /*click_handler*/ ctx[5]);
+    				mounted = true;
+    			}
+    		},
+    		p(ctx, [dirty]) {
+    			if (dirty & /*size*/ 1) {
+    				attr(button, "size", /*size*/ ctx[0]);
+    			}
+
+    			if (dirty & /*style*/ 2) {
+    				attr(button, "style", /*style*/ ctx[1]);
+    			}
+
+    			if (dirty & /*buttonClasses*/ 8 && button_class_value !== (button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-12yipzn"))) {
+    				attr(button, "class", button_class_value);
+    			}
+
+    			if (dirty & /*headerClasses*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-12yipzn"))) {
+    				attr(div, "class", div_class_value);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d(detaching) {
+    			if (detaching) detach(div);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+    }
+
+    function instance$7($$self, $$props, $$invalidate) {
+    	const dispatch = createEventDispatcher();
+    	let { size = "xs" } = $$props;
+    	let { style = "" } = $$props;
+    	let { headerClasses = "" } = $$props;
+    	let { buttonClasses = "" } = $$props;
+    	const click_handler = () => dispatch("close");
+
+    	$$self.$$set = $$props => {
+    		if ("size" in $$props) $$invalidate(0, size = $$props.size);
+    		if ("style" in $$props) $$invalidate(1, style = $$props.style);
+    		if ("headerClasses" in $$props) $$invalidate(2, headerClasses = $$props.headerClasses);
+    		if ("buttonClasses" in $$props) $$invalidate(3, buttonClasses = $$props.buttonClasses);
+    	};
+
+    	return [size, style, headerClasses, buttonClasses, dispatch, click_handler];
+    }
+
+    class LightboxHeader extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		if (!document.getElementById("svelte-12yipzn-style")) add_css$4();
+
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {
+    			size: 0,
+    			style: 1,
+    			headerClasses: 2,
+    			buttonClasses: 3
+    		});
+    	}
+    }
+
+    /* src/Modal/LightboxBody.svelte generated by Svelte v3.24.1 */
+
+    function add_css$3() {
+    	var style = element("style");
+    	style.id = "svelte-x9zrc7-style";
+    	style.textContent = "div.svelte-lightbox-body.svelte-x9zrc7{background-color:transparent;width:auto;height:auto;max-height:80vh}div.svelte-lightbox-unselectable.svelte-x9zrc7{user-select:none;pointer-events:none}div.svelte-lightbox-image-portrait.svelte-x9zrc7{max-width:90vh}";
+    	append(document.head, style);
+    }
+
+    // (10:4) {:else}
+    function create_else_block$1(ctx) {
+    	let div;
+    	let current;
+    	const default_slot_template = /*$$slots*/ ctx[4].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[3], null);
+
+    	return {
+    		c() {
+    			div = element("div");
+    			if (default_slot) default_slot.c();
+    			attr(div, "class", "svelte-x9zrc7");
+    			toggle_class(div, "svelte-lightbox-image-portrait", /*portrait*/ ctx[2]);
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+
+    			if (default_slot) {
+    				default_slot.m(div, null);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty & /*$$scope*/ 8) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[3], dirty, null, null);
+    				}
+    			}
+
+    			if (dirty & /*portrait*/ 4) {
+    				toggle_class(div, "svelte-lightbox-image-portrait", /*portrait*/ ctx[2]);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div);
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+    }
+
+    // (8:4) {#if image.src}
+    function create_if_block$2(ctx) {
+    	let img;
+    	let img_src_value;
+    	let img_alt_value;
+    	let img_style_value;
+    	let img_class_value;
+
+    	return {
+    		c() {
+    			img = element("img");
+    			if (img.src !== (img_src_value = /*image*/ ctx[0].src)) attr(img, "src", img_src_value);
+    			attr(img, "alt", img_alt_value = /*image*/ ctx[0].alt);
+    			attr(img, "style", img_style_value = /*image*/ ctx[0].style);
+    			attr(img, "class", img_class_value = /*image*/ ctx[0].class);
+    		},
+    		m(target, anchor) {
+    			insert(target, img, anchor);
+    		},
+    		p(ctx, dirty) {
+    			if (dirty & /*image*/ 1 && img.src !== (img_src_value = /*image*/ ctx[0].src)) {
+    				attr(img, "src", img_src_value);
+    			}
+
+    			if (dirty & /*image*/ 1 && img_alt_value !== (img_alt_value = /*image*/ ctx[0].alt)) {
+    				attr(img, "alt", img_alt_value);
+    			}
+
+    			if (dirty & /*image*/ 1 && img_style_value !== (img_style_value = /*image*/ ctx[0].style)) {
+    				attr(img, "style", img_style_value);
+    			}
+
+    			if (dirty & /*image*/ 1 && img_class_value !== (img_class_value = /*image*/ ctx[0].class)) {
+    				attr(img, "class", img_class_value);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d(detaching) {
+    			if (detaching) detach(img);
+    		}
+    	};
+    }
+
+    function create_fragment$6(ctx) {
+    	let div;
+    	let current_block_type_index;
+    	let if_block;
+    	let current;
+    	const if_block_creators = [create_if_block$2, create_else_block$1];
+    	const if_blocks = [];
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*image*/ ctx[0].src) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	return {
+    		c() {
+    			div = element("div");
+    			if_block.c();
+    			attr(div, "class", "svelte-lightbox-body svelte-x9zrc7");
+    			toggle_class(div, "svelte-lightbox-unselectable", /*protect*/ ctx[1]);
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+    			if_blocks[current_block_type_index].m(div, null);
+    			current = true;
+    		},
+    		p(ctx, [dirty]) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(div, null);
+    			}
+
+    			if (dirty & /*protect*/ 2) {
+    				toggle_class(div, "svelte-lightbox-unselectable", /*protect*/ ctx[1]);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div);
+    			if_blocks[current_block_type_index].d();
+    		}
+    	};
+    }
+
+    function instance$6($$self, $$props, $$invalidate) {
+    	let { image = {} } = $$props;
+    	let { protect = false } = $$props;
+    	let { portrait = false } = $$props;
+    	let { $$slots = {}, $$scope } = $$props;
+
+    	$$self.$$set = $$props => {
+    		if ("image" in $$props) $$invalidate(0, image = $$props.image);
+    		if ("protect" in $$props) $$invalidate(1, protect = $$props.protect);
+    		if ("portrait" in $$props) $$invalidate(2, portrait = $$props.portrait);
+    		if ("$$scope" in $$props) $$invalidate(3, $$scope = $$props.$$scope);
+    	};
+
+    	return [image, protect, portrait, $$scope, $$slots];
+    }
+
+    class LightboxBody extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		if (!document.getElementById("svelte-x9zrc7-style")) add_css$3();
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, { image: 0, protect: 1, portrait: 2 });
+    	}
+    }
+
+    /* src/Modal/LightboxFooter.svelte generated by Svelte v3.24.1 */
+
+    function add_css$2() {
+    	var style = element("style");
+    	style.id = "svelte-1u8lh7d-style";
+    	style.textContent = "div.svelte-lightbox-footer.svelte-1u8lh7d{background-color:transparent;color:white;text-align:left;width:inherit;height:auto}";
+    	append(document.head, style);
+    }
+
+    // (18:4) {#if galleryLength}
+    function create_if_block$1(ctx) {
+    	let p;
+    	let t0;
+    	let t1_value = /*activeImage*/ ctx[3] + 1 + "";
+    	let t1;
+    	let t2;
+    	let t3;
+
+    	return {
+    		c() {
+    			p = element("p");
+    			t0 = text("Image ");
+    			t1 = text(t1_value);
+    			t2 = text(" of ");
+    			t3 = text(/*galleryLength*/ ctx[2]);
+    		},
+    		m(target, anchor) {
+    			insert(target, p, anchor);
+    			append(p, t0);
+    			append(p, t1);
+    			append(p, t2);
+    			append(p, t3);
+    		},
+    		p(ctx, dirty) {
+    			if (dirty & /*activeImage*/ 8 && t1_value !== (t1_value = /*activeImage*/ ctx[3] + 1 + "")) set_data(t1, t1_value);
+    			if (dirty & /*galleryLength*/ 4) set_data(t3, /*galleryLength*/ ctx[2]);
+    		},
+    		d(detaching) {
+    			if (detaching) detach(p);
+    		}
+    	};
+    }
+
+    function create_fragment$5(ctx) {
+    	let div;
+    	let h2;
+    	let t0;
+    	let h5;
+    	let t1;
+    	let div_class_value;
+    	let if_block = /*galleryLength*/ ctx[2] && create_if_block$1(ctx);
+
+    	return {
+    		c() {
+    			div = element("div");
+    			h2 = element("h2");
+    			t0 = space();
+    			h5 = element("h5");
+    			t1 = space();
+    			if (if_block) if_block.c();
+    			attr(div, "class", div_class_value = "" + (null_to_empty("svelte-lightbox-footer " + /*classes*/ ctx[4]) + " svelte-1u8lh7d"));
+    			attr(div, "style", /*style*/ ctx[5]);
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+    			append(div, h2);
+    			h2.innerHTML = /*title*/ ctx[0];
+    			append(div, t0);
+    			append(div, h5);
+    			h5.innerHTML = /*description*/ ctx[1];
+    			append(div, t1);
+    			if (if_block) if_block.m(div, null);
+    		},
+    		p(ctx, [dirty]) {
+    			if (dirty & /*title*/ 1) h2.innerHTML = /*title*/ ctx[0];			if (dirty & /*description*/ 2) h5.innerHTML = /*description*/ ctx[1];
+    			if (/*galleryLength*/ ctx[2]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block$1(ctx);
+    					if_block.c();
+    					if_block.m(div, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+
+    			if (dirty & /*classes*/ 16 && div_class_value !== (div_class_value = "" + (null_to_empty("svelte-lightbox-footer " + /*classes*/ ctx[4]) + " svelte-1u8lh7d"))) {
+    				attr(div, "class", div_class_value);
+    			}
+
+    			if (dirty & /*style*/ 32) {
+    				attr(div, "style", /*style*/ ctx[5]);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d(detaching) {
+    			if (detaching) detach(div);
+    			if (if_block) if_block.d();
+    		}
+    	};
+    }
+
+    function instance$5($$self, $$props, $$invalidate) {
+    	let { title = "" } = $$props;
+    	let { description = "" } = $$props;
+    	let { galleryLength } = $$props;
+    	let { activeImage } = $$props;
+    	let { classes = "" } = $$props;
+    	let { style = "" } = $$props;
+
+    	$$self.$$set = $$props => {
+    		if ("title" in $$props) $$invalidate(0, title = $$props.title);
+    		if ("description" in $$props) $$invalidate(1, description = $$props.description);
+    		if ("galleryLength" in $$props) $$invalidate(2, galleryLength = $$props.galleryLength);
+    		if ("activeImage" in $$props) $$invalidate(3, activeImage = $$props.activeImage);
+    		if ("classes" in $$props) $$invalidate(4, classes = $$props.classes);
+    		if ("style" in $$props) $$invalidate(5, style = $$props.style);
+    	};
+
+    	return [title, description, galleryLength, activeImage, classes, style];
+    }
+
+    class LightboxFooter extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		if (!document.getElementById("svelte-1u8lh7d-style")) add_css$2();
+
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, {
+    			title: 0,
+    			description: 1,
+    			galleryLength: 2,
+    			activeImage: 3,
+    			classes: 4,
+    			style: 5
+    		});
+    	}
+    }
+
+    /* src/Modal/Index.svelte generated by Svelte v3.24.1 */
+
+    function add_css$1() {
+    	var style = element("style");
+    	style.id = "svelte-tpon2m-style";
+    	style.textContent = ".cover.svelte-tpon2m{position:fixed;z-index:1000000!important;background-color:rgba(43, 39, 45, 0.87);top:0;bottom:0;left:0;right:0;overflow:hidden;width:100%;height:100%}.svelte-lightbox-overlay.svelte-tpon2m{position:relative;z-index:1000001;height:100%;width:100%;display:flex;justify-content:center;align-items:center;padding:1rem}.cover.svelte-tpon2m:before{content:'';position:absolute;top:0;bottom:0;left:0;right:0;opacity:0;z-index:-1}.svelte-lightbox.svelte-tpon2m{position:absolute;background-color:transparent;width:auto;height:auto;max-width:90%;max-height:90%;z-index:1000002}.clearfix.svelte-tpon2m::after{content:\"\";clear:both;display:table}";
+    	append(document.head, style);
+    }
+
+    // (43:12) <Body bind:image={image} bind:protect={protect} bind:portrait={portrait}>
+    function create_default_slot$1(ctx) {
+    	let current;
+    	const default_slot_template = /*$$slots*/ ctx[14].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[25], null);
+
+    	return {
+    		c() {
+    			if (default_slot) default_slot.c();
+    		},
+    		m(target, anchor) {
+    			if (default_slot) {
+    				default_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty & /*$$scope*/ 33554432) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[25], dirty, null, null);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+    }
+
+    function create_fragment$4(ctx) {
+    	let div2;
+    	let div1;
+    	let div0;
+    	let header;
+    	let t0;
+    	let body;
+    	let updating_image;
+    	let updating_protect;
+    	let updating_portrait;
+    	let t1;
+    	let footer;
+    	let updating_title;
+    	let updating_description;
+    	let updating_galleryLength;
+    	let updating_activeImage;
+    	let div1_class_value;
+    	let div1_transition;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	header = new LightboxHeader({});
+    	header.$on("close", /*close_handler*/ ctx[15]);
+
+    	function body_image_binding(value) {
+    		/*body_image_binding*/ ctx[16].call(null, value);
+    	}
+
+    	function body_protect_binding(value) {
+    		/*body_protect_binding*/ ctx[17].call(null, value);
+    	}
+
+    	function body_portrait_binding(value) {
+    		/*body_portrait_binding*/ ctx[18].call(null, value);
+    	}
+
+    	let body_props = {
+    		$$slots: { default: [create_default_slot$1] },
+    		$$scope: { ctx }
+    	};
+
+    	if (/*image*/ ctx[0] !== void 0) {
+    		body_props.image = /*image*/ ctx[0];
+    	}
+
+    	if (/*protect*/ ctx[1] !== void 0) {
+    		body_props.protect = /*protect*/ ctx[1];
+    	}
+
+    	if (/*portrait*/ ctx[2] !== void 0) {
+    		body_props.portrait = /*portrait*/ ctx[2];
+    	}
+
+    	body = new LightboxBody({ props: body_props });
+    	binding_callbacks.push(() => bind(body, "image", body_image_binding));
+    	binding_callbacks.push(() => bind(body, "protect", body_protect_binding));
+    	binding_callbacks.push(() => bind(body, "portrait", body_portrait_binding));
+
+    	function footer_title_binding(value) {
+    		/*footer_title_binding*/ ctx[19].call(null, value);
+    	}
+
+    	function footer_description_binding(value) {
+    		/*footer_description_binding*/ ctx[20].call(null, value);
+    	}
+
+    	function footer_galleryLength_binding(value) {
+    		/*footer_galleryLength_binding*/ ctx[21].call(null, value);
+    	}
+
+    	function footer_activeImage_binding(value) {
+    		/*footer_activeImage_binding*/ ctx[22].call(null, value);
+    	}
+
+    	let footer_props = {};
+
+    	if (/*actualTitle*/ ctx[7] !== void 0) {
+    		footer_props.title = /*actualTitle*/ ctx[7];
+    	}
+
+    	if (/*actualDescription*/ ctx[8] !== void 0) {
+    		footer_props.description = /*actualDescription*/ ctx[8];
+    	}
+
+    	if (/*gallery*/ ctx[3].length !== void 0) {
+    		footer_props.galleryLength = /*gallery*/ ctx[3].length;
+    	}
+
+    	if (/*activeImage*/ ctx[4] !== void 0) {
+    		footer_props.activeImage = /*activeImage*/ ctx[4];
+    	}
+
+    	footer = new LightboxFooter({ props: footer_props });
+    	binding_callbacks.push(() => bind(footer, "title", footer_title_binding));
+    	binding_callbacks.push(() => bind(footer, "description", footer_description_binding));
+    	binding_callbacks.push(() => bind(footer, "galleryLength", footer_galleryLength_binding));
+    	binding_callbacks.push(() => bind(footer, "activeImage", footer_activeImage_binding));
+
+    	return {
+    		c() {
+    			div2 = element("div");
+    			div1 = element("div");
+    			div0 = element("div");
+    			create_component(header.$$.fragment);
+    			t0 = space();
+    			create_component(body.$$.fragment);
+    			t1 = space();
+    			create_component(footer.$$.fragment);
+    			attr(div0, "class", "svelte-lightbox svelte-tpon2m");
+    			attr(div1, "class", div1_class_value = "" + (null_to_empty(/*allModalClasses*/ ctx[9]) + " svelte-tpon2m"));
+    			attr(div1, "style", /*modalStyle*/ ctx[5]);
+    			attr(div2, "class", "cover clearfix svelte-tpon2m");
+    		},
+    		m(target, anchor) {
+    			insert(target, div2, anchor);
+    			append(div2, div1);
+    			append(div1, div0);
+    			mount_component(header, div0, null);
+    			append(div0, t0);
+    			mount_component(body, div0, null);
+    			append(div0, t1);
+    			mount_component(footer, div0, null);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen(div0, "click", /*click_handler*/ ctx[23]),
+    					listen(div1, "click", /*click_handler_1*/ ctx[24])
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p(ctx, [dirty]) {
+    			const body_changes = {};
+
+    			if (dirty & /*$$scope*/ 33554432) {
+    				body_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_image && dirty & /*image*/ 1) {
+    				updating_image = true;
+    				body_changes.image = /*image*/ ctx[0];
+    				add_flush_callback(() => updating_image = false);
+    			}
+
+    			if (!updating_protect && dirty & /*protect*/ 2) {
+    				updating_protect = true;
+    				body_changes.protect = /*protect*/ ctx[1];
+    				add_flush_callback(() => updating_protect = false);
+    			}
+
+    			if (!updating_portrait && dirty & /*portrait*/ 4) {
+    				updating_portrait = true;
+    				body_changes.portrait = /*portrait*/ ctx[2];
+    				add_flush_callback(() => updating_portrait = false);
+    			}
+
+    			body.$set(body_changes);
+    			const footer_changes = {};
+
+    			if (!updating_title && dirty & /*actualTitle*/ 128) {
+    				updating_title = true;
+    				footer_changes.title = /*actualTitle*/ ctx[7];
+    				add_flush_callback(() => updating_title = false);
+    			}
+
+    			if (!updating_description && dirty & /*actualDescription*/ 256) {
+    				updating_description = true;
+    				footer_changes.description = /*actualDescription*/ ctx[8];
+    				add_flush_callback(() => updating_description = false);
+    			}
+
+    			if (!updating_galleryLength && dirty & /*gallery*/ 8) {
+    				updating_galleryLength = true;
+    				footer_changes.galleryLength = /*gallery*/ ctx[3].length;
+    				add_flush_callback(() => updating_galleryLength = false);
+    			}
+
+    			if (!updating_activeImage && dirty & /*activeImage*/ 16) {
+    				updating_activeImage = true;
+    				footer_changes.activeImage = /*activeImage*/ ctx[4];
+    				add_flush_callback(() => updating_activeImage = false);
+    			}
+
+    			footer.$set(footer_changes);
+
+    			if (!current || dirty & /*allModalClasses*/ 512 && div1_class_value !== (div1_class_value = "" + (null_to_empty(/*allModalClasses*/ ctx[9]) + " svelte-tpon2m"))) {
+    				attr(div1, "class", div1_class_value);
+    			}
+
+    			if (!current || dirty & /*modalStyle*/ 32) {
+    				attr(div1, "style", /*modalStyle*/ ctx[5]);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(header.$$.fragment, local);
+    			transition_in(body.$$.fragment, local);
+    			transition_in(footer.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fade, { duration: /*transitionDuration*/ ctx[6] }, true);
+    				div1_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(header.$$.fragment, local);
+    			transition_out(body.$$.fragment, local);
+    			transition_out(footer.$$.fragment, local);
+    			if (!div1_transition) div1_transition = create_bidirectional_transition(div1, fade, { duration: /*transitionDuration*/ ctx[6] }, false);
+    			div1_transition.run(0);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div2);
+    			destroy_component(header);
+    			destroy_component(body);
+    			destroy_component(footer);
+    			if (detaching && div1_transition) div1_transition.end();
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+    }
+
+    function instance$4($$self, $$props, $$invalidate) {
+    	const dispatch = createEventDispatcher();
+    	let { modalClasses = "" } = $$props;
+    	let { modalStyle = "" } = $$props;
+    	let { transitionDuration = 500 } = $$props;
+    	let { image = {} } = $$props;
+    	let { protect = false } = $$props;
+    	let { portrait = false } = $$props;
+    	let { title = "" } = $$props;
+    	let { description = "" } = $$props;
+    	let { gallery } = $$props;
+    	let { activeImage } = $$props;
+    	let actualTitle;
+    	let actualDescription;
+    	let { $$slots = {}, $$scope } = $$props;
+    	const close_handler = () => dispatch("close");
+
+    	function body_image_binding(value) {
+    		image = value;
+    		$$invalidate(0, image);
+    	}
+
+    	function body_protect_binding(value) {
+    		protect = value;
+    		$$invalidate(1, protect);
+    	}
+
+    	function body_portrait_binding(value) {
+    		portrait = value;
+    		$$invalidate(2, portrait);
+    	}
+
+    	function footer_title_binding(value) {
+    		actualTitle = value;
+    		(((($$invalidate(7, actualTitle), $$invalidate(12, title)), $$invalidate(3, gallery)), $$invalidate(13, description)), $$invalidate(4, activeImage));
+    	}
+
+    	function footer_description_binding(value) {
+    		actualDescription = value;
+    		(((($$invalidate(8, actualDescription), $$invalidate(13, description)), $$invalidate(3, gallery)), $$invalidate(12, title)), $$invalidate(4, activeImage));
+    	}
+
+    	function footer_galleryLength_binding(value) {
+    		gallery.length = value;
+    		$$invalidate(3, gallery);
+    	}
+
+    	function footer_activeImage_binding(value) {
+    		activeImage = value;
+    		$$invalidate(4, activeImage);
+    	}
+
+    	const click_handler = () => dispatch("modalClick");
+    	const click_handler_1 = () => dispatch("topModalClick");
+
+    	$$self.$$set = $$props => {
+    		if ("modalClasses" in $$props) $$invalidate(11, modalClasses = $$props.modalClasses);
+    		if ("modalStyle" in $$props) $$invalidate(5, modalStyle = $$props.modalStyle);
+    		if ("transitionDuration" in $$props) $$invalidate(6, transitionDuration = $$props.transitionDuration);
+    		if ("image" in $$props) $$invalidate(0, image = $$props.image);
+    		if ("protect" in $$props) $$invalidate(1, protect = $$props.protect);
+    		if ("portrait" in $$props) $$invalidate(2, portrait = $$props.portrait);
+    		if ("title" in $$props) $$invalidate(12, title = $$props.title);
+    		if ("description" in $$props) $$invalidate(13, description = $$props.description);
+    		if ("gallery" in $$props) $$invalidate(3, gallery = $$props.gallery);
+    		if ("activeImage" in $$props) $$invalidate(4, activeImage = $$props.activeImage);
+    		if ("$$scope" in $$props) $$invalidate(25, $$scope = $$props.$$scope);
+    	};
+
+    	let allModalClasses;
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*modalClasses*/ 2048) {
+    			//let allModalClasses = modalClasses;
+    			$$invalidate(9, allModalClasses = `${modalClasses} svelte-lightbox-overlay clearfix`);
+    		}
+
+    		if ($$self.$$.dirty & /*title*/ 4096) {
+    			$$invalidate(7, actualTitle = title);
+    		}
+
+    		if ($$self.$$.dirty & /*description*/ 8192) {
+    			$$invalidate(8, actualDescription = description);
+    		}
+
+    		if ($$self.$$.dirty & /*gallery, title, description, activeImage*/ 12312) {
+    			if (gallery && !title && !description) {
+    				$$invalidate(7, actualTitle = gallery[activeImage].title);
+    				$$invalidate(8, actualDescription = gallery[activeImage].description);
+    			}
+    		}
+    	};
+
+    	return [
+    		image,
+    		protect,
+    		portrait,
+    		gallery,
+    		activeImage,
+    		modalStyle,
+    		transitionDuration,
+    		actualTitle,
+    		actualDescription,
+    		allModalClasses,
+    		dispatch,
+    		modalClasses,
+    		title,
+    		description,
+    		$$slots,
+    		close_handler,
+    		body_image_binding,
+    		body_protect_binding,
+    		body_portrait_binding,
+    		footer_title_binding,
+    		footer_description_binding,
+    		footer_galleryLength_binding,
+    		footer_activeImage_binding,
+    		click_handler,
+    		click_handler_1,
+    		$$scope
+    	];
+    }
+
+    class Index extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		if (!document.getElementById("svelte-tpon2m-style")) add_css$1();
+
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {
+    			modalClasses: 11,
+    			modalStyle: 5,
+    			transitionDuration: 6,
+    			image: 0,
+    			protect: 1,
+    			portrait: 2,
+    			title: 12,
+    			description: 13,
+    			gallery: 3,
+    			activeImage: 4
+    		});
+    	}
+    }
+
+    /* src/Gallery/InternalGallery.svelte generated by Svelte v3.24.1 */
+
+    function add_css() {
+    	var style = element("style");
+    	style.id = "svelte-wwe8hv-style";
+    	style.textContent = ".arrow.svelte-wwe8hv{fill:none;stroke:black;stroke-linecap:round;stroke-linejoin:bevel;stroke-width:1.5px;margin:10px}button.svelte-wwe8hv{background:transparent;color:black;border:none;font-size:1rem;width:50%;height:100%}button.svelte-wwe8hv:active{background:transparent}button.svelte-wwe8hv:disabled{color:gray}.wrapper.svelte-wwe8hv{position:relative;display:flex;width:auto;height:auto}.previous-button.svelte-wwe8hv{position:absolute;top:0;bottom:0;left:0;right:50%;z-index:4;text-align:left}.slot.svelte-wwe8hv{order:1}.next-button.svelte-wwe8hv{position:absolute;top:0;bottom:0;right:0;z-index:4;text-align:right}svg.svelte-wwe8hv{height:5rem}";
+    	append(document.head, style);
+    }
+
+    function create_fragment$3(ctx) {
+    	let div1;
+    	let button0;
+    	let svg0;
+    	let g0;
+    	let path0;
+    	let button0_disabled_value;
+    	let t0;
+    	let div0;
+    	let t1;
+    	let button1;
+    	let svg1;
+    	let g1;
+    	let path1;
+    	let button1_disabled_value;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	const default_slot_template = /*$$slots*/ ctx[6].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[5], null);
+
+    	return {
+    		c() {
+    			div1 = element("div");
+    			button0 = element("button");
+    			svg0 = svg_element("svg");
+    			g0 = svg_element("g");
+    			path0 = svg_element("path");
+    			t0 = space();
+    			div0 = element("div");
+    			if (default_slot) default_slot.c();
+    			t1 = space();
+    			button1 = element("button");
+    			svg1 = svg_element("svg");
+    			g1 = svg_element("g");
+    			path1 = svg_element("path");
+    			attr(path0, "class", "arrow svelte-wwe8hv");
+    			attr(path0, "d", "M8.7,7.22,4.59,11.33a1,1,0,0,0,0,1.41l4,4");
+    			attr(svg0, "viewBox", "0 0 24 24");
+    			attr(svg0, "xmlns", "http://www.w3.org/2000/svg");
+    			attr(svg0, "class", "svelte-wwe8hv");
+    			button0.disabled = button0_disabled_value = /*activeImage*/ ctx[0] === 0;
+    			attr(button0, "class", "previous-button svelte-wwe8hv");
+    			attr(div0, "class", "slot svelte-wwe8hv");
+    			attr(path1, "class", "arrow svelte-wwe8hv");
+    			attr(path1, "d", "M15.3,16.78l4.11-4.11a1,1,0,0,0,0-1.41l-4-4");
+    			attr(svg1, "viewBox", "0 0 24 24");
+    			attr(svg1, "xmlns", "http://www.w3.org/2000/svg");
+    			attr(svg1, "class", "svelte-wwe8hv");
+    			button1.disabled = button1_disabled_value = /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1;
+    			attr(button1, "class", "next-button svelte-wwe8hv");
+    			attr(div1, "class", "wrapper svelte-wwe8hv");
+    		},
+    		m(target, anchor) {
+    			insert(target, div1, anchor);
+    			append(div1, button0);
+    			append(button0, svg0);
+    			append(svg0, g0);
+    			append(g0, path0);
+    			append(div1, t0);
+    			append(div1, div0);
+
+    			if (default_slot) {
+    				default_slot.m(div0, null);
+    			}
+
+    			/*div0_binding*/ ctx[7](div0);
+    			append(div1, t1);
+    			append(div1, button1);
+    			append(button1, svg1);
+    			append(svg1, g1);
+    			append(g1, path1);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen(button0, "click", /*previousImage*/ ctx[3]),
+    					listen(button1, "click", /*nextImage*/ ctx[4])
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p(ctx, [dirty]) {
+    			if (!current || dirty & /*activeImage*/ 1 && button0_disabled_value !== (button0_disabled_value = /*activeImage*/ ctx[0] === 0)) {
+    				button0.disabled = button0_disabled_value;
+    			}
+
+    			if (default_slot) {
+    				if (default_slot.p && dirty & /*$$scope*/ 32) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[5], dirty, null, null);
+    				}
+    			}
+
+    			if (!current || dirty & /*activeImage, images*/ 5 && button1_disabled_value !== (button1_disabled_value = /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1)) {
+    				button1.disabled = button1_disabled_value;
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div1);
+    			if (default_slot) default_slot.d(detaching);
+    			/*div0_binding*/ ctx[7](null);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let { activeImage = 0 } = $$props;
+    	let slotContent;
+    	let images;
+
+    	const previousImage = () => {
+    		$$invalidate(0, activeImage--, activeImage);
+    	};
+
+    	const nextImage = () => {
+    		$$invalidate(0, activeImage++, activeImage);
+    	};
+
+    	let { $$slots = {}, $$scope } = $$props;
+
+    	function div0_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			slotContent = $$value;
+    			$$invalidate(1, slotContent);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("activeImage" in $$props) $$invalidate(0, activeImage = $$props.activeImage);
+    		if ("$$scope" in $$props) $$invalidate(5, $$scope = $$props.$$scope);
+    	};
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*slotContent*/ 2) {
+    			$$invalidate(2, images = slotContent?.children);
+    		}
+
+    		if ($$self.$$.dirty & /*images, activeImage*/ 5) {
+    			{
+    				console.log(typeof images);
+
+    				if (images && activeImage < images.length) {
+    					Object.values(images).forEach(img => {
+    						img.hidden = true;
+    						return img;
+    					});
+
+    					$$invalidate(2, images[activeImage].hidden = false, images);
+    				} else if (images && activeImage >= images.length) {
+    					console.error("LightboxGallery: Selected image doesn't exist, invalid activeImage");
+    				}
+    			}
+    		}
+    	};
+
+    	return [
+    		activeImage,
+    		slotContent,
+    		images,
+    		previousImage,
+    		nextImage,
+    		$$scope,
+    		$$slots,
+    		div0_binding
+    	];
+    }
+
+    class InternalGallery extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		if (!document.getElementById("svelte-wwe8hv-style")) add_css();
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { activeImage: 0 });
+    	}
+    }
+
+    /* src/Gallery/ExternalGallery.svelte generated by Svelte v3.24.1 */
+
+    function create_fragment$2(ctx) {
+    	let current;
+    	const default_slot_template = /*$$slots*/ ctx[1].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[0], null);
+
+    	return {
+    		c() {
+    			if (default_slot) default_slot.c();
+    		},
+    		m(target, anchor) {
+    			if (default_slot) {
+    				default_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, [dirty]) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty & /*$$scope*/ 1) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[0], dirty, null, null);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let { $$slots = {}, $$scope } = $$props;
+
+    	$$self.$$set = $$props => {
+    		if ("$$scope" in $$props) $$invalidate(0, $$scope = $$props.$$scope);
+    	};
+
+    	return [$$scope, $$slots];
+    }
+
+    class ExternalGallery extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {});
+    	}
+    }
+
+    /* src/Lightbox.svelte generated by Svelte v3.24.1 */
+    const get_thumbnail_slot_changes_1 = dirty => ({});
+    const get_thumbnail_slot_context_1 = ctx => ({});
+    const get_image_slot_changes = dirty => ({});
+    const get_image_slot_context = ctx => ({});
+    const get_thumbnail_slot_changes = dirty => ({});
+    const get_thumbnail_slot_context = ctx => ({});
+
+    // (60:4) {:else}
+    function create_else_block_1(ctx) {
+    	let current;
+    	const default_slot_template = /*$$slots*/ ctx[16].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[31], null);
+
+    	return {
+    		c() {
+    			if (default_slot) default_slot.c();
+    		},
+    		m(target, anchor) {
+    			if (default_slot) {
+    				default_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty[1] & /*$$scope*/ 1) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[31], dirty, null, null);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+    }
+
+    // (58:4) {#if thumbnail || gallery}
+    function create_if_block_3(ctx) {
+    	let current;
+    	const thumbnail_slot_template = /*$$slots*/ ctx[16].thumbnail;
+    	const thumbnail_slot = create_slot(thumbnail_slot_template, ctx, /*$$scope*/ ctx[31], get_thumbnail_slot_context);
+
+    	return {
+    		c() {
+    			if (thumbnail_slot) thumbnail_slot.c();
+    		},
+    		m(target, anchor) {
+    			if (thumbnail_slot) {
+    				thumbnail_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (thumbnail_slot) {
+    				if (thumbnail_slot.p && dirty[1] & /*$$scope*/ 1) {
+    					update_slot(thumbnail_slot, thumbnail_slot_template, ctx, /*$$scope*/ ctx[31], dirty, get_thumbnail_slot_changes, get_thumbnail_slot_context);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(thumbnail_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(thumbnail_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (thumbnail_slot) thumbnail_slot.d(detaching);
+    		}
+    	};
+    }
+
+    // (57:0) <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
+    function create_default_slot_2(ctx) {
+    	let current_block_type_index;
+    	let if_block;
+    	let if_block_anchor;
+    	let current;
+    	const if_block_creators = [create_if_block_3, create_else_block_1];
+    	const if_blocks = [];
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*thumbnail*/ ctx[12] || /*gallery*/ ctx[5]) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	return {
+    		c() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m(target, anchor) {
+    			if_blocks[current_block_type_index].m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if_blocks[current_block_type_index].d(detaching);
+    			if (detaching) detach(if_block_anchor);
+    		}
+    	};
+    }
+
+    // (65:0) {#if visible}
+    function create_if_block(ctx) {
+    	let modal;
+    	let updating_modalClasses;
+    	let updating_modalStyle;
+    	let updating_transitionDuration;
+    	let updating_image;
+    	let updating_protect;
+    	let updating_portrait;
+    	let updating_title;
+    	let updating_description;
+    	let updating_gallery;
+    	let updating_activeImage;
+    	let current;
+
+    	function modal_modalClasses_binding(value) {
+    		/*modal_modalClasses_binding*/ ctx[21].call(null, value);
+    	}
+
+    	function modal_modalStyle_binding(value) {
+    		/*modal_modalStyle_binding*/ ctx[22].call(null, value);
+    	}
+
+    	function modal_transitionDuration_binding(value) {
+    		/*modal_transitionDuration_binding*/ ctx[23].call(null, value);
+    	}
+
+    	function modal_image_binding(value) {
+    		/*modal_image_binding*/ ctx[24].call(null, value);
+    	}
+
+    	function modal_protect_binding(value) {
+    		/*modal_protect_binding*/ ctx[25].call(null, value);
+    	}
+
+    	function modal_portrait_binding(value) {
+    		/*modal_portrait_binding*/ ctx[26].call(null, value);
+    	}
+
+    	function modal_title_binding(value) {
+    		/*modal_title_binding*/ ctx[27].call(null, value);
+    	}
+
+    	function modal_description_binding(value) {
+    		/*modal_description_binding*/ ctx[28].call(null, value);
+    	}
+
+    	function modal_gallery_binding(value) {
+    		/*modal_gallery_binding*/ ctx[29].call(null, value);
+    	}
+
+    	function modal_activeImage_binding(value) {
+    		/*modal_activeImage_binding*/ ctx[30].call(null, value);
+    	}
+
+    	let modal_props = {
+    		$$slots: { default: [create_default_slot] },
+    		$$scope: { ctx }
+    	};
+
+    	if (/*modalClasses*/ ctx[2] !== void 0) {
+    		modal_props.modalClasses = /*modalClasses*/ ctx[2];
+    	}
+
+    	if (/*modalStyle*/ ctx[3] !== void 0) {
+    		modal_props.modalStyle = /*modalStyle*/ ctx[3];
+    	}
+
+    	if (/*transitionDuration*/ ctx[8] !== void 0) {
+    		modal_props.transitionDuration = /*transitionDuration*/ ctx[8];
+    	}
+
+    	if (/*image*/ ctx[10] !== void 0) {
+    		modal_props.image = /*image*/ ctx[10];
+    	}
+
+    	if (/*protect*/ ctx[9] !== void 0) {
+    		modal_props.protect = /*protect*/ ctx[9];
+    	}
+
+    	if (/*portrait*/ ctx[11] !== void 0) {
+    		modal_props.portrait = /*portrait*/ ctx[11];
+    	}
+
+    	if (/*title*/ ctx[6] !== void 0) {
+    		modal_props.title = /*title*/ ctx[6];
+    	}
+
+    	if (/*description*/ ctx[7] !== void 0) {
+    		modal_props.description = /*description*/ ctx[7];
+    	}
+
+    	if (/*gallery*/ ctx[5] !== void 0) {
+    		modal_props.gallery = /*gallery*/ ctx[5];
+    	}
+
+    	if (/*activeImage*/ ctx[4] !== void 0) {
+    		modal_props.activeImage = /*activeImage*/ ctx[4];
+    	}
+
+    	modal = new Index({ props: modal_props });
+    	binding_callbacks.push(() => bind(modal, "modalClasses", modal_modalClasses_binding));
+    	binding_callbacks.push(() => bind(modal, "modalStyle", modal_modalStyle_binding));
+    	binding_callbacks.push(() => bind(modal, "transitionDuration", modal_transitionDuration_binding));
+    	binding_callbacks.push(() => bind(modal, "image", modal_image_binding));
+    	binding_callbacks.push(() => bind(modal, "protect", modal_protect_binding));
+    	binding_callbacks.push(() => bind(modal, "portrait", modal_portrait_binding));
+    	binding_callbacks.push(() => bind(modal, "title", modal_title_binding));
+    	binding_callbacks.push(() => bind(modal, "description", modal_description_binding));
+    	binding_callbacks.push(() => bind(modal, "gallery", modal_gallery_binding));
+    	binding_callbacks.push(() => bind(modal, "activeImage", modal_activeImage_binding));
+    	modal.$on("close", /*toggle*/ ctx[14]);
+    	modal.$on("topModalClick", /*toggle*/ ctx[14]);
+    	modal.$on("modalClick", /*toggle*/ ctx[14]);
+
+    	return {
+    		c() {
+    			create_component(modal.$$.fragment);
+    		},
+    		m(target, anchor) {
+    			mount_component(modal, target, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			const modal_changes = {};
+
+    			if (dirty[0] & /*thumbnail, activeImage, gallery*/ 4144 | dirty[1] & /*$$scope*/ 1) {
+    				modal_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_modalClasses && dirty[0] & /*modalClasses*/ 4) {
+    				updating_modalClasses = true;
+    				modal_changes.modalClasses = /*modalClasses*/ ctx[2];
+    				add_flush_callback(() => updating_modalClasses = false);
+    			}
+
+    			if (!updating_modalStyle && dirty[0] & /*modalStyle*/ 8) {
+    				updating_modalStyle = true;
+    				modal_changes.modalStyle = /*modalStyle*/ ctx[3];
+    				add_flush_callback(() => updating_modalStyle = false);
+    			}
+
+    			if (!updating_transitionDuration && dirty[0] & /*transitionDuration*/ 256) {
+    				updating_transitionDuration = true;
+    				modal_changes.transitionDuration = /*transitionDuration*/ ctx[8];
+    				add_flush_callback(() => updating_transitionDuration = false);
+    			}
+
+    			if (!updating_image && dirty[0] & /*image*/ 1024) {
+    				updating_image = true;
+    				modal_changes.image = /*image*/ ctx[10];
+    				add_flush_callback(() => updating_image = false);
+    			}
+
+    			if (!updating_protect && dirty[0] & /*protect*/ 512) {
+    				updating_protect = true;
+    				modal_changes.protect = /*protect*/ ctx[9];
+    				add_flush_callback(() => updating_protect = false);
+    			}
+
+    			if (!updating_portrait && dirty[0] & /*portrait*/ 2048) {
+    				updating_portrait = true;
+    				modal_changes.portrait = /*portrait*/ ctx[11];
+    				add_flush_callback(() => updating_portrait = false);
+    			}
+
+    			if (!updating_title && dirty[0] & /*title*/ 64) {
+    				updating_title = true;
+    				modal_changes.title = /*title*/ ctx[6];
+    				add_flush_callback(() => updating_title = false);
+    			}
+
+    			if (!updating_description && dirty[0] & /*description*/ 128) {
+    				updating_description = true;
+    				modal_changes.description = /*description*/ ctx[7];
+    				add_flush_callback(() => updating_description = false);
+    			}
+
+    			if (!updating_gallery && dirty[0] & /*gallery*/ 32) {
+    				updating_gallery = true;
+    				modal_changes.gallery = /*gallery*/ ctx[5];
+    				add_flush_callback(() => updating_gallery = false);
+    			}
+
+    			if (!updating_activeImage && dirty[0] & /*activeImage*/ 16) {
+    				updating_activeImage = true;
+    				modal_changes.activeImage = /*activeImage*/ ctx[4];
+    				add_flush_callback(() => updating_activeImage = false);
+    			}
+
+    			modal.$set(modal_changes);
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(modal.$$.fragment, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(modal.$$.fragment, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			destroy_component(modal, detaching);
+    		}
+    	};
+    }
+
+    // (77:8) {:else}
+    function create_else_block(ctx) {
+    	let current;
+    	const default_slot_template = /*$$slots*/ ctx[16].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[31], null);
+
+    	return {
+    		c() {
+    			if (default_slot) default_slot.c();
+    		},
+    		m(target, anchor) {
+    			if (default_slot) {
+    				default_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty[1] & /*$$scope*/ 1) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[31], dirty, null, null);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+    }
+
+    // (71:26) 
+    function create_if_block_2(ctx) {
+    	let internalgallery;
+    	let updating_activeImage;
+    	let current;
+
+    	function internalgallery_activeImage_binding(value) {
+    		/*internalgallery_activeImage_binding*/ ctx[20].call(null, value);
+    	}
+
+    	let internalgallery_props = {
+    		$$slots: { default: [create_default_slot_1] },
+    		$$scope: { ctx }
+    	};
+
+    	if (/*activeImage*/ ctx[4] !== void 0) {
+    		internalgallery_props.activeImage = /*activeImage*/ ctx[4];
+    	}
+
+    	internalgallery = new InternalGallery({ props: internalgallery_props });
+    	binding_callbacks.push(() => bind(internalgallery, "activeImage", internalgallery_activeImage_binding));
+
+    	return {
+    		c() {
+    			create_component(internalgallery.$$.fragment);
+    		},
+    		m(target, anchor) {
+    			mount_component(internalgallery, target, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			const internalgallery_changes = {};
+
+    			if (dirty[1] & /*$$scope*/ 1) {
+    				internalgallery_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_activeImage && dirty[0] & /*activeImage*/ 16) {
+    				updating_activeImage = true;
+    				internalgallery_changes.activeImage = /*activeImage*/ ctx[4];
+    				add_flush_callback(() => updating_activeImage = false);
+    			}
+
+    			internalgallery.$set(internalgallery_changes);
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(internalgallery.$$.fragment, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(internalgallery.$$.fragment, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			destroy_component(internalgallery, detaching);
+    		}
+    	};
+    }
+
+    // (69:8) {#if thumbnail}
+    function create_if_block_1(ctx) {
+    	let current;
+    	const image_slot_template = /*$$slots*/ ctx[16].image;
+    	const image_slot = create_slot(image_slot_template, ctx, /*$$scope*/ ctx[31], get_image_slot_context);
+
+    	return {
+    		c() {
+    			if (image_slot) image_slot.c();
+    		},
+    		m(target, anchor) {
+    			if (image_slot) {
+    				image_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (image_slot) {
+    				if (image_slot.p && dirty[1] & /*$$scope*/ 1) {
+    					update_slot(image_slot, image_slot_template, ctx, /*$$scope*/ ctx[31], dirty, get_image_slot_changes, get_image_slot_context);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(image_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(image_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (image_slot) image_slot.d(detaching);
+    		}
+    	};
+    }
+
+    // (72:12) <InternalGallery bind:activeImage>
+    function create_default_slot_1(ctx) {
+    	let t;
+    	let current;
+    	const thumbnail_slot_template = /*$$slots*/ ctx[16].thumbnail;
+    	const thumbnail_slot = create_slot(thumbnail_slot_template, ctx, /*$$scope*/ ctx[31], get_thumbnail_slot_context_1);
+    	const default_slot_template = /*$$slots*/ ctx[16].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[31], null);
+
+    	return {
+    		c() {
+    			if (thumbnail_slot) thumbnail_slot.c();
+    			t = space();
+    			if (default_slot) default_slot.c();
+    		},
+    		m(target, anchor) {
+    			if (thumbnail_slot) {
+    				thumbnail_slot.m(target, anchor);
+    			}
+
+    			insert(target, t, anchor);
+
+    			if (default_slot) {
+    				default_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (thumbnail_slot) {
+    				if (thumbnail_slot.p && dirty[1] & /*$$scope*/ 1) {
+    					update_slot(thumbnail_slot, thumbnail_slot_template, ctx, /*$$scope*/ ctx[31], dirty, get_thumbnail_slot_changes_1, get_thumbnail_slot_context_1);
+    				}
+    			}
+
+    			if (default_slot) {
+    				if (default_slot.p && dirty[1] & /*$$scope*/ 1) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[31], dirty, null, null);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(thumbnail_slot, local);
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(thumbnail_slot, local);
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (thumbnail_slot) thumbnail_slot.d(detaching);
+    			if (detaching) detach(t);
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+    }
+
+    // (66:4) <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect            bind:portrait bind:title bind:description bind:gallery bind:activeImage            on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}>
+    function create_default_slot(ctx) {
+    	let current_block_type_index;
+    	let if_block;
+    	let if_block_anchor;
+    	let current;
+    	const if_block_creators = [create_if_block_1, create_if_block_2, create_else_block];
+    	const if_blocks = [];
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*thumbnail*/ ctx[12]) return 0;
+    		if (/*gallery*/ ctx[5]) return 1;
+    		return 2;
+    	}
+
+    	current_block_type_index = select_block_type_1(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	return {
+    		c() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m(target, anchor) {
+    			if_blocks[current_block_type_index].m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type_1(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if_blocks[current_block_type_index].d(detaching);
+    			if (detaching) detach(if_block_anchor);
+    		}
+    	};
+    }
+
+    function create_fragment$1(ctx) {
+    	let thumbnail_1;
+    	let updating_thumbnailClasses;
+    	let updating_thumbnailStyle;
+    	let updating_protect;
+    	let t;
+    	let if_block_anchor;
+    	let current;
+
+    	function thumbnail_1_thumbnailClasses_binding(value) {
+    		/*thumbnail_1_thumbnailClasses_binding*/ ctx[17].call(null, value);
+    	}
+
+    	function thumbnail_1_thumbnailStyle_binding(value) {
+    		/*thumbnail_1_thumbnailStyle_binding*/ ctx[18].call(null, value);
+    	}
+
+    	function thumbnail_1_protect_binding(value) {
+    		/*thumbnail_1_protect_binding*/ ctx[19].call(null, value);
+    	}
+
+    	let thumbnail_1_props = {
+    		$$slots: { default: [create_default_slot_2] },
+    		$$scope: { ctx }
+    	};
+
+    	if (/*thumbnailClasses*/ ctx[0] !== void 0) {
+    		thumbnail_1_props.thumbnailClasses = /*thumbnailClasses*/ ctx[0];
+    	}
+
+    	if (/*thumbnailStyle*/ ctx[1] !== void 0) {
+    		thumbnail_1_props.thumbnailStyle = /*thumbnailStyle*/ ctx[1];
+    	}
+
+    	if (/*protect*/ ctx[9] !== void 0) {
+    		thumbnail_1_props.protect = /*protect*/ ctx[9];
+    	}
+
+    	thumbnail_1 = new LightboxThumbnail({ props: thumbnail_1_props });
+    	binding_callbacks.push(() => bind(thumbnail_1, "thumbnailClasses", thumbnail_1_thumbnailClasses_binding));
+    	binding_callbacks.push(() => bind(thumbnail_1, "thumbnailStyle", thumbnail_1_thumbnailStyle_binding));
+    	binding_callbacks.push(() => bind(thumbnail_1, "protect", thumbnail_1_protect_binding));
+    	thumbnail_1.$on("click", /*toggle*/ ctx[14]);
+    	let if_block = /*visible*/ ctx[13] && create_if_block(ctx);
+
+    	return {
+    		c() {
+    			create_component(thumbnail_1.$$.fragment);
+    			t = space();
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m(target, anchor) {
+    			mount_component(thumbnail_1, target, anchor);
+    			insert(target, t, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			const thumbnail_1_changes = {};
+
+    			if (dirty[0] & /*thumbnail, gallery*/ 4128 | dirty[1] & /*$$scope*/ 1) {
+    				thumbnail_1_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_thumbnailClasses && dirty[0] & /*thumbnailClasses*/ 1) {
+    				updating_thumbnailClasses = true;
+    				thumbnail_1_changes.thumbnailClasses = /*thumbnailClasses*/ ctx[0];
+    				add_flush_callback(() => updating_thumbnailClasses = false);
+    			}
+
+    			if (!updating_thumbnailStyle && dirty[0] & /*thumbnailStyle*/ 2) {
+    				updating_thumbnailStyle = true;
+    				thumbnail_1_changes.thumbnailStyle = /*thumbnailStyle*/ ctx[1];
+    				add_flush_callback(() => updating_thumbnailStyle = false);
+    			}
+
+    			if (!updating_protect && dirty[0] & /*protect*/ 512) {
+    				updating_protect = true;
+    				thumbnail_1_changes.protect = /*protect*/ ctx[9];
+    				add_flush_callback(() => updating_protect = false);
+    			}
+
+    			thumbnail_1.$set(thumbnail_1_changes);
+
+    			if (/*visible*/ ctx[13]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty[0] & /*visible*/ 8192) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(thumbnail_1.$$.fragment, local);
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(thumbnail_1.$$.fragment, local);
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d(detaching) {
+    			destroy_component(thumbnail_1, detaching);
+    			if (detaching) detach(t);
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach(if_block_anchor);
+    		}
+    	};
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	let { thumbnailClasses = "" } = $$props;
+    	let { thumbnailStyle = "" } = $$props;
+    	let { modalClasses = "" } = $$props;
+    	let { modalStyle = "" } = $$props;
+    	let { activeImage = 0 } = $$props;
+    	let { gallery = false } = $$props;
+    	let { title = "" } = $$props;
+    	let { description = "" } = $$props;
+    	let { transitionDuration = 500 } = $$props;
+    	let { protect = false } = $$props;
+    	let { image = {} } = $$props;
+    	let { portrait = false } = $$props;
+    	let { noScroll = true } = $$props;
+    	let { thumbnail = false } = $$props;
+    	let visible = false;
+
+    	const toggle = () => {
+    		$$invalidate(13, visible = !visible);
+
+    		if (noScroll) {
+    			mountedT();
+    		}
+    	};
+
+    	let mountedT = () => {
+    		
+    	};
+
+    	onMount(() => {
+    		let defaultOverflow = document.body.style.overflow;
+
+    		mountedT = () => {
+    			if (visible) {
+    				document.body.style.overflow = "hidden";
+    			} else {
+    				document.body.style.overflow = defaultOverflow;
+    			}
+    		};
+    	});
+
+    	let { $$slots = {}, $$scope } = $$props;
+
+    	function thumbnail_1_thumbnailClasses_binding(value) {
+    		thumbnailClasses = value;
+    		$$invalidate(0, thumbnailClasses);
+    	}
+
+    	function thumbnail_1_thumbnailStyle_binding(value) {
+    		thumbnailStyle = value;
+    		$$invalidate(1, thumbnailStyle);
+    	}
+
+    	function thumbnail_1_protect_binding(value) {
+    		protect = value;
+    		$$invalidate(9, protect);
+    	}
+
+    	function internalgallery_activeImage_binding(value) {
+    		activeImage = value;
+    		$$invalidate(4, activeImage);
+    	}
+
+    	function modal_modalClasses_binding(value) {
+    		modalClasses = value;
+    		$$invalidate(2, modalClasses);
+    	}
+
+    	function modal_modalStyle_binding(value) {
+    		modalStyle = value;
+    		$$invalidate(3, modalStyle);
+    	}
+
+    	function modal_transitionDuration_binding(value) {
+    		transitionDuration = value;
+    		$$invalidate(8, transitionDuration);
+    	}
+
+    	function modal_image_binding(value) {
+    		image = value;
+    		$$invalidate(10, image);
+    	}
+
+    	function modal_protect_binding(value) {
+    		protect = value;
+    		$$invalidate(9, protect);
+    	}
+
+    	function modal_portrait_binding(value) {
+    		portrait = value;
+    		$$invalidate(11, portrait);
+    	}
+
+    	function modal_title_binding(value) {
+    		title = value;
+    		$$invalidate(6, title);
+    	}
+
+    	function modal_description_binding(value) {
+    		description = value;
+    		$$invalidate(7, description);
+    	}
+
+    	function modal_gallery_binding(value) {
+    		gallery = value;
+    		$$invalidate(5, gallery);
+    	}
+
+    	function modal_activeImage_binding(value) {
+    		activeImage = value;
+    		$$invalidate(4, activeImage);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("thumbnailClasses" in $$props) $$invalidate(0, thumbnailClasses = $$props.thumbnailClasses);
+    		if ("thumbnailStyle" in $$props) $$invalidate(1, thumbnailStyle = $$props.thumbnailStyle);
+    		if ("modalClasses" in $$props) $$invalidate(2, modalClasses = $$props.modalClasses);
+    		if ("modalStyle" in $$props) $$invalidate(3, modalStyle = $$props.modalStyle);
+    		if ("activeImage" in $$props) $$invalidate(4, activeImage = $$props.activeImage);
+    		if ("gallery" in $$props) $$invalidate(5, gallery = $$props.gallery);
+    		if ("title" in $$props) $$invalidate(6, title = $$props.title);
+    		if ("description" in $$props) $$invalidate(7, description = $$props.description);
+    		if ("transitionDuration" in $$props) $$invalidate(8, transitionDuration = $$props.transitionDuration);
+    		if ("protect" in $$props) $$invalidate(9, protect = $$props.protect);
+    		if ("image" in $$props) $$invalidate(10, image = $$props.image);
+    		if ("portrait" in $$props) $$invalidate(11, portrait = $$props.portrait);
+    		if ("noScroll" in $$props) $$invalidate(15, noScroll = $$props.noScroll);
+    		if ("thumbnail" in $$props) $$invalidate(12, thumbnail = $$props.thumbnail);
+    		if ("$$scope" in $$props) $$invalidate(31, $$scope = $$props.$$scope);
+    	};
+
+    	return [
+    		thumbnailClasses,
+    		thumbnailStyle,
+    		modalClasses,
+    		modalStyle,
+    		activeImage,
+    		gallery,
+    		title,
+    		description,
+    		transitionDuration,
+    		protect,
+    		image,
+    		portrait,
+    		thumbnail,
+    		visible,
+    		toggle,
+    		noScroll,
+    		$$slots,
+    		thumbnail_1_thumbnailClasses_binding,
+    		thumbnail_1_thumbnailStyle_binding,
+    		thumbnail_1_protect_binding,
+    		internalgallery_activeImage_binding,
+    		modal_modalClasses_binding,
+    		modal_modalStyle_binding,
+    		modal_transitionDuration_binding,
+    		modal_image_binding,
+    		modal_protect_binding,
+    		modal_portrait_binding,
+    		modal_title_binding,
+    		modal_description_binding,
+    		modal_gallery_binding,
+    		modal_activeImage_binding,
+    		$$scope
+    	];
+    }
+
+    class Lightbox extends SvelteComponent {
+    	constructor(options) {
+    		super();
+
+    		init(
+    			this,
+    			options,
+    			instance$1,
+    			create_fragment$1,
+    			safe_not_equal,
+    			{
+    				thumbnailClasses: 0,
+    				thumbnailStyle: 1,
+    				modalClasses: 2,
+    				modalStyle: 3,
+    				activeImage: 4,
+    				gallery: 5,
+    				title: 6,
+    				description: 7,
+    				transitionDuration: 8,
+    				protect: 9,
+    				image: 10,
+    				portrait: 11,
+    				noScroll: 15,
+    				thumbnail: 12
+    			},
+    			[-1, -1]
+    		);
+    	}
+    }
+
+    /* src/Gallery/LightboxImage.svelte generated by Svelte v3.24.1 */
+
+    function create_fragment(ctx) {
+    	let div;
+    	let current;
+    	const default_slot_template = /*$$slots*/ ctx[1].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[0], null);
+
+    	return {
+    		c() {
+    			div = element("div");
+    			if (default_slot) default_slot.c();
+    			div.hidden = true;
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+
+    			if (default_slot) {
+    				default_slot.m(div, null);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, [dirty]) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty & /*$$scope*/ 1) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[0], dirty, null, null);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div);
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+    	let { $$slots = {}, $$scope } = $$props;
+
+    	$$self.$$set = $$props => {
+    		if ("$$scope" in $$props) $$invalidate(0, $$scope = $$props.$$scope);
+    	};
+
+    	return [$$scope, $$slots];
+    }
+
+    class LightboxImage extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		init(this, options, instance, create_fragment, safe_not_equal, {});
+    	}
+    }
+
+    exports.Lightbox = Lightbox;
+    exports.LightboxGallery = ExternalGallery;
+    exports.LightboxImage = LightboxImage;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
