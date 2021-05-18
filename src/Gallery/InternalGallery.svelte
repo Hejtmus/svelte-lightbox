@@ -2,10 +2,8 @@
     export let activeImage = 0;
     let slotContent;
     let images;
-    $: images = slotContent?.children
-    $: console.log(images)
-    $: console.log($$slots)
 
+    $: images = slotContent?.children
     $: {
         console.log(typeof images)
         if (images && activeImage < images.length) {

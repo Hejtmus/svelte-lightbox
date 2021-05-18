@@ -1,13 +1,15 @@
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser'
+import { terser as terserPlugin } from 'rollup-plugin-terser'
 import pkg from './package.json';
 import gzipPlugin from 'rollup-plugin-gzip';
 let gzip = () => {};
+let terser = () => {};
 
 const dev = process.env.BUILD;
 
 if (dev) gzip = gzipPlugin;
+if (dev) terser = terserPlugin();
 
 const name = pkg.name
 	.replace(/^(@\S+\/)?(svelte-)?(\S+)/, '$3')
