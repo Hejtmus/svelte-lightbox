@@ -68,6 +68,13 @@
         align-items: center;
         padding: 1rem;
     }
+    .cover:before {
+         content: '';
+         position: absolute;
+         top: 0; bottom: 0; left: 0; right: 0;
+         opacity: 0;
+         z-index: -1;
+     }
     .svelte-lightbox {
         position: absolute;
         background-color: transparent;
@@ -82,5 +89,6 @@
         clear: both;
         display: table;
     }
+
     /* I need help with styling this */
 </style>
