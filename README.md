@@ -31,26 +31,37 @@ it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'`.
 <script>
     //Svelte import
     import { 
-        Lightbox
+        Lightbox,
+        LightboxImage,
+        LightboxGallery
     } from 'svelte-lightbox';
     //Sapper import
 	import Lightbox from 'svelte-lightbox/src/Lightbox.svelte';
 
-    // NOTE - Gallery feature is NOT implemented in this version
-
-    //Include all titles of your images, this is also used as number that indicate count of sections
+    /*
+    Include all titles and descriptions of your images, this field is optional, and you can set universal 
+    title and description by setting it as Lightbox prop.
+    */
+	
     const gallery = [
-        'Cat is eating mouse',
-        'Bike is driven',
-        'JS components are downloaded from npm',
-        'This component is being developed'
+     {
+      title: 'Cat is eating mouse',
+      description: 'Pretty cruel, ieurgv eoirhe hgioh vihvieh vn  if neib '
+     },
+     {
+      title: 'Bike is driven',
+      description: `LOL, What a sentence, eriugherheh ioghieo `
+     },
+     {
+      title: 'JS components are downloaded from npm',
+      description: 'Obviously, jrgoer iojre oigejgi heiruoiqevj eoirhjv ioehh ve'
+     },
+     {
+      title: 'This component is under development',
+      description: `So don't stake your life on it, but it should be pretty stable`
+     }
     ];
-    //Have to set to 0 (or image you wish to display as default), otherwise lightbox will not display
-    let activeImage = 0;
-    //END OF NON EXISTING FEATURE
 </script>
-
-    // THIS WORKS, STABLE, TESTED
 
     <Lightbox description="Simple lightbox">
         <img src="path" alt="Simple lightbox">
@@ -61,24 +72,25 @@ it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'`.
         <img slot="image" src="path/image.png" alt="Lightbox image">
     </Lightbox>
 
-    // END OF IMPLEMENTED CODE
 
-    // AS MENTIONED BEFORE, GALLERY FEATURE IS NOT PRESENT, USE UPPER CODE ^^^
+    <Lightbox {gallery}>
+        <!-- Important thing to mention: 
+        lightbox gallery needs some thumbnail, you can set it like this, dont worry, this image will be displayed within gallery
+         -->
+        <img slot="thumbnail" src="./portrait.png" class="img-fluid" alt="Simple lightbox">
+        <LightboxGallery>
+            <LightboxImage gallery={false}>
+                <img src="./1.jpg" alt="Simple lightbox">
+            </LightboxImage>
+            <LightboxImage>
+                <img src="./2.png" alt="Simple lightbox">
+            </LightboxImage>
+            <LightboxImage>
+                <img src="./3.png" alt="Simple lightbox">
+            </LightboxImage>
+        </LightboxGallery>
+    </Lightbox>
 
-    <Lightbox {gallery} imageId="0" bind:activeImage>
-        <img src="path" alt="Someone is having tough time">
-    </Lightbox>
-    <Lightbox {gallery} imageId="1" bind:activeImage>
-        <img src="path" alt="That ninja is impressively fast">
-    </Lightbox>
-    <Lightbox {gallery} imageId="2" bind:activeImage>
-        <img src="path" alt="NPM rocks">
-    </Lightbox>
-    <Lightbox {gallery} imageId="2" bind:activeImage>
-        <img src="path" alt="svelte-lightbox is not done yet">
-    </Lightbox>
-
-    //END OF NON EXISTING FEATURE
 ```
 
 ### Tweaks
@@ -90,23 +102,36 @@ So, there are options for customizing your Lightbox component.
 These props are customizable:
 
 * **thumbnail** - `boolean` - Enables thumbnail to be different from an actual image.
+  
 * **thumbnailClasses** - `string` - Standard HTML "class" for lightbox thumbnail.
+  
 * **thumbnailStyle** - `string` - Standard HTML "style" for lightbox thumbnail.
+  
 * **modalClasses** - `string` - Standard HTML "class" for lightbox modal.
+  
 * **modalStyle** - `string` - Standard HTML "style" for lightbox modal.
+  
 * **transitionDuration** - `number` - Duration of lightbox toggle.
+  
 * **protect** - `boolean` - Enable protection of image from being dragged n dropped.
+  
 * **title** - `string/HTML` - Image's title that is displayed below the image (in a lightbox), feel free to use HTML
  (eg, `<br>`, `<span>`). Everything in a lightbox footer is aligned to the left, but you can override it
  by putting it into `<span>` which would allow you to apply a different style or a class of your choosing.
+  
 * **description** - `string/HTML` - Image's description that is, similarly to the title, displayed under the image (in a lightbox).
 The difference between those two is that the title is wrapped in `<h2>` and description is wrapped in `<h5>`.
+  
 * **portrait** - `boolean` - Enables improved portrait mode.
+  
 * **noScroll** - `boolean` - Disables body scrolling while in lightbox mode, default `true`.
 
-* **gallery** - `array` - Array containing Lightbox descriptions. **NOT IMPLEMENTED**
-* **activeImage** - `number` - Number that points set visibility of image. **NOT IMPLEMENTED**
-* **imageId** - `number/string` - Number or number in string, says what to display. **NOT IMPLEMENTED**
+
+* **gallery** - `array of objects` - Array containing objects with Lightbox descriptions and titles. Optional, if you don't 
+need image specific title and description, you can specify universal by passing props *title* and *description* to `<Lightbox>` component.
+  
+* **activeImage** - `number` - Number that points set visibility of image. Also optional, this is used for programmatic 
+selecting of visible image when Lightbox is opened.
 
 ### Future
 
