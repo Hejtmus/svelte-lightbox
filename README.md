@@ -17,13 +17,23 @@ Gallery feature is on its way, please be patient
 ## How to use
 
 1. Make Svelte page
+   
 2. Include `import { Lightbox } from 'svelte-lightbox';` into that file.
+   
 3. Make Lightbox galleries and put them into `<Lightbox>` as prop, image put inside slot (as its child). You are done.
-4. **Warning, in this version step 4 is redundant, because feature is not implemented**. Define new array that will contain 
-all descriptions of all images, insert them into Lightbox component, example `<Lightbox gallery={myGallery}`.
+   
+4. Define new array that will contain objects with all descriptions and titles of all images, insert them into 
+   Lightbox component, example `<Lightbox gallery={myGallery}`.
+   
 5. You can **check if everything is working**, if you use **Sapper**, don't forget to make this component **SSR**, just include
 it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'`.
 
+## Pro tips
+
+- Images in lightbox behave in the same way as their thumbnails, if you need to behave differently, override thumbnail
+with other image, or the same image, but with different style
+  
+- If you want to disable drag'n'drop over lightbox, pass protected prop to `<Lightbox>` component
 
 ### Something copyable
 
