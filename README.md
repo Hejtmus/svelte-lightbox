@@ -6,8 +6,6 @@ Lightweight Lightbox Svelte component, no vanilla JS or jQuery, just pure Svelte
 mobile devices. Tested on Svelte and Sapper. Note that this component is in development, expect bugs, if you notice some, 
 please report them to this component's GitHub repo to the 'Issues' section.
 
-Gallery feature is on its way, please be patient
-
 ## Instalation
 
 > ```bash
@@ -17,23 +15,43 @@ Gallery feature is on its way, please be patient
 ## How to use
 
 1. Make Svelte page
-   
+
 2. Include `import { Lightbox } from 'svelte-lightbox';` into that file.
+
+3. Make `<Lightbox>` component and image you need to display put inside slot (as its child).
+
+### Standard lightbox
+
+4. You can **check if everything is working**, if you use **Sapper**, don't forget to make this component **SSR**, just include
+   it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'` (this step is not needed in SvelteKit).
    
-3. Make Lightbox galleries and put them into `<Lightbox>` as prop, image put inside slot (as its child). You are done.
-   
-4. Define new array that will contain objects with all descriptions and titles of all images, insert them into 
+### Lightbox with gallery
+
+4. Go to import from step `2.` and include `LightboxGallery` and `LightboxImage` as well.
+
+5. Define new array that will contain objects with all descriptions and titles of all images, insert them into
    Lightbox component, example `<Lightbox gallery={myGallery}`.
+   ```js
+    GalleryArray: [
+        GalleryImage,
+        GalleryImage,
+        ...
+    ]
+    GalleryImage: {
+        title: String /*(supports HTML)*/,
+        description: String /*(supports HTML)*/
+    }
+    ```
+6. Put `<img slot="thumbnail">` with prop slot equal to thumbnail inside `<Lightbox>`. This will be the main image, that 
+   will users see.
+
+6. Make `<LightboxGallery>` and put it into `<Lightbox>`.
+
+7. Make `<LightboxImage>`, put your `<img>` into it and then make, pass it to your `<LightboxGallery>`.
+
+8. Test functionality and eventually post issue to [this project repository](https://github.com/Hejtmus/svelte-lightbox).
+    If you use sapper, don't forget to make imports SSR compatible (this step is not needed in SvelteKit).
    
-5. You can **check if everything is working**, if you use **Sapper**, don't forget to make this component **SSR**, just include
-it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'`.
-
-## Pro tips
-
-- Images in lightbox behave in the same way as their thumbnails, if you need to behave differently, override thumbnail
-with other image, or the same image, but with different style
-  
-- If you want to disable drag'n'drop over lightbox, pass protected prop to `<Lightbox>` component
 
 ### Something copyable
 
@@ -87,16 +105,16 @@ with other image, or the same image, but with different style
         <!-- Important thing to mention: 
         lightbox gallery needs some thumbnail, you can set it like this, dont worry, this image will be displayed within gallery
          -->
-        <img slot="thumbnail" src="./portrait.png" class="img-fluid" alt="Simple lightbox">
+        <img slot="thumbnail" src="./image.png" alt="Simple lightbox">
         <LightboxGallery>
-            <LightboxImage gallery={false}>
-                <img src="./1.jpg" alt="Simple lightbox">
+            <LightboxImage>
+                <img src="./image.jpg" alt="Simple lightbox">
             </LightboxImage>
             <LightboxImage>
-                <img src="./2.png" alt="Simple lightbox">
+                <img src="./image.png" alt="Simple lightbox">
             </LightboxImage>
             <LightboxImage>
-                <img src="./3.png" alt="Simple lightbox">
+                <img src="./image.png" alt="Simple lightbox">
             </LightboxImage>
         </LightboxGallery>
     </Lightbox>
@@ -106,6 +124,7 @@ with other image, or the same image, but with different style
 ### Tweaks
 
 So, there are options for customizing your Lightbox component.
+
 
 #### Lightbox
 
@@ -143,7 +162,14 @@ need image specific title and description, you can specify universal by passing 
 * **activeImage** - `number` - Number that points set visibility of image. Also optional, this is used for programmatic 
 selecting of visible image when Lightbox is opened.
 
-### Future
+## Pro tips
+
+- Images in lightbox behave in the same way as their thumbnails, if you need to behave differently, override thumbnail
+  with other image, or the same image, but with different style
+
+- If you want to disable drag'n'drop over lightbox, pass protected prop to `<Lightbox>` component
+
+## Future
 
 I plan to improve this component in the future, but I don't have much time.
 So feel free to contribute some code if you will. This component needs CSS rework.
