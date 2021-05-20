@@ -3,8 +3,6 @@
     import Modal from './Modal/Index.svelte';
     import InternalGallery from './Gallery/InternalGallery.svelte';
     import {onMount} from 'svelte';
-    import {writable} from "svelte/store";
-    import ExternalGallery from "./Gallery/ExternalGallery.svelte";
 
     //exporting classes, for passing classes into thumbnail
     export let thumbnailClasses = '';
@@ -16,6 +14,7 @@
     export let activeImage = 0;
     //array with image descriptions
     export let gallery = false;
+    //getting universal title and descriptions
     export let title = '';
     export let description = '';
     //exporting duration of fade transition

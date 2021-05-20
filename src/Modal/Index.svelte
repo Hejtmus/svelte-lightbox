@@ -22,9 +22,11 @@
 
     //let allModalClasses = modalClasses;
     $: allModalClasses = `${modalClasses} svelte-lightbox-overlay clearfix`;
+    // For variable title and description, we need to define this auxiliary variables
     $: actualTitle = title;
     $: actualDescription = description;
 
+    // If there is not universal title or description for gallery, we will display individual title and description
     $: if (gallery && !title && !description) {
             actualTitle = gallery[activeImage].title;
             actualDescription = gallery[activeImage].description;
