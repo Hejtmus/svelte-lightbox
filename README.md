@@ -1,5 +1,7 @@
 # Svelte-lightbox
 
+Lightweight Lightbox Svelte component
+
 ***In development, stable, tested***
 
 Lightweight Lightbox Svelte component, no vanilla JS or jQuery, just pure Svelte component. There is also support for

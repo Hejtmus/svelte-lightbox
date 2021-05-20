@@ -17,6 +17,7 @@
     export let description = '';
     export let gallery;
     export let activeImage;
+    export let fit;
     let actualTitle;
     let actualDescription;
 
@@ -42,7 +43,7 @@
 
             <Header on:close={ () => dispatch('close') }/>
 
-            <Body bind:image={image} bind:protect={protect} bind:portrait={portrait}>
+            <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
                 <slot/>
             </Body>
 
