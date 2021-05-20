@@ -1,11 +1,20 @@
 <script>
+    // Gives option for user to control displayed image
     export let activeImage = 0;
+    // Here will be stored markup that will user put inside of this component
     let slotContent;
+    // Auxiliary variable for storing elements with image that user has provided
     let images;
 
+    // Every time, when contents of this component changes, images will be updated
     $: images = slotContent?.children
+
     $: {
-        console.log(typeof images)
+        /*
+        When activeImage or images array changes, checks if active image points to existing image and then displays it,
+        if selected image doesn't exist, then logs out error, these error normally does not occur, only in cases when
+        activeImage is controlled programmatically
+         */
         if (images && activeImage < images.length) {
             Object.values(images).forEach(img=>{
                 img.hidden = true;
@@ -17,6 +26,11 @@
         }
     }
 
+    /*
+    Those functions move between active image, we dont need condition to disable their role, because this is already
+    implemented in the element section by conditionally disabling buttons, that call this function.
+
+     */
     const previousImage = () => {
         activeImage--
     }
@@ -28,6 +42,7 @@
 </script>
 
 <div class="wrapper">
+    <!-- Left arrow -->
     <button on:click={previousImage} disabled={activeImage === 0} class="previous-button">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -36,11 +51,13 @@
         </svg>
     </button>
 
+    <!-- Image wrapper -->
     <div bind:this={slotContent} class="slot">
         <slot>
         </slot>
     </div>
 
+    <!-- Right arrow -->
     <button on:click={nextImage} disabled={activeImage === images?.length-1} class="next-button">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g>
