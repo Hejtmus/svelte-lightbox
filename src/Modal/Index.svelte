@@ -6,6 +6,7 @@
     import Body from './LightboxBody.svelte';
     import Footer from './LightboxFooter.svelte';
     import ModalCover from "./ModalCover.svelte";
+    import Modal from "./Modal.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -38,7 +39,7 @@
 </script>
 
 <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
-    <div class={allModalClasses} style={modalStyle} transition:fade={{duration:transitionDuration}} on:click={ () => dispatch('modalClick') }>
+    <Modal bind:allModalClasses bind:modalStyle on:click={ () => dispatch('modalClick') }>
         <Header on:close={ () => dispatch('close') }/>
 
         <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
@@ -48,8 +49,7 @@
 
         <Footer bind:title={actualTitle} bind:description={actualDescription} bind:galleryLength={gallery.length}
                 bind:activeImage={activeImage}/>
-
-    </div>
+    </Modal>
 </ModalCover>
 
 
