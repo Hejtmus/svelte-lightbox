@@ -38,6 +38,11 @@
             mountedT()
         }
     };
+
+    const close = () => {
+        visible = false;
+    };
+
     let mountedT = () => {
     };
 
@@ -65,7 +70,7 @@
 {#if visible}
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
            bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:fit={fit}
-           on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle} >
+           on:close on:topModalClick={close} on:modalClick={toggle} >
         {#if thumbnail}
             <slot name="image"/>
         {:else if gallery}
