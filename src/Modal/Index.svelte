@@ -1,11 +1,13 @@
 <script>
     import {fade} from 'svelte/transition';
-    import { createEventDispatcher } from 'svelte';
-    const dispatch = createEventDispatcher();
+    import {createEventDispatcher} from 'svelte';
 
     import Header from './LightboxHeader.svelte';
     import Body from './LightboxBody.svelte';
     import Footer from './LightboxFooter.svelte';
+    import ModalCover from "./ModalCover.svelte";
+
+    const dispatch = createEventDispatcher();
 
     export let modalClasses = '';
     export let modalStyle = '';
@@ -22,55 +24,36 @@
     let actualDescription;
 
     //let allModalClasses = modalClasses;
-    $: allModalClasses = `${modalClasses} svelte-lightbox-overlay clearfix`;
+    $: allModalClasses = `${modalClasses} svelte-lightbox clearfix`;
     // For variable title and description, we need to define this auxiliary variables
     $: actualTitle = title;
     $: actualDescription = description;
 
     // If there is not universal title or description for gallery, we will display individual title and description
     $: if (gallery && !title && !description) {
-            actualTitle = gallery[activeImage].title;
-            actualDescription = gallery[activeImage].description;
+        actualTitle = gallery[activeImage].title;
+        actualDescription = gallery[activeImage].description;
     }
 
 </script>
 
-<div class="cover clearfix">
+<ModalCover on:click={ () => dispatch('topModalClick') }>
+    <div class={allModalClasses} style={modalStyle} transition:fade={{duration:transitionDuration}} on:click={ () => dispatch('modalClick') }>
+        <Header on:close={ () => dispatch('close') }/>
 
-    <div class={allModalClasses} style={modalStyle} transition:fade={{duration:transitionDuration}} on:click={ () => dispatch('topModalClick') }>
-
-        <div class="svelte-lightbox" on:click={ () => dispatch('modalClick') }>
-
-            <Header on:close={ () => dispatch('close') }/>
-
-            <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
-                <slot/>
-            </Body>
+        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
+        <slot/>
+        </Body>
 
 
-            <Footer bind:title={actualTitle} bind:description={actualDescription} bind:galleryLength={gallery.length}
-                    bind:activeImage={activeImage}/>
-
-        </div>
+        <Footer bind:title={actualTitle} bind:description={actualDescription} bind:galleryLength={gallery.length}
+                bind:activeImage={activeImage}/>
 
     </div>
-
-</div>
+</ModalCover>
 
 
 <style>
-    .cover {
-        position: fixed;
-        z-index: 1000000!important;
-        background-color: rgba(43, 39, 45, 0.87);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-    }
     .svelte-lightbox-overlay {
         position: relative;
         z-index: 1000001;
@@ -81,21 +64,12 @@
         align-items: center;
         padding: 1rem;
     }
-    .cover:before {
-         content: '';
-         position: absolute;
-         top: 0; bottom: 0; left: 0; right: 0;
-         opacity: 0;
-         z-index: -1;
-     }
     .svelte-lightbox {
-        position: absolute;
         background-color: transparent;
         width: auto;
         height: auto;
-        max-width: 90%;
-        max-height: 90%;
-        z-index: 1000002;
+        max-width: 90vw;
+        max-height: 90vh;
     }
     .clearfix::after {
         content: "";
