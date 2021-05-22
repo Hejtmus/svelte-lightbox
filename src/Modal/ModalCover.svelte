@@ -2,6 +2,7 @@
     import {fade} from 'svelte/transition';
     import {createEventDispatcher} from 'svelte';
 
+    export let transitionDuration;
     const dispatch = createEventDispatcher();
 
     const click = () => {
@@ -9,7 +10,7 @@
     }
 </script>
 
-<div on:click in:fade={{duration:1000}} out:fade={{duration: 250}}>
+<div on:click in:fade={{duration:transitionDuration*2}} out:fade={{duration: transitionDuration/2}}>
     <slot>
     </slot>
 </div>

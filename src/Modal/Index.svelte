@@ -37,7 +37,7 @@
 
 </script>
 
-<ModalCover on:click={ () => dispatch('topModalClick') }>
+<ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
     <div class={allModalClasses} style={modalStyle} transition:fade={{duration:transitionDuration}} on:click={ () => dispatch('modalClick') }>
         <Header on:close={ () => dispatch('close') }/>
 
