@@ -29,8 +29,11 @@
     export let noScroll = true;
     export let thumbnail = false;
     export let fit = false;
+    export let clickToClose = false;
 
     let visible = false;
+
+    let modalClicked = false;
 
     const toggle = () => {
         visible = !visible;
@@ -42,6 +45,35 @@
     const close = () => {
         visible = false;
     };
+
+    const coverClick = () => {
+        console.log('coverClick')
+        if (!modalClicked || clickToClose) {
+            close()
+        }
+        modalClicked = false;
+    }
+
+    const modalClick = () => {
+        console.log('modalClick')
+        modalClicked = true;
+        /*
+        setTimeout(()=>{
+            visible = true;
+        })
+
+        /*
+        console.log('modalClick')
+        if (!clickToClose) {
+            console.log('lal')
+            console.log(closeCanceller)
+            clearTimeout(closeCanceller)
+            console.log(closeCanceller)
+        }
+        visible = true
+
+         */
+    }
 
     let mountedT = () => {
     };
@@ -70,7 +102,7 @@
 {#if visible}
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
            bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:fit={fit}
-           on:close on:topModalClick={close} on:modalClick={toggle} >
+           on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
         {#if thumbnail}
             <slot name="image"/>
         {:else if gallery}
