@@ -47,7 +47,7 @@
     };
 
     const coverClick = () => {
-        console.log('coverClick')
+        // console.log('coverClick')
         if (!modalClicked || clickToClose) {
             close()
         }
@@ -55,24 +55,8 @@
     }
 
     const modalClick = () => {
-        console.log('modalClick')
+        // console.log('modalClick')
         modalClicked = true;
-        /*
-        setTimeout(()=>{
-            visible = true;
-        })
-
-        /*
-        console.log('modalClick')
-        if (!clickToClose) {
-            console.log('lal')
-            console.log(closeCanceller)
-            clearTimeout(closeCanceller)
-            console.log(closeCanceller)
-        }
-        visible = true
-
-         */
     }
 
     let toggleScroll = () => {
