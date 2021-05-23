@@ -1,5 +1,7 @@
 # Svelte-lightbox
 
+Lightweight Lightbox Svelte component
+
 ***In development, stable, tested***
 
 Lightweight Lightbox Svelte component, no vanilla JS or jQuery, just pure Svelte component. There is also support for
@@ -121,61 +123,116 @@ please report them to this component's GitHub repo to the 'Issues' section.
 
 ```
 
-### Tweaks
+# Tweaks
 
 So, there are options for customizing your Lightbox component.
 
 
-#### Lightbox
+## `<Lightbox>`
 
 These props are customizable:
 
-* **thumbnail** - `boolean` - Enables thumbnail to be different from an actual image.
+### thumbnail `boolean`
+
+Enables thumbnail to be different from an actual image. In that case thumbnail has to be included as child component with
+prop slot equal to "thumbnail". Default `false`.
   
-* **thumbnailClasses** - `string` - Standard HTML "class" for lightbox thumbnail.
   
-* **thumbnailStyle** - `string` - Standard HTML "style" for lightbox thumbnail.
+### modalClasses `string`
+
+Standard HTML "class" for lightbox modal.
   
-* **modalClasses** - `string` - Standard HTML "class" for lightbox modal.
+### modalStyle `string`
+
+Standard HTML "style" for lightbox modal.
   
-* **modalStyle** - `string` - Standard HTML "style" for lightbox modal.
+### transitionDuration `number`
+
+Duration of lightbox toggle, in milliseconds. Based on this number are calculated transitions for lightbox cover. Default
+`500`.
   
-* **transitionDuration** - `number` - Duration of lightbox toggle.
+### protect `boolean`
+
+Enable protection of image from being dragged and dropped (disabled drag'n'drop). Default `false`.
   
-* **protect** - `boolean` - Enable protection of image from being dragged n dropped.
+### title `string/HTML`
+
+Image's title that is displayed below the image (in a lightbox), feel free to use HTML (eg, `<br>`, `<span>`). Everything 
+in a lightbox footer is aligned to the left, but you can override it by putting it into `<span>` which would allow you to
+apply a different style or a class of your choosing.
+
+***IMPORTANT: When used with gallery, title acts as universal title for all images in gallery***
   
-* **title** - `string/HTML` - Image's title that is displayed below the image (in a lightbox), feel free to use HTML
- (eg, `<br>`, `<span>`). Everything in a lightbox footer is aligned to the left, but you can override it
- by putting it into `<span>` which would allow you to apply a different style or a class of your choosing.
+### description `string/HTML`
+
+Image's description that is, similarly to the title, displayed under the image (in a lightbox). The difference between 
+those two is the title is wrapped in `<h2>` and description is wrapped in `<h5>`.
+
+***IMPORTANT: When used with gallery, description acts as universal description for all images in gallery***
   
-* **description** - `string/HTML` - Image's description that is, similarly to the title, displayed under the image (in a lightbox).
-The difference between those two is that the title is wrapped in `<h2>` and description is wrapped in `<h5>`.
+### ~~portrait~~ `boolean` ***DEPRECATED -> use `imagePreset="fit"`***
+
+~~Enables improved portrait mode.~~
   
-* **portrait** - `boolean` - Enables improved portrait mode.
-  
-* **noScroll** - `boolean` - Disables body scrolling while in lightbox mode, default `true`.
+### noScroll `boolean`
+
+Disables body scrolling while in lightbox mode, default `true`.
 
 
-* **gallery** - `array of objects` - Array containing objects with Lightbox descriptions and titles. Optional, if you don't 
-need image specific title and description, you can specify universal by passing props *title* and *description* to `<Lightbox>` component.
-  
-* **activeImage** - `number` - Number that points set visibility of image. Also optional, this is used for programmatic 
-selecting of visible image when Lightbox is opened.
+### gallery `array of objects` 
 
-## Pro tips
+Array containing objects with Lightbox descriptions and titles. Optional, if you don't need image specific title and 
+description, you can specify universal by passing props *title* and *description* to `<Lightbox>` component.
+  
+### activeImage `number` 
+
+Number that points set visibility of image. Also optional, this is used for programmatic selecting of visible image when 
+Lightbox is opened.
+
+### imagePreset `string` 
+
+Select between 3 presets: fit, expand, scroll.
+
+#### fit
+
+Makes big image fit into small viewport.
+
+#### expand
+
+Expands image above its resolution to fill user's viewport.
+
+#### scroll ***EXPERIMENTAL: don't use in production***
+
+Enables scrolling big image instead of making it smaller to fit into the screen.
+
+## `<LightboxThumbnail>`
+
+### thumbnailClasses `string`
+
+Standard HTML "class" for lightbox thumbnail, classes are separated by space, just like classic HTML class.
+
+### thumbnailStyle `string`
+
+Standard HTML "style" for lightbox thumbnail, similar to thumbnailStyle. 
+
+## `<LightboxThumbnail>`
+
+Nothing to customize, behaviour of gallery depends on `<Lightbox>` setting.
+
+# Pro tips
 
 - Images in lightbox behave in the same way as their thumbnails, if you need to behave differently, override thumbnail
   with other image, or the same image, but with different style
 
 - If you want to disable drag'n'drop over lightbox, pass protected prop to `<Lightbox>` component
 
-## Future
+# Future
 
 I plan to improve this component in the future, but I don't have much time.
 So feel free to contribute some code if you will. This component needs CSS rework.
 
-## License
+# License
 
-### It's free
+## It's free
 
 This component is under MIT license.

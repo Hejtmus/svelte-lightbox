@@ -28,25 +28,49 @@
     //disables scrolling <body>
     export let noScroll = true;
     export let thumbnail = false;
+    export let imagePreset = false;
+    export let clickToClose = false;
+    export let closeButton = true;
 
     let visible = false;
 
+    let modalClicked = false;
+
     const toggle = () => {
         visible = !visible;
-        if (noScroll) {
-            mountedT()
-        }
+        toggleScroll()
     };
-    let mountedT = () => {
+
+    const close = () => {
+        visible = false;
+        toggleScroll()
+    };
+
+    const coverClick = () => {
+        // console.log('coverClick')
+        if (!modalClicked || clickToClose) {
+            close()
+        }
+        modalClicked = false;
+    }
+
+    const modalClick = () => {
+        // console.log('modalClick')
+        modalClicked = true;
+    }
+
+    let toggleScroll = () => {
     };
 
     onMount(() => {
         let defaultOverflow = document.body.style.overflow;
-        mountedT = () => {
-            if (visible) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = defaultOverflow;
+        toggleScroll = () => {
+            if (noScroll) {
+                if (visible) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = defaultOverflow;
+                }
             }
         };
     })
@@ -63,8 +87,8 @@
 
 {#if visible}
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
-           bind:portrait bind:title bind:description bind:gallery bind:activeImage
-           on:close={toggle} on:topModalClick={toggle} on:modalClick={toggle}>
+           bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
+           on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
         {#if thumbnail}
             <slot name="image"/>
         {:else if gallery}
