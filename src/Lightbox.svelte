@@ -38,13 +38,12 @@
 
     const toggle = () => {
         visible = !visible;
-        if (noScroll) {
-            mountedT()
-        }
+        toggleScroll()
     };
 
     const close = () => {
         visible = false;
+        toggleScroll()
     };
 
     const coverClick = () => {
@@ -76,16 +75,18 @@
          */
     }
 
-    let mountedT = () => {
+    let toggleScroll = () => {
     };
 
     onMount(() => {
         let defaultOverflow = document.body.style.overflow;
-        mountedT = () => {
-            if (visible) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = defaultOverflow;
+        toggleScroll = () => {
+            if (noScroll) {
+                if (visible) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = defaultOverflow;
+                }
             }
         };
     })
