@@ -6,12 +6,15 @@
     export let style = '';
     export let headerClasses = '';
     export let buttonClasses = '';
+    export let closeButton = true;
 </script>
 
 <div class={"svelte-lightbox-header " + headerClasses}>
-    <button on:click={ () => dispatch('close')} {size} {style} class={buttonClasses}>
-        ×
-    </button>
+    {#if closeButton}
+        <button on:click={ () => dispatch('close')} {size} {style} class={buttonClasses}>
+            ×
+        </button>
+    {/if}
 </div>
 
 <style>
