@@ -18,7 +18,7 @@
     export let portrait = false;
     export let title = '';
     export let description = '';
-    export let gallery;
+    export let gallery = [];
     export let activeImage;
     export let fit;
     export let closeButton;
@@ -38,7 +38,7 @@
 </script>
 
 <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
-    <Modal bind:modalClasses bind:modalStyle on:click={ () => dispatch('modalClick') }>
+    <Modal bind:modalClasses bind:modalStyle bind:transitionDuration on:click={ () => dispatch('modalClick') }>
         <Header bind:closeButton on:close={ () => dispatch('close') }/>
 
         <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
@@ -46,7 +46,7 @@
         </Body>
 
 
-        <Footer bind:title={actualTitle} bind:description={actualDescription} bind:galleryLength={gallery.length}
+        <Footer bind:title={actualTitle} bind:description={actualDescription} galleryLength={gallery ? gallery.length : false}
                 bind:activeImage={activeImage}/>
     </Modal>
 </ModalCover>
