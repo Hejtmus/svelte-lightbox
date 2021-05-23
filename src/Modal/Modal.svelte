@@ -1,22 +1,34 @@
 <script>
-    export let modalStyle;
-    export let allModalClasses;
     import {fade} from 'svelte/transition';
     import {createEventDispatcher} from 'svelte';
 
-    export let transitionDuration;
     const dispatch = createEventDispatcher();
+
+    export let modalStyle;
+    export let modalClasses;
+    export let transitionDuration;
 
     const click = () => {
         dispatch('click')
     }
 </script>
 
-<div transition:fade={{duration:transitionDuration}} on:click>
+<div class={modalClasses} transition:fade={{duration:transitionDuration}} on:click>
     <slot>
     </slot>
 </div>
 
 <style>
-
+     div {
+        background-color: transparent;
+        width: auto;
+        height: auto;
+        max-width: 90vw;
+        max-height: 90vh;
+    }
+    div::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
 </style>

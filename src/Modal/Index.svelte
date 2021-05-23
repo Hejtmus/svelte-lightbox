@@ -25,8 +25,6 @@
     let actualTitle;
     let actualDescription;
 
-    //let allModalClasses = modalClasses;
-    $: allModalClasses = `${modalClasses} svelte-lightbox clearfix`;
     // For variable title and description, we need to define this auxiliary variables
     $: actualTitle = title;
     $: actualDescription = description;
@@ -40,7 +38,7 @@
 </script>
 
 <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
-    <Modal bind:allModalClasses bind:modalStyle on:click={ () => dispatch('modalClick') }>
+    <Modal bind:modalClasses bind:modalStyle on:click={ () => dispatch('modalClick') }>
         <Header bind:closeButton on:close={ () => dispatch('close') }/>
 
         <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
@@ -53,30 +51,3 @@
     </Modal>
 </ModalCover>
 
-
-<style>
-    .svelte-lightbox-overlay {
-        position: relative;
-        z-index: 1000001;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 1rem;
-    }
-    .svelte-lightbox {
-        background-color: transparent;
-        width: auto;
-        height: auto;
-        max-width: 90vw;
-        max-height: 90vh;
-    }
-    .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-
-    /* I need help with styling this */
-</style>
