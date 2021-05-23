@@ -20,7 +20,7 @@
     export let description = '';
     export let gallery = [];
     export let activeImage;
-    export let fit;
+    export let imagePreset;
     export let closeButton;
     let actualTitle;
     let actualDescription;
@@ -41,7 +41,7 @@
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration on:click={ () => dispatch('modalClick') }>
         <Header bind:closeButton on:close={ () => dispatch('close') }/>
 
-        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
+        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:imagePreset>
         <slot/>
         </Body>
 

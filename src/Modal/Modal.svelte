@@ -20,11 +20,12 @@
 
 <style>
      div {
-        background-color: transparent;
-        width: auto;
-        height: auto;
-        max-width: 90vw;
-        max-height: 90vh;
+         position: relative;
+         background-color: transparent;
+         width: auto;
+         height: auto;
+         max-width: 90vw;
+         max-height: 90vh;
     }
     div::after {
         content: "";

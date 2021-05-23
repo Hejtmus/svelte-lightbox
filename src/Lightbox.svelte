@@ -28,7 +28,7 @@
     //disables scrolling <body>
     export let noScroll = true;
     export let thumbnail = false;
-    export let fit = false;
+    export let imagePreset = false;
     export let clickToClose = false;
     export let closeButton = true;
 
@@ -87,7 +87,7 @@
 
 {#if visible}
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
-           bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:fit bind:closeButton
+           bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
            on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
         {#if thumbnail}
             <slot name="image"/>
