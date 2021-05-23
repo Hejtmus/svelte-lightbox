@@ -21,6 +21,7 @@
     export let gallery;
     export let activeImage;
     export let fit;
+    export let closeButton;
     let actualTitle;
     let actualDescription;
 
@@ -40,7 +41,7 @@
 
 <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
     <Modal bind:allModalClasses bind:modalStyle on:click={ () => dispatch('modalClick') }>
-        <Header on:close={ () => dispatch('close') }/>
+        <Header bind:closeButton on:close={ () => dispatch('close') }/>
 
         <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:fit={fit}>
         <slot/>

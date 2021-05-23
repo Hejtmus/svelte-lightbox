@@ -30,6 +30,7 @@
     export let thumbnail = false;
     export let fit = false;
     export let clickToClose = false;
+    export let closeButton = true;
 
     let visible = false;
 
@@ -101,7 +102,7 @@
 
 {#if visible}
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
-           bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:fit={fit}
+           bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:fit bind:closeButton
            on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
         {#if thumbnail}
             <slot name="image"/>
