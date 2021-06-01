@@ -2,13 +2,14 @@
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
 
-    export let thumbnailClasses = '';
-    export let thumbnailStyle = '';
+    let classes = '';
+    export {classes as class};
+    export let style = '';
     export let protect = false;
 </script>
 
 <div class="clickable" on:click={ () => dispatch('click') }>
-    <div class={thumbnailClasses} style={thumbnailStyle} class:svelte-lightbox-unselectable={protect}>
+    <div class={classes} {style} class:svelte-lightbox-unselectable={protect}>
         <slot/>
     </div>
 </div>
