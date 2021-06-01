@@ -136,8 +136,17 @@ These props are customizable:
 
 Enables thumbnail to be different from an actual image. In that case thumbnail has to be included as child component with
 prop slot equal to "thumbnail". Default `false`.
-  
-  
+
+### thumbnailClasses `string`
+
+Standard HTML "class" for lightbox thumbnail parent div, this class applies to both, automatically generated thumbnail 
+and custom thumbnail (`<LightboxThumbnail>`, keep in mind that `thumbnailClass` styles parent div and not directly 
+thumbnail).
+
+### thumbnailStyle `string `
+
+Standard HTML "style" for lightbox thumbnail. Same as `thubmnailClasses`, but this is style.
+
 ### modalClasses `string`
 
 Standard HTML "class" for lightbox modal.
@@ -215,15 +224,15 @@ Enables close button. Default `true`.
 
 ## `<LightboxThumbnail>`
 
-### thumbnailClasses `string`
+### class `string`
 
 Standard HTML "class" for lightbox thumbnail, classes are separated by space, just like classic HTML class.
 
-### thumbnailStyle `string`
+### style `string`
 
 Standard HTML "style" for lightbox thumbnail, similar to thumbnailStyle. 
 
-## `<LightboxThumbnail>`
+## `<LightboxGallery>`
 
 Nothing to customize, behaviour of gallery depends on `<Lightbox>` setting.
 
