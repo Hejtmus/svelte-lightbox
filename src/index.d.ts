@@ -1,7 +1,9 @@
 import Lightbox from './Lightbox';
-import LightboxThumbnail from './LightboxThumbnail';
+import LightboxImage from './Gallery/LightboxImage';
+import LightboxGallery from './Gallery/ExternalGallery';
 
 export {
     Lightbox,
-    LightboxThumbnail
+    LightboxImage,
+    LightboxGallery
 }
