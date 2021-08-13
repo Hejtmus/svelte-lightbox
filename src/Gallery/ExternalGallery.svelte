@@ -4,5 +4,5 @@
      */
 </script>
 
-<slot>
+<slot {...$$restProps}>
 </slot>
