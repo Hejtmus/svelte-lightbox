@@ -6,6 +6,14 @@
      */
 </script>
 
-<div hidden={true}>
+<div hidden={true} {...$$restProps}>
     <slot/>
 </div>
+
+<style>
+	div {
+		max-height: inherit;
+		display: flex;
+		justify-content: center;
+	}
+</style>
