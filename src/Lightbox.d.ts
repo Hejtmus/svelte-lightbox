@@ -16,6 +16,7 @@ export interface LightboxProps {
     title?: string,
     transitionDuration?: number,
     image?: Image,
+    isVisible?: boolean,
     protect?: boolean,
     portrait?: boolean,
     noScroll?: boolean,

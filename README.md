@@ -214,6 +214,10 @@ Expands image above its resolution to fill user's viewport.
 
 Enables scrolling big image instead of making it smaller to fit into the screen.
 
+### isVisible `boolean`
+
+Allows you to programmatically control lightbox visibility. Default varies on user activity.
+
 ### clickToClose `boolean`
 
 Anywhere user clicks when modal is opened, closes it. Default `false`.

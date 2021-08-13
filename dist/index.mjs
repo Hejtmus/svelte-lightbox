@@ -2515,7 +2515,7 @@ function create_default_slot_2(ctx) {
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*thumbnail*/ ctx[14] || /*gallery*/ ctx[5]) return 0;
+		if (/*thumbnail*/ ctx[15] || /*gallery*/ ctx[5]) return 0;
 		return 1;
 	}
 
@@ -2575,7 +2575,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (88:0) {#if visible}
+// (88:0) {#if isVisible}
 function create_if_block(ctx) {
 	let modal;
 	let updating_modalClasses;
@@ -2721,7 +2721,7 @@ function create_if_block(ctx) {
 		p(ctx, dirty) {
 			const modal_changes = {};
 
-			if (dirty[0] & /*thumbnail, activeImage, gallery*/ 16432 | dirty[1] & /*$$scope*/ 256) {
+			if (dirty[0] & /*thumbnail, activeImage, gallery*/ 32816 | dirty[1] & /*$$scope*/ 256) {
 				modal_changes.$$scope = { dirty, ctx };
 			}
 
@@ -3022,7 +3022,7 @@ function create_default_slot(ctx) {
 	const if_blocks = [];
 
 	function select_block_type_1(ctx, dirty) {
-		if (/*thumbnail*/ ctx[14]) return 0;
+		if (/*thumbnail*/ ctx[15]) return 0;
 		if (/*gallery*/ ctx[5]) return 1;
 		return 2;
 	}
@@ -3126,7 +3126,7 @@ function create_fragment$2(ctx) {
 	binding_callbacks.push(() => bind(thumbnail_1, "thumbnailStyle", thumbnail_1_thumbnailStyle_binding));
 	binding_callbacks.push(() => bind(thumbnail_1, "protect", thumbnail_1_protect_binding));
 	thumbnail_1.$on("click", /*toggle*/ ctx[16]);
-	let if_block = /*visible*/ ctx[15] && create_if_block(ctx);
+	let if_block = /*isVisible*/ ctx[14] && create_if_block(ctx);
 
 	return {
 		c() {
@@ -3145,7 +3145,7 @@ function create_fragment$2(ctx) {
 		p(ctx, dirty) {
 			const thumbnail_1_changes = {};
 
-			if (dirty[0] & /*thumbnail, gallery*/ 16416 | dirty[1] & /*$$scope*/ 256) {
+			if (dirty[0] & /*thumbnail, gallery*/ 32800 | dirty[1] & /*$$scope*/ 256) {
 				thumbnail_1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -3169,11 +3169,11 @@ function create_fragment$2(ctx) {
 
 			thumbnail_1.$set(thumbnail_1_changes);
 
-			if (/*visible*/ ctx[15]) {
+			if (/*isVisible*/ ctx[14]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty[0] & /*visible*/ 32768) {
+					if (dirty[0] & /*isVisible*/ 16384) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -3231,16 +3231,16 @@ function instance$2($$self, $$props, $$invalidate) {
 	let { imagePreset = false } = $$props;
 	let { clickToClose = false } = $$props;
 	let { closeButton = true } = $$props;
-	let visible = false;
+	let { isVisible = false } = $$props;
 	let modalClicked = false;
 
 	const toggle = () => {
-		$$invalidate(15, visible = !visible);
+		$$invalidate(14, isVisible = !isVisible);
 		toggleScroll();
 	};
 
 	const close = () => {
-		$$invalidate(15, visible = false);
+		$$invalidate(14, isVisible = false);
 		toggleScroll();
 	};
 
@@ -3267,7 +3267,7 @@ function instance$2($$self, $$props, $$invalidate) {
 
 		toggleScroll = () => {
 			if (noScroll) {
-				if (visible) {
+				if (isVisible) {
 					document.body.style.overflow = "hidden";
 				} else {
 					document.body.style.overflow = defaultOverflow;
@@ -3370,10 +3370,11 @@ function instance$2($$self, $$props, $$invalidate) {
 		if ("image" in $$props) $$invalidate(10, image = $$props.image);
 		if ("portrait" in $$props) $$invalidate(11, portrait = $$props.portrait);
 		if ("noScroll" in $$props) $$invalidate(20, noScroll = $$props.noScroll);
-		if ("thumbnail" in $$props) $$invalidate(14, thumbnail = $$props.thumbnail);
+		if ("thumbnail" in $$props) $$invalidate(15, thumbnail = $$props.thumbnail);
 		if ("imagePreset" in $$props) $$invalidate(12, imagePreset = $$props.imagePreset);
 		if ("clickToClose" in $$props) $$invalidate(21, clickToClose = $$props.clickToClose);
 		if ("closeButton" in $$props) $$invalidate(13, closeButton = $$props.closeButton);
+		if ("isVisible" in $$props) $$invalidate(14, isVisible = $$props.isVisible);
 		if ("$$scope" in $$props) $$invalidate(39, $$scope = $$props.$$scope);
 	};
 
@@ -3392,8 +3393,8 @@ function instance$2($$self, $$props, $$invalidate) {
 		portrait,
 		imagePreset,
 		closeButton,
+		isVisible,
 		thumbnail,
-		visible,
 		toggle,
 		close,
 		coverClick,
@@ -3445,10 +3446,11 @@ class Lightbox extends SvelteComponent {
 				image: 10,
 				portrait: 11,
 				noScroll: 20,
-				thumbnail: 14,
+				thumbnail: 15,
 				imagePreset: 12,
 				clickToClose: 21,
-				closeButton: 13
+				closeButton: 13,
+				isVisible: 14
 			},
 			[-1, -1]
 		);
