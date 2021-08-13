@@ -32,17 +32,17 @@
     export let clickToClose = false;
     export let closeButton = true;
 
-    let visible = false;
+    export let isVisible = false;
 
     let modalClicked = false;
 
     const toggle = () => {
-        visible = !visible;
+        isVisible = !isVisible;
         toggleScroll()
     };
 
     const close = () => {
-        visible = false;
+        isVisible = false;
         toggleScroll()
     };
 
@@ -66,7 +66,7 @@
         let defaultOverflow = document.body.style.overflow;
         toggleScroll = () => {
             if (noScroll) {
-                if (visible) {
+                if (isVisible) {
                     document.body.style.overflow = 'hidden';
                 } else {
                     document.body.style.overflow = defaultOverflow;
@@ -85,7 +85,7 @@
     {/if}
 </Thumbnail>
 
-{#if visible}
+{#if isVisible}
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
            bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
            on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
