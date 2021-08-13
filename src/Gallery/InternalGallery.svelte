@@ -69,6 +69,9 @@
 
 
 <style>
+	div {
+		max-height: inherit;
+	}
     .arrow{
         fill:none;
         stroke: black;
@@ -108,6 +111,8 @@
     }
     .slot {
         order: 1;
+	    display: flex;
+	    justify-content: center;
     }
     .next-button {
         position: absolute;
