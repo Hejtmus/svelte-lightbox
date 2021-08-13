@@ -2,6 +2,7 @@
     import Thumbnail from './LightboxThumbnail.svelte';
     import Modal from './Modal/Index.svelte';
     import InternalGallery from './Gallery/InternalGallery.svelte';
+    import BodyChild from "./Modal/BodyChild.svelte";
     import {onMount} from 'svelte';
 
     //exporting classes, for passing classes into thumbnail
@@ -86,19 +87,21 @@
 </Thumbnail>
 
 {#if isVisible}
-    <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
-           bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
-           on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-        {#if thumbnail}
-            <slot name="image"/>
-        {:else if gallery}
-            <InternalGallery bind:activeImage>
-                <slot name="thumbnail"/>
-                <slot>
-                </slot>
-            </InternalGallery>
-        {:else}
-            <slot/>
-        {/if}
-    </Modal>
+	<BodyChild>
+		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
+		       bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
+		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
+			{#if thumbnail}
+				<slot name="image"/>
+			{:else if gallery}
+				<InternalGallery bind:activeImage>
+					<slot name="thumbnail"/>
+					<slot>
+					</slot>
+				</InternalGallery>
+			{:else}
+				<slot/>
+			{/if}
+		</Modal>
+	</BodyChild>
 {/if}
