@@ -1,6 +1,7 @@
 <script>
     // Gives option for user to control displayed image
     export let activeImage = 0;
+    export let imagePreset = '';
     // Here will be stored markup that will user put inside of this component
     let slotContent;
     // Auxiliary variable for storing elements with image that user has provided
@@ -39,9 +40,10 @@
         activeImage++
     }
 
+    $: fullscreen = imagePreset === 'fullscreen';
 </script>
 
-<div class="wrapper">
+<div class="wrapper" class:fullscreen>
     <!-- Left arrow -->
     <button on:click={previousImage} disabled={activeImage === 0} class="previous-button">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -71,6 +73,10 @@
 <style>
 	div {
 		max-height: inherit;
+	}
+	div.fullscreen {
+		height: 100%;
+		width: 100%;
 	}
     .arrow{
         fill:none;

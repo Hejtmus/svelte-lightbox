@@ -34,14 +34,14 @@
         actualTitle = gallery[activeImage].title;
         actualDescription = gallery[activeImage].description;
     }
-
+    $: fullscreen = imagePreset === 'fullscreen';
 </script>
 
 <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
-    <Modal bind:modalClasses bind:modalStyle bind:transitionDuration on:click={ () => dispatch('modalClick') }>
-        <Header bind:closeButton on:close={ () => dispatch('close') }/>
+    <Modal bind:modalClasses bind:modalStyle bind:transitionDuration {fullscreen} on:click={ () => dispatch('modalClick') }>
+        <Header bind:closeButton {fullscreen} on:close={ () => dispatch('close') }/>
 
-        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} bind:imagePreset>
+        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} {imagePreset} {fullscreen} gallery={!!gallery.length}>
         <slot/>
         </Body>
 

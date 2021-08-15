@@ -75,7 +75,6 @@
             }
         };
     })
-
 </script>
 
 <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
@@ -94,8 +93,10 @@
 			{#if thumbnail}
 				<slot name="image"/>
 			{:else if gallery}
-				<InternalGallery bind:activeImage>
-					<slot name="thumbnail"/>
+				<InternalGallery bind:activeImage {imagePreset}>
+					<div>
+						<slot name="thumbnail"/>
+					</div>
 					<slot>
 					</slot>
 				</InternalGallery>
