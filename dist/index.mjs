@@ -24,6 +24,16 @@ function safe_not_equal(a, b) {
 function is_empty(obj) {
     return Object.keys(obj).length === 0;
 }
+function subscribe(store, ...callbacks) {
+    if (store == null) {
+        return noop;
+    }
+    const unsub = store.subscribe(...callbacks);
+    return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+function component_subscribe(component, store, callback) {
+    component.$$.on_destroy.push(subscribe(store, callback));
+}
 function create_slot(definition, ctx, $$scope, fn) {
     if (definition) {
         const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
@@ -184,6 +194,9 @@ function set_data(text, data) {
     if (text.wholeText !== data)
         text.data = data;
 }
+function set_style(node, key, value, important) {
+    node.style.setProperty(key, value, important ? 'important' : '');
+}
 function toggle_class(element, name, toggle) {
     element.classList[toggle ? 'add' : 'remove'](name);
 }
@@ -285,6 +298,12 @@ function createEventDispatcher() {
             });
         }
     };
+}
+function setContext(key, context) {
+    get_current_component().$$.context.set(key, context);
+}
+function getContext(key) {
+    return get_current_component().$$.context.get(key);
 }
 // TODO figure out if we still want to support
 // shorthand events, or if we want to implement
@@ -927,8 +946,8 @@ function fade(node, { delay = 0, duration = 400, easing = identity } = {}) {
 
 function add_css$6() {
 	var style = element("style");
-	style.id = "svelte-1uc4hb1-style";
-	style.textContent = "div.svelte-lightbox-header.svelte-1uc4hb1{width:auto;height:3rem;display:flex;justify-content:flex-end;align-items:center}div.fullscreen.svelte-1uc4hb1{position:fixed;top:0;left:0;right:0}button.svelte-1uc4hb1{background:transparent;font-size:3rem;border:none;color:white}button.svelte-1uc4hb1:hover{color:lightgray;cursor:pointer}button.svelte-1uc4hb1:active{background-color:transparent}button.fullscreen.svelte-1uc4hb1{filter:drop-shadow(0 0 5px black) drop-shadow(0 0 10px black)}";
+	style.id = "svelte-fa0syz-style";
+	style.textContent = "div.svelte-lightbox-header.svelte-fa0syz{width:auto;height:3rem;display:flex;justify-content:flex-end;align-items:center}div.fullscreen.svelte-fa0syz{position:fixed;z-index:5;top:0;left:0;right:0}button.svelte-fa0syz{background:transparent;font-size:3rem;border:none;color:white}button.svelte-fa0syz:hover{color:lightgray;cursor:pointer}button.svelte-fa0syz:active{background-color:transparent}button.fullscreen.svelte-fa0syz{filter:drop-shadow(0 0 5px black) drop-shadow(0 0 10px black)}";
 	append(document.head, style);
 }
 
@@ -946,7 +965,7 @@ function create_if_block$3(ctx) {
 			t = text("×");
 			attr(button, "size", /*size*/ ctx[0]);
 			attr(button, "style", /*style*/ ctx[1]);
-			attr(button, "class", button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-1uc4hb1"));
+			attr(button, "class", button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-fa0syz"));
 			toggle_class(button, "fullscreen", /*fullscreen*/ ctx[5]);
 		},
 		m(target, anchor) {
@@ -967,7 +986,7 @@ function create_if_block$3(ctx) {
 				attr(button, "style", /*style*/ ctx[1]);
 			}
 
-			if (dirty & /*buttonClasses*/ 8 && button_class_value !== (button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-1uc4hb1"))) {
+			if (dirty & /*buttonClasses*/ 8 && button_class_value !== (button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-fa0syz"))) {
 				attr(button, "class", button_class_value);
 			}
 
@@ -992,7 +1011,7 @@ function create_fragment$a(ctx) {
 		c() {
 			div = element("div");
 			if (if_block) if_block.c();
-			attr(div, "class", div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-1uc4hb1"));
+			attr(div, "class", div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-fa0syz"));
 			toggle_class(div, "fullscreen", /*fullscreen*/ ctx[5]);
 		},
 		m(target, anchor) {
@@ -1013,7 +1032,7 @@ function create_fragment$a(ctx) {
 				if_block = null;
 			}
 
-			if (dirty & /*headerClasses*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-1uc4hb1"))) {
+			if (dirty & /*headerClasses*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-fa0syz"))) {
 				attr(div, "class", div_class_value);
 			}
 
@@ -1064,7 +1083,7 @@ function instance$a($$self, $$props, $$invalidate) {
 class LightboxHeader extends SvelteComponent {
 	constructor(options) {
 		super();
-		if (!document.getElementById("svelte-1uc4hb1-style")) add_css$6();
+		if (!document.getElementById("svelte-fa0syz-style")) add_css$6();
 
 		init(this, options, instance$a, create_fragment$a, safe_not_equal, {
 			size: 0,
@@ -1112,7 +1131,7 @@ function add_css$5() {
 	append(document.head, style);
 }
 
-// (50:1) {:else}
+// (56:1) {:else}
 function create_else_block$1(ctx) {
 	let div;
 	let current;
@@ -1179,7 +1198,7 @@ function create_else_block$1(ctx) {
 	};
 }
 
-// (48:1) {#if !fullscreen && image.src}
+// (54:1) {#if !fullscreen && image.src}
 function create_if_block$2(ctx) {
 	let img;
 	let img_src_value;
@@ -1326,10 +1345,13 @@ function instance$9($$self, $$props, $$invalidate) {
 	let imageParent;
 
 	const getFullscreenSrc = () => {
+		// Getting image that should been displayed and taking its src
 		if (imageParent) {
 			let imageElement;
 
 			if (gallery) {
+				// Gallery is composed by divs containing images, so we have to 'dig' inside of those divs and take active
+				// image, by getting its parent that is not hidden
 				const imageWrapper = imageParent.firstChild.children[1].children;
 
 				for (let i = 0; !imageElement && i !== imageWrapper.length; i++) {
@@ -1338,10 +1360,13 @@ function instance$9($$self, $$props, $$invalidate) {
 					}
 				}
 			} else {
+				// In case of classic lightbox, we just grab image that is first child
 				imageElement = imageParent.firstChild;
 			}
 
+			// Getting source for lightbox body background and hiding original
 			$$invalidate(0, image.src = imageElement.src, image);
+
 			imageElement.style.display = "none";
 		} else {
 			queueMicrotask(getFullscreenSrc);
@@ -1387,6 +1412,7 @@ function instance$9($$self, $$props, $$invalidate) {
 
 		if ($$self.$$.dirty & /*fullscreen*/ 16) {
 			if (fullscreen) {
+				// In case user uses fullscreen preset, we need to get image source from new image and hide it
 				afterUpdate(getFullscreenSrc);
 			}
 		}
@@ -2382,12 +2408,64 @@ class Index extends SvelteComponent {
 	}
 }
 
+const subscriber_queue = [];
+/**
+ * Create a `Writable` store that allows both updating and reading by subscription.
+ * @param {*=}value initial value
+ * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+ */
+function writable(value, start = noop) {
+    let stop;
+    const subscribers = [];
+    function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+            value = new_value;
+            if (stop) { // store is ready
+                const run_queue = !subscriber_queue.length;
+                for (let i = 0; i < subscribers.length; i += 1) {
+                    const s = subscribers[i];
+                    s[1]();
+                    subscriber_queue.push(s, value);
+                }
+                if (run_queue) {
+                    for (let i = 0; i < subscriber_queue.length; i += 2) {
+                        subscriber_queue[i][0](subscriber_queue[i + 1]);
+                    }
+                    subscriber_queue.length = 0;
+                }
+            }
+        }
+    }
+    function update(fn) {
+        set(fn(value));
+    }
+    function subscribe(run, invalidate = noop) {
+        const subscriber = [run, invalidate];
+        subscribers.push(subscriber);
+        if (subscribers.length === 1) {
+            stop = start(set) || noop;
+        }
+        run(value);
+        return () => {
+            const index = subscribers.indexOf(subscriber);
+            if (index !== -1) {
+                subscribers.splice(index, 1);
+            }
+            if (subscribers.length === 0) {
+                stop();
+                stop = null;
+            }
+        };
+    }
+    return { set, update, subscribe };
+}
+
 /* src/Gallery/InternalGallery.svelte generated by Svelte v3.38.2 */
 
 function add_css$1() {
 	var style = element("style");
-	style.id = "svelte-qvc43l-style";
-	style.textContent = "div.svelte-qvc43l{max-height:inherit}div.fullscreen.svelte-qvc43l{height:100%;width:100%}.arrow.svelte-qvc43l{fill:none;stroke:black;stroke-linecap:round;stroke-linejoin:bevel;stroke-width:1.5px;margin:10px}button.svelte-qvc43l{background:transparent;color:black;border:none;font-size:1rem;width:50%;height:100%}button.svelte-qvc43l:active{background:transparent}button.svelte-qvc43l:disabled{color:gray}.wrapper.svelte-qvc43l{position:relative;display:flex;width:auto;height:auto}.previous-button.svelte-qvc43l{position:absolute;top:0;bottom:0;left:0;right:50%;z-index:4;text-align:left}.slot.svelte-qvc43l{order:1;display:flex;justify-content:center}.next-button.svelte-qvc43l{position:absolute;top:0;bottom:0;right:0;z-index:4;text-align:right}svg.svelte-qvc43l{height:5rem}";
+	style.id = "svelte-1lrmlbr-style";
+	style.textContent = "div.svelte-1lrmlbr{max-height:inherit}div.fullscreen.svelte-1lrmlbr{height:100%;width:100%}.arrow.svelte-1lrmlbr{fill:none;stroke:var(--svelte-lightbox-arrows-color);stroke-linecap:round;stroke-linejoin:bevel;stroke-width:1.5px;margin:10px}button.svelte-1lrmlbr{background:transparent;border:none;font-size:1rem;width:50%;height:100%}button.svelte-1lrmlbr:active{background:transparent}button.svelte-1lrmlbr:disabled{color:gray}button:disabled.hideDisabled.svelte-1lrmlbr{visibility:hidden}.wrapper.svelte-1lrmlbr{position:relative;display:flex;width:auto;height:auto}.previous-button.svelte-1lrmlbr{position:absolute;top:0;bottom:0;left:0;right:50%;z-index:4;text-align:left}.slot.svelte-1lrmlbr{order:1;display:flex;justify-content:center}.next-button.svelte-1lrmlbr{position:absolute;top:0;bottom:0;right:0;z-index:4;text-align:right}svg.svelte-1lrmlbr{height:5rem}";
 	append(document.head, style);
 }
 
@@ -2409,8 +2487,8 @@ function create_fragment$4(ctx) {
 	let current;
 	let mounted;
 	let dispose;
-	const default_slot_template = /*#slots*/ ctx[8].default;
-	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[7], null);
+	const default_slot_template = /*#slots*/ ctx[18].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[17], null);
 
 	return {
 		c() {
@@ -2427,23 +2505,26 @@ function create_fragment$4(ctx) {
 			svg1 = svg_element("svg");
 			g1 = svg_element("g");
 			path1 = svg_element("path");
-			attr(path0, "class", "arrow svelte-qvc43l");
+			attr(path0, "class", "arrow svelte-1lrmlbr");
 			attr(path0, "d", "M8.7,7.22,4.59,11.33a1,1,0,0,0,0,1.41l4,4");
 			attr(svg0, "viewBox", "0 0 24 24");
 			attr(svg0, "xmlns", "http://www.w3.org/2000/svg");
-			attr(svg0, "class", "svelte-qvc43l");
-			button0.disabled = button0_disabled_value = /*activeImage*/ ctx[0] === 0;
-			attr(button0, "class", "previous-button svelte-qvc43l");
-			attr(div0, "class", "slot svelte-qvc43l");
-			attr(path1, "class", "arrow svelte-qvc43l");
+			attr(svg0, "class", "svelte-1lrmlbr");
+			button0.disabled = button0_disabled_value = /*galleryArrowsCharacter*/ ctx[3] !== "loop" && /*activeImage*/ ctx[0] === 0;
+			attr(button0, "class", "previous-button svelte-1lrmlbr");
+			toggle_class(button0, "hideDisabled", /*galleryArrowsCharacter*/ ctx[3] === "hide");
+			attr(div0, "class", "slot svelte-1lrmlbr");
 			attr(path1, "d", "M15.3,16.78l4.11-4.11a1,1,0,0,0,0-1.41l-4-4");
+			attr(path1, "class", "arrow svelte-1lrmlbr");
 			attr(svg1, "viewBox", "0 0 24 24");
 			attr(svg1, "xmlns", "http://www.w3.org/2000/svg");
-			attr(svg1, "class", "svelte-qvc43l");
-			button1.disabled = button1_disabled_value = /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1;
-			attr(button1, "class", "next-button svelte-qvc43l");
-			attr(div1, "class", "wrapper svelte-qvc43l");
-			toggle_class(div1, "fullscreen", /*fullscreen*/ ctx[3]);
+			attr(svg1, "class", "svelte-1lrmlbr");
+			button1.disabled = button1_disabled_value = /*galleryArrowsCharacter*/ ctx[3] !== "loop" && /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1;
+			attr(button1, "class", "next-button svelte-1lrmlbr");
+			toggle_class(button1, "hideDisabled", /*galleryArrowsCharacter*/ ctx[3] === "hide");
+			attr(div1, "class", "wrapper svelte-1lrmlbr");
+			set_style(div1, "--svelte-lightbox-arrows-color", /*galleryArrowsColor*/ ctx[4]);
+			toggle_class(div1, "fullscreen", /*fullscreen*/ ctx[5]);
 		},
 		m(target, anchor) {
 			insert(target, div1, anchor);
@@ -2458,7 +2539,7 @@ function create_fragment$4(ctx) {
 				default_slot.m(div0, null);
 			}
 
-			/*div0_binding*/ ctx[9](div0);
+			/*div0_binding*/ ctx[20](div0);
 			append(div1, t1);
 			append(div1, button1);
 			append(button1, svg1);
@@ -2468,30 +2549,43 @@ function create_fragment$4(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen(button0, "click", /*previousImage*/ ctx[4]),
-					listen(button1, "click", /*nextImage*/ ctx[5])
+					listen(window, "keydown", /*keydown_handler*/ ctx[19]),
+					listen(button0, "click", /*previousImage*/ ctx[9]),
+					listen(button1, "click", /*nextImage*/ ctx[10])
 				];
 
 				mounted = true;
 			}
 		},
 		p(ctx, [dirty]) {
-			if (!current || dirty & /*activeImage*/ 1 && button0_disabled_value !== (button0_disabled_value = /*activeImage*/ ctx[0] === 0)) {
+			if (!current || dirty & /*galleryArrowsCharacter, activeImage*/ 9 && button0_disabled_value !== (button0_disabled_value = /*galleryArrowsCharacter*/ ctx[3] !== "loop" && /*activeImage*/ ctx[0] === 0)) {
 				button0.disabled = button0_disabled_value;
 			}
 
+			if (dirty & /*galleryArrowsCharacter*/ 8) {
+				toggle_class(button0, "hideDisabled", /*galleryArrowsCharacter*/ ctx[3] === "hide");
+			}
+
 			if (default_slot) {
-				if (default_slot.p && (!current || dirty & /*$$scope*/ 128)) {
-					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[7], dirty, null, null);
+				if (default_slot.p && (!current || dirty & /*$$scope*/ 131072)) {
+					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[17], dirty, null, null);
 				}
 			}
 
-			if (!current || dirty & /*activeImage, images*/ 5 && button1_disabled_value !== (button1_disabled_value = /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1)) {
+			if (!current || dirty & /*galleryArrowsCharacter, activeImage, images*/ 13 && button1_disabled_value !== (button1_disabled_value = /*galleryArrowsCharacter*/ ctx[3] !== "loop" && /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1)) {
 				button1.disabled = button1_disabled_value;
 			}
 
-			if (dirty & /*fullscreen*/ 8) {
-				toggle_class(div1, "fullscreen", /*fullscreen*/ ctx[3]);
+			if (dirty & /*galleryArrowsCharacter*/ 8) {
+				toggle_class(button1, "hideDisabled", /*galleryArrowsCharacter*/ ctx[3] === "hide");
+			}
+
+			if (!current || dirty & /*galleryArrowsColor*/ 16) {
+				set_style(div1, "--svelte-lightbox-arrows-color", /*galleryArrowsColor*/ ctx[4]);
+			}
+
+			if (dirty & /*fullscreen*/ 32) {
+				toggle_class(div1, "fullscreen", /*fullscreen*/ ctx[5]);
 			}
 		},
 		i(local) {
@@ -2506,7 +2600,7 @@ function create_fragment$4(ctx) {
 		d(detaching) {
 			if (detaching) detach(div1);
 			if (default_slot) default_slot.d(detaching);
-			/*div0_binding*/ ctx[9](null);
+			/*div0_binding*/ ctx[20](null);
 			mounted = false;
 			run_all(dispose);
 		}
@@ -2514,10 +2608,22 @@ function create_fragment$4(ctx) {
 }
 
 function instance$4($$self, $$props, $$invalidate) {
+	let galleryArrowsColor;
+	let galleryArrowsCharacter;
+	let disableKeyboardArrowsControl;
 	let fullscreen;
+	let $arrowsColorStore;
+	let $arrowsCharacterStore;
+	let $keyboardControlStore;
 	let { $$slots: slots = {}, $$scope } = $$props;
 	let { activeImage = 0 } = $$props;
 	let { imagePreset = "" } = $$props;
+	const arrowsColorStore = new writable("black");
+	component_subscribe($$self, arrowsColorStore, value => $$invalidate(14, $arrowsColorStore = value));
+	const arrowsCharacterStore = new writable("unset");
+	component_subscribe($$self, arrowsCharacterStore, value => $$invalidate(15, $arrowsCharacterStore = value));
+	const keyboardControlStore = new writable(false);
+	component_subscribe($$self, keyboardControlStore, value => $$invalidate(16, $keyboardControlStore = value));
 
 	// Here will be stored markup that will user put inside of this component
 	let slotContent;
@@ -2525,18 +2631,47 @@ function instance$4($$self, $$props, $$invalidate) {
 	// Auxiliary variable for storing elements with image that user has provided
 	let images;
 
-	/*
-Those functions move between active image, we dont need condition to disable their role, because this is already
-implemented in the element section by conditionally disabling buttons, that call this function.
-
- */
 	const previousImage = () => {
-		$$invalidate(0, activeImage--, activeImage);
+		if (activeImage === 0) {
+			if (galleryArrowsCharacter === "loop") {
+				$$invalidate(0, activeImage = images.length - 1);
+			}
+		} else {
+			$$invalidate(0, activeImage--, activeImage);
+		}
 	};
 
 	const nextImage = () => {
-		$$invalidate(0, activeImage++, activeImage);
+		if (activeImage === images.length - 1) {
+			if (galleryArrowsCharacter === "loop") {
+				$$invalidate(0, activeImage = 0);
+			}
+		} else {
+			$$invalidate(0, activeImage++, activeImage);
+		}
 	};
+
+	const handleKey = event => {
+		if (!disableKeyboardArrowsControl) {
+			switch (event.key) {
+				case "ArrowLeft":
+					{
+						previousImage();
+						break;
+					}
+				case "ArrowRight":
+					{
+						nextImage();
+						break;
+					}
+			}
+		}
+	};
+
+	setContext("svelte-lightbox-galleryArrowsColor", arrowsColorStore);
+	setContext("svelte-lightbox-galleryArrowsCharacter", arrowsCharacterStore);
+	setContext("svelte-lightbox-disableKeyboardArrowsControl", keyboardControlStore);
+	const keydown_handler = event => handleKey(event);
 
 	function div0_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
@@ -2547,11 +2682,23 @@ implemented in the element section by conditionally disabling buttons, that call
 
 	$$self.$$set = $$props => {
 		if ("activeImage" in $$props) $$invalidate(0, activeImage = $$props.activeImage);
-		if ("imagePreset" in $$props) $$invalidate(6, imagePreset = $$props.imagePreset);
-		if ("$$scope" in $$props) $$invalidate(7, $$scope = $$props.$$scope);
+		if ("imagePreset" in $$props) $$invalidate(12, imagePreset = $$props.imagePreset);
+		if ("$$scope" in $$props) $$invalidate(17, $$scope = $$props.$$scope);
 	};
 
 	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*$arrowsColorStore*/ 16384) {
+			$$invalidate(4, galleryArrowsColor = $arrowsColorStore);
+		}
+
+		if ($$self.$$.dirty & /*$arrowsCharacterStore*/ 32768) {
+			$$invalidate(3, galleryArrowsCharacter = $arrowsCharacterStore);
+		}
+
+		if ($$self.$$.dirty & /*$keyboardControlStore*/ 65536) {
+			$$invalidate(13, disableKeyboardArrowsControl = $keyboardControlStore);
+		}
+
 		if ($$self.$$.dirty & /*slotContent*/ 2) {
 			// Every time, when contents of this component changes, images will be updated
 			$$invalidate(2, images = slotContent?.children);
@@ -2577,8 +2724,12 @@ activeImage is controlled programmatically
 			}
 		}
 
-		if ($$self.$$.dirty & /*imagePreset*/ 64) {
-			$$invalidate(3, fullscreen = imagePreset === "fullscreen");
+		if ($$self.$$.dirty & /*imagePreset*/ 4096) {
+			$$invalidate(5, fullscreen = imagePreset === "fullscreen");
+		}
+
+		if ($$self.$$.dirty & /*galleryArrowsColor, galleryArrowsCharacter, disableKeyboardArrowsControl*/ 8216) {
+			console.log(galleryArrowsColor, galleryArrowsCharacter, disableKeyboardArrowsControl);
 		}
 	};
 
@@ -2586,12 +2737,23 @@ activeImage is controlled programmatically
 		activeImage,
 		slotContent,
 		images,
+		galleryArrowsCharacter,
+		galleryArrowsColor,
 		fullscreen,
+		arrowsColorStore,
+		arrowsCharacterStore,
+		keyboardControlStore,
 		previousImage,
 		nextImage,
+		handleKey,
 		imagePreset,
+		disableKeyboardArrowsControl,
+		$arrowsColorStore,
+		$arrowsCharacterStore,
+		$keyboardControlStore,
 		$$scope,
 		slots,
+		keydown_handler,
 		div0_binding
 	];
 }
@@ -2599,8 +2761,8 @@ activeImage is controlled programmatically
 class InternalGallery extends SvelteComponent {
 	constructor(options) {
 		super();
-		if (!document.getElementById("svelte-qvc43l-style")) add_css$1();
-		init(this, options, instance$4, create_fragment$4, safe_not_equal, { activeImage: 0, imagePreset: 6 });
+		if (!document.getElementById("svelte-1lrmlbr-style")) add_css$1();
+		init(this, options, instance$4, create_fragment$4, safe_not_equal, { activeImage: 0, imagePreset: 12 });
 	}
 }
 
@@ -3885,15 +4047,14 @@ class LightboxImage extends SvelteComponent {
 }
 
 /* src/Gallery/ExternalGallery.svelte generated by Svelte v3.38.2 */
-
-const get_default_slot_spread_changes = dirty => dirty & /*$$restProps*/ 1 > 0 ? -1 : 0;
+const get_default_slot_spread_changes = dirty => dirty & /*$$restProps*/ 8 > 0 ? -1 : 0;
 const get_default_slot_changes = dirty => ({});
-const get_default_slot_context = ctx => ({ .../*$$restProps*/ ctx[0] });
+const get_default_slot_context = ctx => ({ .../*$$restProps*/ ctx[3] });
 
 function create_fragment(ctx) {
 	let current;
-	const default_slot_template = /*#slots*/ ctx[2].default;
-	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[1], get_default_slot_context);
+	const default_slot_template = /*#slots*/ ctx[11].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[10], get_default_slot_context);
 
 	return {
 		c() {
@@ -3908,8 +4069,8 @@ function create_fragment(ctx) {
 		},
 		p(ctx, [dirty]) {
 			if (default_slot) {
-				if (default_slot.p && (!current || dirty & /*$$scope, $$restProps*/ 3)) {
-					update_slot_spread(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[1], dirty, get_default_slot_changes, get_default_slot_spread_changes, get_default_slot_context);
+				if (default_slot.p && (!current || dirty & /*$$scope, $$restProps*/ 1032)) {
+					update_slot_spread(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[10], dirty, get_default_slot_changes, get_default_slot_spread_changes, get_default_slot_context);
 				}
 			}
 		},
@@ -3929,23 +4090,74 @@ function create_fragment(ctx) {
 }
 
 function instance($$self, $$props, $$invalidate) {
-	const omit_props_names = [];
+	const omit_props_names = ["galleryArrowsColor","galleryArrowsCharacter","disableKeyboardArrowsControl"];
 	let $$restProps = compute_rest_props($$props, omit_props_names);
+	let $arrowsColorStore;
+	let $arrowsCharacterStore;
+	let $keyboardControlStore;
 	let { $$slots: slots = {}, $$scope } = $$props;
+	let { galleryArrowsColor = "black" } = $$props;
+	let { galleryArrowsCharacter = "unset" } = $$props;
+	let { disableKeyboardArrowsControl = false } = $$props;
+	const arrowsColorStore = getContext("svelte-lightbox-galleryArrowsColor");
+	component_subscribe($$self, arrowsColorStore, value => $$invalidate(7, $arrowsColorStore = value));
+	const arrowsCharacterStore = getContext("svelte-lightbox-galleryArrowsCharacter");
+	component_subscribe($$self, arrowsCharacterStore, value => $$invalidate(8, $arrowsCharacterStore = value));
+	const keyboardControlStore = getContext("svelte-lightbox-disableKeyboardArrowsControl");
+	component_subscribe($$self, keyboardControlStore, value => $$invalidate(9, $keyboardControlStore = value));
 
 	$$self.$$set = $$new_props => {
 		$$props = assign(assign({}, $$props), exclude_internal_props($$new_props));
-		$$invalidate(0, $$restProps = compute_rest_props($$props, omit_props_names));
-		if ("$$scope" in $$new_props) $$invalidate(1, $$scope = $$new_props.$$scope);
+		$$invalidate(3, $$restProps = compute_rest_props($$props, omit_props_names));
+		if ("galleryArrowsColor" in $$new_props) $$invalidate(4, galleryArrowsColor = $$new_props.galleryArrowsColor);
+		if ("galleryArrowsCharacter" in $$new_props) $$invalidate(5, galleryArrowsCharacter = $$new_props.galleryArrowsCharacter);
+		if ("disableKeyboardArrowsControl" in $$new_props) $$invalidate(6, disableKeyboardArrowsControl = $$new_props.disableKeyboardArrowsControl);
+		if ("$$scope" in $$new_props) $$invalidate(10, $$scope = $$new_props.$$scope);
 	};
 
-	return [$$restProps, $$scope, slots];
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*galleryArrowsColor*/ 16) {
+			arrowsColorStore.set(galleryArrowsColor);
+		}
+
+		if ($$self.$$.dirty & /*galleryArrowsCharacter*/ 32) {
+			arrowsCharacterStore.set(galleryArrowsCharacter);
+		}
+
+		if ($$self.$$.dirty & /*disableKeyboardArrowsControl*/ 64) {
+			keyboardControlStore.set(disableKeyboardArrowsControl);
+		}
+
+		if ($$self.$$.dirty & /*$arrowsColorStore, $arrowsCharacterStore, $keyboardControlStore*/ 896) {
+			console.log($arrowsColorStore, $arrowsCharacterStore, $keyboardControlStore);
+		}
+	};
+
+	return [
+		arrowsColorStore,
+		arrowsCharacterStore,
+		keyboardControlStore,
+		$$restProps,
+		galleryArrowsColor,
+		galleryArrowsCharacter,
+		disableKeyboardArrowsControl,
+		$arrowsColorStore,
+		$arrowsCharacterStore,
+		$keyboardControlStore,
+		$$scope,
+		slots
+	];
 }
 
 class ExternalGallery extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance, create_fragment, safe_not_equal, {});
+
+		init(this, options, instance, create_fragment, safe_not_equal, {
+			galleryArrowsColor: 4,
+			galleryArrowsCharacter: 5,
+			disableKeyboardArrowsControl: 6
+		});
 	}
 }
 
