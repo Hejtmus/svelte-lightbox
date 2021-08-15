@@ -200,13 +200,17 @@ Lightbox is opened.
 
 ### imagePreset `string` 
 
-Select between 3 presets: fit, expand, scroll.
+Select between 4 presets: fit, expand, fullscreen, scroll.
 
 #### fit
 
 Makes big image fit into small viewport.
 
-#### expand
+#### fullscreen ***RELATIVELY NEW: works well, passed 1st level of testing, but currently is in testing in production***
+
+Makes image fullscreen to cover at least one of axes.
+
+#### expand ***PESKY: Behaves broken in some situations***
 
 Expands image above its resolution to fill user's viewport.
 
