@@ -1,30 +1,22 @@
 <script>
     import presets from './presets.js';
-    import {afterUpdate} from "svelte";
+    import {afterUpdate, getContext} from "svelte";
     export let image = {};
     export let protect = false;
     export let portrait = false;
     export let imagePreset = false;
     export let fullscreen = false;
     export let gallery = false;
+    const activeImageStore = getContext('svelte-lightbox-activeImage');
     let imageParent;
-    
+
     const getFullscreenSrc = () => {
         // Getting image that should been displayed and taking its src
       if (imageParent) {
           let imageElement;
           if (gallery) {
-              // Gallery is composed by divs containing images, so we have to 'dig' inside of those divs and take active
-	          // image, by getting its parent that is not hidden
-              const imageWrapper = imageParent.firstChild.children[1].children;
-              for (let i = 0; !imageElement && i !== imageWrapper.length;i++){
-                  if (!imageWrapper[i].hidden) {
-                      imageElement = imageWrapper[i].firstChild
-                  }
-              }
-              if (!imageElement) {
-                  imageElement = imageWrapper[1].firstChild
-              }
+              // Getting active images src from gallery
+              imageElement = imageParent.firstChild.children[1].children[$activeImageStore].firstChild;
           } else {
               // In case of classic lightbox, we just grab image that is first child
               imageElement = imageParent.firstChild;

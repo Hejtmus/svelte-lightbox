@@ -26,6 +26,7 @@
     export let portrait = false;
     //disables scrolling <body>
     export let noScroll = true;
+    export let thumbnail = false;
     export let imagePreset = false;
     export let clickToClose = false;
     export let closeButton = true;
@@ -75,7 +76,7 @@
 </script>
 
 <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
-	{#if $$slots.thumbnail || gallery}
+	{#if thumbnail || gallery}
 		<slot name="thumbnail"/>
 	{:else}
 		<slot/>
@@ -85,9 +86,9 @@
 {#if isVisible}
 	<BodyChild>
 		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
-		       bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
+		       bind:portrait bind:title bind:description bind:gallery bind:imagePreset bind:closeButton
 		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-			{#if $$slots.thumbnail}
+			{#if thumbnail}
 				<slot name="image"/>
 			{:else if gallery}
 				<InternalGallery {imagePreset}>

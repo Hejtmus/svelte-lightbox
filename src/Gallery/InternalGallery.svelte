@@ -4,7 +4,7 @@
     import {writable} from "svelte/store";
 
     export let imagePreset = '';
-    const activeImageStore = new writable(0);
+    const activeImageStore = getContext('svelte-lightbox-activeImage');
     const arrowsColorStore = new writable('black');
     const arrowsCharacterStore = new writable('unset');
     const keyboardControlStore = new writable(false);
@@ -16,19 +16,19 @@
     const previousImage = () => {
         if (activeImage === 0) {
             if (galleryArrowsCharacter === 'loop') {
-                activeImage = images.length - 1
+                activeImageStore.set(images.length - 1)
             }
         } else {
-            activeImage--
+            activeImageStore.set(activeImage - 1)
         }
     }
     const nextImage = () => {
         if (activeImage === images.length - 1) {
             if (galleryArrowsCharacter === 'loop') {
-                activeImage = 0;
+                activeImageStore.set(0)
             }
         } else {
-            activeImage++
+            activeImageStore.set(activeImage + 1)
         }
     }
     const handleKey = (event) => {
@@ -46,7 +46,6 @@
         }
     };
 
-    setContext('svelte-lightbox-activeImage', activeImageStore)
     setContext('svelte-lightbox-galleryArrowsColor', arrowsColorStore)
     setContext('svelte-lightbox-galleryArrowsCharacter', arrowsCharacterStore)
     setContext('svelte-lightbox-disableKeyboardArrowsControl', keyboardControlStore)
@@ -69,7 +68,9 @@
                 img.hidden = true;
                 return img
             })
-            images[activeImage].hidden = false;
+	        if (!fullscreen) {
+                images[activeImage].hidden = false;
+	        }
         } else if (images && activeImage >= images.length) {
             console.error("LightboxGallery: Selected image doesn't exist, invalid activeImage")
         }
