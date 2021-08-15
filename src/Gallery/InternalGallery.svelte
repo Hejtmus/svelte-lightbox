@@ -15,7 +15,7 @@
 
     const previousImage = () => {
         if (activeImage === 0) {
-            if (galleryArrowsCharacter !== 'hide') {
+            if (galleryArrowsCharacter === 'loop') {
                 activeImage = images.length - 1
             }
         } else {
@@ -24,7 +24,7 @@
     }
     const nextImage = () => {
         if (activeImage === images.length - 1) {
-            if (galleryArrowsCharacter !== 'hide') {
+            if (galleryArrowsCharacter === 'loop') {
                 activeImage = 0;
             }
         } else {
