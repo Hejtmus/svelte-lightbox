@@ -10,9 +10,12 @@
     let imageParent;
     
     const getFullscreenSrc = () => {
+        // Getting image that should been displayed and taking its src
       if (imageParent) {
           let imageElement;
           if (gallery) {
+              // Gallery is composed by divs containing images, so we have to 'dig' inside of those divs and take active
+	          // image, by getting its parent that is not hidden
               const imageWrapper = imageParent.firstChild.children[1].children;
               for (let i = 0; !imageElement && i !== imageWrapper.length;i++){
                   if (!imageWrapper[i].hidden) {
@@ -20,8 +23,10 @@
                   }
               }
           } else {
+              // In case of classic lightbox, we just grab image that is first child
               imageElement = imageParent.firstChild;
           }
+          // Getting source for lightbox body background and hiding original
           image.src = imageElement.src;
           imageElement.style.display = 'none';
       } else {
@@ -40,6 +45,7 @@
     $: imageClass = `${image.class ? image.class : ''} ${imagePreset ? imagePreset : ''}`
     $: if (fullscreen && !image?.src) getFullscreenSrc()
     $: if (fullscreen) {
+        // In case user uses fullscreen preset, we need to get image source from new image and hide it
         afterUpdate(getFullscreenSrc)
     }
 </script>
