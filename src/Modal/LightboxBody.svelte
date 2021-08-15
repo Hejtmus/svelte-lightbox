@@ -24,13 +24,12 @@
         }
     }
 
-    $: if (imageParent && imagePreset) {
+    $: if (imageParent && imagePreset && presets[imagePreset]) {
         const imageStyle = imageParent.firstChild.style;
-        imageStyle.width = presets[imagePreset].width
-        imageStyle.height = presets[imagePreset].height
-        imageStyle.maxWidth = presets[imagePreset].maxWidth
-        imageStyle.maxHeight = presets[imagePreset].maxHeight
-        imageStyle.overflow = presets[imagePreset].overflow
+        const styles = Object.keys(presets[imagePreset])
+        for (let i = 0; i !== styles.length; i++) {
+            imageStyle[styles[i]] = presets[imagePreset][i]
+        }
     }
     $: console.log('imagePreset:', imagePreset)
 
