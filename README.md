@@ -192,21 +192,20 @@ Disables body scrolling while in lightbox mode, default `true`.
 
 Array containing objects with Lightbox descriptions and titles. Optional, if you don't need image specific title and 
 description, you can specify universal by passing props *title* and *description* to `<Lightbox>` component.
-  
-### activeImage `number` 
-
-Number that points set visibility of image. Also optional, this is used for programmatic selecting of visible image when 
-Lightbox is opened.
 
 ### imagePreset `string` 
 
-Select between 3 presets: fit, expand, scroll.
+Select between 4 presets: fit, expand, fullscreen, scroll.
 
 #### fit
 
 Makes big image fit into small viewport.
 
-#### expand
+#### fullscreen ***RELATIVELY NEW: works well, passed 1st level of testing, but currently is in testing in production***
+
+Makes image fullscreen to cover at least one of axes.
+
+#### expand ***PESKY: Behaves broken in some situations***
 
 Expands image above its resolution to fill user's viewport.
 
@@ -238,7 +237,35 @@ Standard HTML "style" for lightbox thumbnail, similar to thumbnailStyle.
 
 ## `<LightboxGallery>`
 
-Nothing to customize, behaviour of gallery depends on `<Lightbox>` setting.
+### activeImage `number`
+
+Number that points set visibility of image. Also optional, this is used for programmatic selecting of visible image when
+Lightbox is opened.
+
+### galleryArrowsColor `string`
+
+Sets color of arrows for navigation between images in gallery. Valid is any valid CSS color. Default `black`.
+
+### galleryArrowsCharacter `string`
+
+Sets arrow charter in edge cases (0th and last item of gallery). Valid values: `unset`, `hide`, `loop`
+
+#### unset
+
+Leaves arrow inactive and disables particular arrow on keyboard in edge case.
+
+#### hide
+
+Hides arrow and disables particular arrow on keyboard in edge case.
+
+#### loop
+
+Arrows are always active and keyboard arrows as well. For instance when user clicks left arrow on first image, last image
+will be displayed.
+
+### disableKeyboardArrowsControl `boolean`
+
+Disables navigation withing gallery using keyboard arrows. Default `false`.
 
 # Pro tips
 

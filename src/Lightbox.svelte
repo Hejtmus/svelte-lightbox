@@ -11,8 +11,6 @@
     //exporting classes, for passing classes into wrapper
     export let modalClasses = '';
     export let modalStyle = '';
-    //number that hold which image is active
-    export let activeImage = 0;
     //array with image descriptions
     export let gallery = false;
     //getting universal title and descriptions
@@ -75,27 +73,30 @@
             }
         };
     })
-
 </script>
 
 <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
-    {#if thumbnail || gallery}
-        <slot name="thumbnail"/>
-    {:else}
-        <slot/>
-    {/if}
+	{#if thumbnail || gallery}
+		<slot name="thumbnail"/>
+	{:else}
+		<slot/>
+	{/if}
 </Thumbnail>
 
 {#if isVisible}
 	<BodyChild>
 		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
-		       bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
+		       bind:portrait bind:title bind:description bind:gallery bind:imagePreset bind:closeButton
 		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
 			{#if thumbnail}
 				<slot name="image"/>
 			{:else if gallery}
-				<InternalGallery bind:activeImage>
-					<slot name="thumbnail"/>
+				<InternalGallery {imagePreset}>
+					{#if $$slots.thumbnail}
+						<div>
+							<slot name="thumbnail"/>
+						</div>
+					{/if}
 					<slot>
 					</slot>
 				</InternalGallery>

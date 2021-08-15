@@ -21,7 +21,7 @@ export interface LightboxProps {
     portrait?: boolean,
     noScroll?: boolean,
     thumbnail?: boolean,
-    imagePreset?: string | boolean,
+    imagePreset?: 'fit' | 'expand' | 'fullscreen' | 'scroll' | boolean,
     clickToClose?: boolean,
     clickButton?: boolean
 }

@@ -30,6 +30,16 @@
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function subscribe(store, ...callbacks) {
+        if (store == null) {
+            return noop;
+        }
+        const unsub = store.subscribe(...callbacks);
+        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+    }
+    function component_subscribe(component, store, callback) {
+        component.$$.on_destroy.push(subscribe(store, callback));
+    }
     function create_slot(definition, ctx, $$scope, fn) {
         if (definition) {
             const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
@@ -87,6 +97,13 @@
             if (!keys.has(k) && k[0] !== '$')
                 rest[k] = props[k];
         return rest;
+    }
+    function compute_slots(slots) {
+        const result = {};
+        for (const key in slots) {
+            result[key] = true;
+        }
+        return result;
     }
     function null_to_empty(value) {
         return value == null ? '' : value;
@@ -190,6 +207,9 @@
         if (text.wholeText !== data)
             text.data = data;
     }
+    function set_style(node, key, value, important) {
+        node.style.setProperty(key, value, important ? 'important' : '');
+    }
     function toggle_class(element, name, toggle) {
         element.classList[toggle ? 'add' : 'remove'](name);
     }
@@ -272,6 +292,9 @@
     function onMount(fn) {
         get_current_component().$$.on_mount.push(fn);
     }
+    function afterUpdate(fn) {
+        get_current_component().$$.after_update.push(fn);
+    }
     function onDestroy(fn) {
         get_current_component().$$.on_destroy.push(fn);
     }
@@ -288,6 +311,12 @@
                 });
             }
         };
+    }
+    function setContext(key, context) {
+        get_current_component().$$.context.set(key, context);
+    }
+    function getContext(key) {
+        return get_current_component().$$.context.get(key);
     }
     // TODO figure out if we still want to support
     // shorthand events, or if we want to implement
@@ -930,12 +959,12 @@
 
     function add_css$6() {
     	var style = element("style");
-    	style.id = "svelte-12yipzn-style";
-    	style.textContent = "div.svelte-lightbox-header.svelte-12yipzn{width:auto;height:3rem;display:flex;justify-content:flex-end;align-items:center}button.svelte-12yipzn{background:transparent;font-size:3rem;border:none;color:white}button.svelte-12yipzn:hover{color:lightgray;cursor:pointer}";
+    	style.id = "svelte-fa0syz-style";
+    	style.textContent = "div.svelte-lightbox-header.svelte-fa0syz{width:auto;height:3rem;display:flex;justify-content:flex-end;align-items:center}div.fullscreen.svelte-fa0syz{position:fixed;z-index:5;top:0;left:0;right:0}button.svelte-fa0syz{background:transparent;font-size:3rem;border:none;color:white}button.svelte-fa0syz:hover{color:lightgray;cursor:pointer}button.svelte-fa0syz:active{background-color:transparent}button.fullscreen.svelte-fa0syz{filter:drop-shadow(0 0 5px black) drop-shadow(0 0 10px black)}";
     	append(document.head, style);
     }
 
-    // (13:4) {#if closeButton}
+    // (14:4) {#if closeButton}
     function create_if_block$3(ctx) {
     	let button;
     	let t;
@@ -949,14 +978,15 @@
     			t = text("×");
     			attr(button, "size", /*size*/ ctx[0]);
     			attr(button, "style", /*style*/ ctx[1]);
-    			attr(button, "class", button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-12yipzn"));
+    			attr(button, "class", button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-fa0syz"));
+    			toggle_class(button, "fullscreen", /*fullscreen*/ ctx[5]);
     		},
     		m(target, anchor) {
     			insert(target, button, anchor);
     			append(button, t);
 
     			if (!mounted) {
-    				dispose = listen(button, "click", /*click_handler*/ ctx[6]);
+    				dispose = listen(button, "click", /*click_handler*/ ctx[7]);
     				mounted = true;
     			}
     		},
@@ -969,8 +999,12 @@
     				attr(button, "style", /*style*/ ctx[1]);
     			}
 
-    			if (dirty & /*buttonClasses*/ 8 && button_class_value !== (button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-12yipzn"))) {
+    			if (dirty & /*buttonClasses*/ 8 && button_class_value !== (button_class_value = "" + (null_to_empty(/*buttonClasses*/ ctx[3]) + " svelte-fa0syz"))) {
     				attr(button, "class", button_class_value);
+    			}
+
+    			if (dirty & /*buttonClasses, fullscreen*/ 40) {
+    				toggle_class(button, "fullscreen", /*fullscreen*/ ctx[5]);
     			}
     		},
     		d(detaching) {
@@ -990,7 +1024,8 @@
     		c() {
     			div = element("div");
     			if (if_block) if_block.c();
-    			attr(div, "class", div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-12yipzn"));
+    			attr(div, "class", div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-fa0syz"));
+    			toggle_class(div, "fullscreen", /*fullscreen*/ ctx[5]);
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1010,8 +1045,12 @@
     				if_block = null;
     			}
 
-    			if (dirty & /*headerClasses*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-12yipzn"))) {
+    			if (dirty & /*headerClasses*/ 4 && div_class_value !== (div_class_value = "" + (null_to_empty("svelte-lightbox-header " + /*headerClasses*/ ctx[2]) + " svelte-fa0syz"))) {
     				attr(div, "class", div_class_value);
+    			}
+
+    			if (dirty & /*headerClasses, fullscreen*/ 36) {
+    				toggle_class(div, "fullscreen", /*fullscreen*/ ctx[5]);
     			}
     		},
     		i: noop,
@@ -1030,6 +1069,7 @@
     	let { headerClasses = "" } = $$props;
     	let { buttonClasses = "" } = $$props;
     	let { closeButton = true } = $$props;
+    	let { fullscreen = false } = $$props;
     	const click_handler = () => dispatch("close");
 
     	$$self.$$set = $$props => {
@@ -1038,6 +1078,7 @@
     		if ("headerClasses" in $$props) $$invalidate(2, headerClasses = $$props.headerClasses);
     		if ("buttonClasses" in $$props) $$invalidate(3, buttonClasses = $$props.buttonClasses);
     		if ("closeButton" in $$props) $$invalidate(4, closeButton = $$props.closeButton);
+    		if ("fullscreen" in $$props) $$invalidate(5, fullscreen = $$props.fullscreen);
     	};
 
     	return [
@@ -1046,6 +1087,7 @@
     		headerClasses,
     		buttonClasses,
     		closeButton,
+    		fullscreen,
     		dispatch,
     		click_handler
     	];
@@ -1054,42 +1096,70 @@
     class LightboxHeader extends SvelteComponent {
     	constructor(options) {
     		super();
-    		if (!document.getElementById("svelte-12yipzn-style")) add_css$6();
+    		if (!document.getElementById("svelte-fa0syz-style")) add_css$6();
 
     		init(this, options, instance$a, create_fragment$a, safe_not_equal, {
     			size: 0,
     			style: 1,
     			headerClasses: 2,
     			buttonClasses: 3,
-    			closeButton: 4
+    			closeButton: 4,
+    			fullscreen: 5
     		});
     	}
     }
+
+    const presets =  {
+        expand: {
+            "width": "100%",
+            "maxWidth": "",
+            "height": "auto",
+            "maxHeight": ""
+        },
+        fit: {
+            "width": "",
+            "maxWidth": "80vw",
+            "height": "",
+            "maxHeight": "80vh"
+        },
+        fullscreen: {
+            "width": "100vw",
+            "maxWidth": "100vw",
+            "height": "100vh",
+            "maxHeight": "100vh"
+        },
+        scroll: {
+            "width": "auto",
+            "height": "auto",
+            "overflow": "scroll"
+        }
+    };
 
     /* src/Modal/LightboxBody.svelte generated by Svelte v3.38.2 */
 
     function add_css$5() {
     	var style = element("style");
-    	style.id = "svelte-5blj8a-style";
-    	style.textContent = "div.svelte-lightbox-body.svelte-5blj8a{background-color:transparent;width:auto;height:auto;max-height:80vh}div.svelte-lightbox-unselectable.svelte-5blj8a{user-select:none;pointer-events:none}div.svelte-lightbox-image-portrait.svelte-5blj8a{height:90vh}div.expand.svelte-5blj8a{width:90vw;height:auto;max-height:90vh}";
+    	style.id = "svelte-3luti8-style";
+    	style.textContent = "div.svelte-lightbox-body.svelte-3luti8{background-color:transparent;width:auto;height:auto;max-height:80vh}div.svelte-lightbox-body.fullscreen.svelte-3luti8{background-size:contain;background-repeat:no-repeat;background-position:center}div.fullscreen.svelte-3luti8{width:inherit;max-width:inherit;height:inherit;max-height:inherit}div.svelte-lightbox-unselectable.svelte-3luti8{user-select:none;pointer-events:none}div.svelte-lightbox-image-portrait.svelte-3luti8{height:90vh}div.expand.svelte-3luti8{width:90vw;height:auto;max-height:90vh}";
     	append(document.head, style);
     }
 
-    // (43:4) {:else}
+    // (51:1) {:else}
     function create_else_block$1(ctx) {
     	let div;
     	let current;
-    	const default_slot_template = /*#slots*/ ctx[7].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[6], null);
+    	const default_slot_template = /*#slots*/ ctx[10].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[9], null);
 
     	return {
     		c() {
     			div = element("div");
     			if (default_slot) default_slot.c();
-    			attr(div, "class", "svelte-5blj8a");
+    			attr(div, "class", "svelte-3luti8");
     			toggle_class(div, "svelte-lightbox-image-portrait", /*portrait*/ ctx[2]);
     			toggle_class(div, "expand", /*imagePreset*/ ctx[3] == "expand");
     			toggle_class(div, "fit", /*imagePreset*/ ctx[3] == "fit");
+    			toggle_class(div, "fullscreen", /*fullscreen*/ ctx[4]);
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1098,13 +1168,13 @@
     				default_slot.m(div, null);
     			}
 
-    			/*div_binding*/ ctx[8](div);
+    			/*div_binding*/ ctx[11](div);
     			current = true;
     		},
     		p(ctx, dirty) {
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty & /*$$scope*/ 64)) {
-    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[6], dirty, null, null);
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 512)) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[9], dirty, null, null);
     				}
     			}
 
@@ -1119,6 +1189,10 @@
     			if (dirty & /*imagePreset*/ 8) {
     				toggle_class(div, "fit", /*imagePreset*/ ctx[3] == "fit");
     			}
+
+    			if (dirty & /*fullscreen*/ 16) {
+    				toggle_class(div, "fullscreen", /*fullscreen*/ ctx[4]);
+    			}
     		},
     		i(local) {
     			if (current) return;
@@ -1132,12 +1206,12 @@
     		d(detaching) {
     			if (detaching) detach(div);
     			if (default_slot) default_slot.d(detaching);
-    			/*div_binding*/ ctx[8](null);
+    			/*div_binding*/ ctx[11](null);
     		}
     	};
     }
 
-    // (41:4) {#if image.src}
+    // (49:1) {#if !fullscreen && image.src}
     function create_if_block$2(ctx) {
     	let img;
     	let img_src_value;
@@ -1150,7 +1224,7 @@
     			if (img.src !== (img_src_value = /*image*/ ctx[0].src)) attr(img, "src", img_src_value);
     			attr(img, "alt", img_alt_value = /*image*/ ctx[0].alt);
     			attr(img, "style", img_style_value = /*image*/ ctx[0].style);
-    			attr(img, "class", /*imageClass*/ ctx[5]);
+    			attr(img, "class", /*imageClass*/ ctx[6]);
     		},
     		m(target, anchor) {
     			insert(target, img, anchor);
@@ -1168,8 +1242,8 @@
     				attr(img, "style", img_style_value);
     			}
 
-    			if (dirty & /*imageClass*/ 32) {
-    				attr(img, "class", /*imageClass*/ ctx[5]);
+    			if (dirty & /*imageClass*/ 64) {
+    				attr(img, "class", /*imageClass*/ ctx[6]);
     			}
     		},
     		i: noop,
@@ -1184,12 +1258,13 @@
     	let div;
     	let current_block_type_index;
     	let if_block;
+    	let div_style_value;
     	let current;
     	const if_block_creators = [create_if_block$2, create_else_block$1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
-    		if (/*image*/ ctx[0].src) return 0;
+    		if (!/*fullscreen*/ ctx[4] && /*image*/ ctx[0].src) return 0;
     		return 1;
     	}
 
@@ -1200,8 +1275,14 @@
     		c() {
     			div = element("div");
     			if_block.c();
-    			attr(div, "class", "svelte-lightbox-body svelte-5blj8a");
+    			attr(div, "class", "svelte-lightbox-body svelte-3luti8");
+
+    			attr(div, "style", div_style_value = /*fullscreen*/ ctx[4]
+    			? `background-image: url(${/*image*/ ctx[0].src || ""})`
+    			: "");
+
     			toggle_class(div, "svelte-lightbox-unselectable", /*protect*/ ctx[1]);
+    			toggle_class(div, "fullscreen", /*fullscreen*/ ctx[4]);
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1235,8 +1316,18 @@
     				if_block.m(div, null);
     			}
 
+    			if (!current || dirty & /*fullscreen, image*/ 17 && div_style_value !== (div_style_value = /*fullscreen*/ ctx[4]
+    			? `background-image: url(${/*image*/ ctx[0].src || ""})`
+    			: "")) {
+    				attr(div, "style", div_style_value);
+    			}
+
     			if (dirty & /*protect*/ 2) {
     				toggle_class(div, "svelte-lightbox-unselectable", /*protect*/ ctx[1]);
+    			}
+
+    			if (dirty & /*fullscreen*/ 16) {
+    				toggle_class(div, "fullscreen", /*fullscreen*/ ctx[4]);
     			}
     		},
     		i(local) {
@@ -1257,37 +1348,44 @@
 
     function instance$9($$self, $$props, $$invalidate) {
     	let imageClass;
+    	let $activeImageStore;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	let { image = {} } = $$props;
     	let { protect = false } = $$props;
     	let { portrait = false } = $$props;
     	let { imagePreset = false } = $$props;
+    	let { fullscreen = false } = $$props;
+    	let { gallery = false } = $$props;
+    	const activeImageStore = getContext("svelte-lightbox-activeImage");
+    	component_subscribe($$self, activeImageStore, value => $$invalidate(12, $activeImageStore = value));
     	let imageParent;
 
-    	const presets = {
-    		fit: {
-    			width: "",
-    			maxWidth: "80vw",
-    			height: "",
-    			maxHeight: "80vh"
-    		},
-    		expand: {
-    			width: "100%",
-    			maxWidth: "",
-    			height: "auto",
-    			maxHeight: ""
-    		},
-    		scroll: {
-    			width: "auto",
-    			height: "auto",
-    			overflow: "scroll"
+    	const getFullscreenSrc = () => {
+    		// Getting image that should been displayed and taking its src
+    		if (imageParent) {
+    			let imageElement;
+
+    			if (gallery) {
+    				// Getting active images src from gallery
+    				imageElement = imageParent.firstChild.children[1].children[$activeImageStore].firstChild;
+    			} else {
+    				// In case of classic lightbox, we just grab image that is first child
+    				imageElement = imageParent.firstChild;
+    			}
+
+    			// Getting source for lightbox body background and hiding original
+    			$$invalidate(0, image.src = imageElement.src, image);
+
+    			imageElement.style.display = "none";
+    		} else {
+    			queueMicrotask(getFullscreenSrc);
     		}
     	};
 
     	function div_binding($$value) {
     		binding_callbacks[$$value ? "unshift" : "push"](() => {
     			imageParent = $$value;
-    			$$invalidate(4, imageParent);
+    			$$invalidate(5, imageParent);
     		});
     	}
 
@@ -1296,27 +1394,36 @@
     		if ("protect" in $$props) $$invalidate(1, protect = $$props.protect);
     		if ("portrait" in $$props) $$invalidate(2, portrait = $$props.portrait);
     		if ("imagePreset" in $$props) $$invalidate(3, imagePreset = $$props.imagePreset);
-    		if ("$$scope" in $$props) $$invalidate(6, $$scope = $$props.$$scope);
+    		if ("fullscreen" in $$props) $$invalidate(4, fullscreen = $$props.fullscreen);
+    		if ("gallery" in $$props) $$invalidate(8, gallery = $$props.gallery);
+    		if ("$$scope" in $$props) $$invalidate(9, $$scope = $$props.$$scope);
     	};
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*imageParent, imagePreset*/ 24) {
-    			if (imageParent && imagePreset) {
+    		if ($$self.$$.dirty & /*imageParent, imagePreset*/ 40) {
+    			if (imageParent && imagePreset && presets[imagePreset]) {
     				const imageStyle = imageParent.firstChild.style;
-    				imageStyle.width = presets[imagePreset].width;
-    				imageStyle.height = presets[imagePreset].height;
-    				imageStyle.maxWidth = presets[imagePreset].maxWidth;
-    				imageStyle.maxHeight = presets[imagePreset].maxHeight;
-    				imageStyle.overflow = presets[imagePreset].overflow;
+    				const styles = Object.keys(presets[imagePreset]);
+
+    				for (let i = 0; i !== styles.length; i++) {
+    					imageStyle[styles[i]] = presets[imagePreset][i];
+    				}
     			}
     		}
 
-    		if ($$self.$$.dirty & /*imagePreset*/ 8) {
-    			console.log("imagePreset:", imagePreset);
+    		if ($$self.$$.dirty & /*image, imagePreset*/ 9) {
+    			$$invalidate(6, imageClass = `${image.class ? image.class : ""} ${imagePreset ? imagePreset : ""}`);
     		}
 
-    		if ($$self.$$.dirty & /*image, imagePreset*/ 9) {
-    			$$invalidate(5, imageClass = `${image.class} ${imagePreset ? imagePreset : ""}`);
+    		if ($$self.$$.dirty & /*fullscreen, image*/ 17) {
+    			if (fullscreen && !image?.src) getFullscreenSrc();
+    		}
+
+    		if ($$self.$$.dirty & /*fullscreen*/ 16) {
+    			if (fullscreen) {
+    				// In case user uses fullscreen preset, we need to get image source from new image and hide it
+    				afterUpdate(getFullscreenSrc);
+    			}
     		}
     	};
 
@@ -1325,8 +1432,11 @@
     		protect,
     		portrait,
     		imagePreset,
+    		fullscreen,
     		imageParent,
     		imageClass,
+    		activeImageStore,
+    		gallery,
     		$$scope,
     		slots,
     		div_binding
@@ -1336,13 +1446,15 @@
     class LightboxBody extends SvelteComponent {
     	constructor(options) {
     		super();
-    		if (!document.getElementById("svelte-5blj8a-style")) add_css$5();
+    		if (!document.getElementById("svelte-3luti8-style")) add_css$5();
 
     		init(this, options, instance$9, create_fragment$9, safe_not_equal, {
     			image: 0,
     			protect: 1,
     			portrait: 2,
-    			imagePreset: 3
+    			imagePreset: 3,
+    			fullscreen: 4,
+    			gallery: 8
     		});
     	}
     }
@@ -1601,8 +1713,8 @@
 
     function add_css$2() {
     	var style = element("style");
-    	style.id = "svelte-1nx05o5-style";
-    	style.textContent = "div.svelte-1nx05o5{position:relative;background-color:transparent;width:auto;height:auto;max-width:90vw;max-height:90vh}div.svelte-1nx05o5::after{content:\"\";clear:both;display:table}";
+    	style.id = "svelte-12ihcp1-style";
+    	style.textContent = "div.svelte-12ihcp1{position:relative;background-color:transparent;width:auto;height:auto;max-width:90vw;max-height:90vh}.fullscreen.svelte-12ihcp1{height:inherit;width:inherit;max-height:inherit;max-width:inherit}";
     	append(document.head, style);
     }
 
@@ -1613,14 +1725,15 @@
     	let current;
     	let mounted;
     	let dispose;
-    	const default_slot_template = /*#slots*/ ctx[4].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[3], null);
+    	const default_slot_template = /*#slots*/ ctx[5].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[4], null);
 
     	return {
     		c() {
     			div = element("div");
     			if (default_slot) default_slot.c();
-    			attr(div, "class", div_class_value = "" + (null_to_empty(/*modalClasses*/ ctx[0]) + " svelte-1nx05o5"));
+    			attr(div, "class", div_class_value = "" + (null_to_empty(/*modalClasses*/ ctx[0]) + " svelte-12ihcp1"));
+    			toggle_class(div, "fullscreen", /*fullscreen*/ ctx[2]);
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1632,7 +1745,7 @@
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen(div, "click", /*click_handler*/ ctx[5]);
+    				dispose = listen(div, "click", /*click_handler*/ ctx[6]);
     				mounted = true;
     			}
     		},
@@ -1640,13 +1753,17 @@
     			ctx = new_ctx;
 
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty & /*$$scope*/ 8)) {
-    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[3], dirty, null, null);
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 16)) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[4], dirty, null, null);
     				}
     			}
 
-    			if (!current || dirty & /*modalClasses*/ 1 && div_class_value !== (div_class_value = "" + (null_to_empty(/*modalClasses*/ ctx[0]) + " svelte-1nx05o5"))) {
+    			if (!current || dirty & /*modalClasses*/ 1 && div_class_value !== (div_class_value = "" + (null_to_empty(/*modalClasses*/ ctx[0]) + " svelte-12ihcp1"))) {
     				attr(div, "class", div_class_value);
+    			}
+
+    			if (dirty & /*modalClasses, fullscreen*/ 5) {
+    				toggle_class(div, "fullscreen", /*fullscreen*/ ctx[2]);
     			}
     		},
     		i(local) {
@@ -1682,40 +1799,103 @@
     	let { modalStyle } = $$props;
     	let { modalClasses } = $$props;
     	let { transitionDuration } = $$props;
+    	let { fullscreen = false } = $$props;
 
     	function click_handler(event) {
     		bubble($$self, event);
     	}
 
     	$$self.$$set = $$props => {
-    		if ("modalStyle" in $$props) $$invalidate(2, modalStyle = $$props.modalStyle);
+    		if ("modalStyle" in $$props) $$invalidate(3, modalStyle = $$props.modalStyle);
     		if ("modalClasses" in $$props) $$invalidate(0, modalClasses = $$props.modalClasses);
     		if ("transitionDuration" in $$props) $$invalidate(1, transitionDuration = $$props.transitionDuration);
-    		if ("$$scope" in $$props) $$invalidate(3, $$scope = $$props.$$scope);
+    		if ("fullscreen" in $$props) $$invalidate(2, fullscreen = $$props.fullscreen);
+    		if ("$$scope" in $$props) $$invalidate(4, $$scope = $$props.$$scope);
     	};
 
-    	return [modalClasses, transitionDuration, modalStyle, $$scope, slots, click_handler];
+    	return [
+    		modalClasses,
+    		transitionDuration,
+    		fullscreen,
+    		modalStyle,
+    		$$scope,
+    		slots,
+    		click_handler
+    	];
     }
 
     class Modal extends SvelteComponent {
     	constructor(options) {
     		super();
-    		if (!document.getElementById("svelte-1nx05o5-style")) add_css$2();
+    		if (!document.getElementById("svelte-12ihcp1-style")) add_css$2();
 
     		init(this, options, instance$6, create_fragment$6, safe_not_equal, {
-    			modalStyle: 2,
+    			modalStyle: 3,
     			modalClasses: 0,
-    			transitionDuration: 1
+    			transitionDuration: 1,
+    			fullscreen: 2
     		});
     	}
+    }
+
+    const subscriber_queue = [];
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = [];
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (let i = 0; i < subscribers.length; i += 1) {
+                        const s = subscribers[i];
+                        s[1]();
+                        subscriber_queue.push(s, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.push(subscriber);
+            if (subscribers.length === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                const index = subscribers.indexOf(subscriber);
+                if (index !== -1) {
+                    subscribers.splice(index, 1);
+                }
+                if (subscribers.length === 0) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
     }
 
     /* src/Modal/Index.svelte generated by Svelte v3.38.2 */
 
     function create_default_slot_2$1(ctx) {
     	let current;
-    	const default_slot_template = /*#slots*/ ctx[15].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[31], null);
+    	const default_slot_template = /*#slots*/ ctx[17].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[32], null);
 
     	return {
     		c() {
@@ -1730,8 +1910,8 @@
     		},
     		p(ctx, dirty) {
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 1)) {
-    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[31], dirty, null, null);
+    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 2)) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[32], dirty, null, null);
     				}
     			}
     		},
@@ -1750,7 +1930,7 @@
     	};
     }
 
-    // (41:4) <Modal bind:modalClasses bind:modalStyle bind:transitionDuration on:click={ () => dispatch('modalClick') }>
+    // (43:4) <Modal bind:modalClasses bind:modalStyle bind:transitionDuration {fullscreen} on:click={ () => dispatch('modalClick') }>
     function create_default_slot_1$1(ctx) {
     	let header;
     	let updating_closeButton;
@@ -1759,7 +1939,6 @@
     	let updating_image;
     	let updating_protect;
     	let updating_portrait;
-    	let updating_imagePreset;
     	let t1;
     	let footer;
     	let updating_title;
@@ -1768,76 +1947,70 @@
     	let current;
 
     	function header_closeButton_binding(value) {
-    		/*header_closeButton_binding*/ ctx[16](value);
+    		/*header_closeButton_binding*/ ctx[18](value);
     	}
 
-    	let header_props = {};
+    	let header_props = { fullscreen: /*fullscreen*/ ctx[12] };
 
-    	if (/*closeButton*/ ctx[8] !== void 0) {
-    		header_props.closeButton = /*closeButton*/ ctx[8];
+    	if (/*closeButton*/ ctx[6] !== void 0) {
+    		header_props.closeButton = /*closeButton*/ ctx[6];
     	}
 
     	header = new LightboxHeader({ props: header_props });
     	binding_callbacks.push(() => bind(header, "closeButton", header_closeButton_binding));
-    	header.$on("close", /*close_handler*/ ctx[17]);
+    	header.$on("close", /*close_handler*/ ctx[19]);
 
     	function body_image_binding(value) {
-    		/*body_image_binding*/ ctx[18](value);
+    		/*body_image_binding*/ ctx[20](value);
     	}
 
     	function body_protect_binding(value) {
-    		/*body_protect_binding*/ ctx[19](value);
+    		/*body_protect_binding*/ ctx[21](value);
     	}
 
     	function body_portrait_binding(value) {
-    		/*body_portrait_binding*/ ctx[20](value);
-    	}
-
-    	function body_imagePreset_binding(value) {
-    		/*body_imagePreset_binding*/ ctx[21](value);
+    		/*body_portrait_binding*/ ctx[22](value);
     	}
 
     	let body_props = {
+    		imagePreset: /*imagePreset*/ ctx[8],
+    		fullscreen: /*fullscreen*/ ctx[12],
+    		gallery: !!/*gallery*/ ctx[7].length,
     		$$slots: { default: [create_default_slot_2$1] },
     		$$scope: { ctx }
     	};
 
-    	if (/*image*/ ctx[4] !== void 0) {
-    		body_props.image = /*image*/ ctx[4];
+    	if (/*image*/ ctx[3] !== void 0) {
+    		body_props.image = /*image*/ ctx[3];
     	}
 
-    	if (/*protect*/ ctx[5] !== void 0) {
-    		body_props.protect = /*protect*/ ctx[5];
+    	if (/*protect*/ ctx[4] !== void 0) {
+    		body_props.protect = /*protect*/ ctx[4];
     	}
 
-    	if (/*portrait*/ ctx[6] !== void 0) {
-    		body_props.portrait = /*portrait*/ ctx[6];
-    	}
-
-    	if (/*imagePreset*/ ctx[7] !== void 0) {
-    		body_props.imagePreset = /*imagePreset*/ ctx[7];
+    	if (/*portrait*/ ctx[5] !== void 0) {
+    		body_props.portrait = /*portrait*/ ctx[5];
     	}
 
     	body = new LightboxBody({ props: body_props });
     	binding_callbacks.push(() => bind(body, "image", body_image_binding));
     	binding_callbacks.push(() => bind(body, "protect", body_protect_binding));
     	binding_callbacks.push(() => bind(body, "portrait", body_portrait_binding));
-    	binding_callbacks.push(() => bind(body, "imagePreset", body_imagePreset_binding));
 
     	function footer_title_binding(value) {
-    		/*footer_title_binding*/ ctx[22](value);
+    		/*footer_title_binding*/ ctx[23](value);
     	}
 
     	function footer_description_binding(value) {
-    		/*footer_description_binding*/ ctx[23](value);
+    		/*footer_description_binding*/ ctx[24](value);
     	}
 
     	function footer_activeImage_binding(value) {
-    		/*footer_activeImage_binding*/ ctx[24](value);
+    		/*footer_activeImage_binding*/ ctx[25](value);
     	}
 
     	let footer_props = {
-    		galleryLength: /*gallery*/ ctx[9] ? /*gallery*/ ctx[9].length : false
+    		galleryLength: /*gallery*/ ctx[7] ? /*gallery*/ ctx[7].length : false
     	};
 
     	if (/*actualTitle*/ ctx[10] !== void 0) {
@@ -1848,8 +2021,8 @@
     		footer_props.description = /*actualDescription*/ ctx[11];
     	}
 
-    	if (/*activeImage*/ ctx[0] !== void 0) {
-    		footer_props.activeImage = /*activeImage*/ ctx[0];
+    	if (/*$activeImageStore*/ ctx[9] !== void 0) {
+    		footer_props.activeImage = /*$activeImageStore*/ ctx[9];
     	}
 
     	footer = new LightboxFooter({ props: footer_props });
@@ -1875,47 +2048,45 @@
     		},
     		p(ctx, dirty) {
     			const header_changes = {};
+    			if (dirty[0] & /*fullscreen*/ 4096) header_changes.fullscreen = /*fullscreen*/ ctx[12];
 
-    			if (!updating_closeButton && dirty[0] & /*closeButton*/ 256) {
+    			if (!updating_closeButton && dirty[0] & /*closeButton*/ 64) {
     				updating_closeButton = true;
-    				header_changes.closeButton = /*closeButton*/ ctx[8];
+    				header_changes.closeButton = /*closeButton*/ ctx[6];
     				add_flush_callback(() => updating_closeButton = false);
     			}
 
     			header.$set(header_changes);
     			const body_changes = {};
+    			if (dirty[0] & /*imagePreset*/ 256) body_changes.imagePreset = /*imagePreset*/ ctx[8];
+    			if (dirty[0] & /*fullscreen*/ 4096) body_changes.fullscreen = /*fullscreen*/ ctx[12];
+    			if (dirty[0] & /*gallery*/ 128) body_changes.gallery = !!/*gallery*/ ctx[7].length;
 
-    			if (dirty[1] & /*$$scope*/ 1) {
+    			if (dirty[1] & /*$$scope*/ 2) {
     				body_changes.$$scope = { dirty, ctx };
     			}
 
-    			if (!updating_image && dirty[0] & /*image*/ 16) {
+    			if (!updating_image && dirty[0] & /*image*/ 8) {
     				updating_image = true;
-    				body_changes.image = /*image*/ ctx[4];
+    				body_changes.image = /*image*/ ctx[3];
     				add_flush_callback(() => updating_image = false);
     			}
 
-    			if (!updating_protect && dirty[0] & /*protect*/ 32) {
+    			if (!updating_protect && dirty[0] & /*protect*/ 16) {
     				updating_protect = true;
-    				body_changes.protect = /*protect*/ ctx[5];
+    				body_changes.protect = /*protect*/ ctx[4];
     				add_flush_callback(() => updating_protect = false);
     			}
 
-    			if (!updating_portrait && dirty[0] & /*portrait*/ 64) {
+    			if (!updating_portrait && dirty[0] & /*portrait*/ 32) {
     				updating_portrait = true;
-    				body_changes.portrait = /*portrait*/ ctx[6];
+    				body_changes.portrait = /*portrait*/ ctx[5];
     				add_flush_callback(() => updating_portrait = false);
-    			}
-
-    			if (!updating_imagePreset && dirty[0] & /*imagePreset*/ 128) {
-    				updating_imagePreset = true;
-    				body_changes.imagePreset = /*imagePreset*/ ctx[7];
-    				add_flush_callback(() => updating_imagePreset = false);
     			}
 
     			body.$set(body_changes);
     			const footer_changes = {};
-    			if (dirty[0] & /*gallery*/ 512) footer_changes.galleryLength = /*gallery*/ ctx[9] ? /*gallery*/ ctx[9].length : false;
+    			if (dirty[0] & /*gallery*/ 128) footer_changes.galleryLength = /*gallery*/ ctx[7] ? /*gallery*/ ctx[7].length : false;
 
     			if (!updating_title && dirty[0] & /*actualTitle*/ 1024) {
     				updating_title = true;
@@ -1929,9 +2100,9 @@
     				add_flush_callback(() => updating_description = false);
     			}
 
-    			if (!updating_activeImage && dirty[0] & /*activeImage*/ 1) {
+    			if (!updating_activeImage && dirty[0] & /*$activeImageStore*/ 512) {
     				updating_activeImage = true;
-    				footer_changes.activeImage = /*activeImage*/ ctx[0];
+    				footer_changes.activeImage = /*$activeImageStore*/ ctx[9];
     				add_flush_callback(() => updating_activeImage = false);
     			}
 
@@ -1960,7 +2131,7 @@
     	};
     }
 
-    // (40:0) <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
+    // (42:0) <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
     function create_default_slot$1(ctx) {
     	let modal;
     	let updating_modalClasses;
@@ -1969,39 +2140,40 @@
     	let current;
 
     	function modal_modalClasses_binding(value) {
-    		/*modal_modalClasses_binding*/ ctx[25](value);
+    		/*modal_modalClasses_binding*/ ctx[26](value);
     	}
 
     	function modal_modalStyle_binding(value) {
-    		/*modal_modalStyle_binding*/ ctx[26](value);
+    		/*modal_modalStyle_binding*/ ctx[27](value);
     	}
 
     	function modal_transitionDuration_binding(value) {
-    		/*modal_transitionDuration_binding*/ ctx[27](value);
+    		/*modal_transitionDuration_binding*/ ctx[28](value);
     	}
 
     	let modal_props = {
+    		fullscreen: /*fullscreen*/ ctx[12],
     		$$slots: { default: [create_default_slot_1$1] },
     		$$scope: { ctx }
     	};
 
-    	if (/*modalClasses*/ ctx[1] !== void 0) {
-    		modal_props.modalClasses = /*modalClasses*/ ctx[1];
+    	if (/*modalClasses*/ ctx[0] !== void 0) {
+    		modal_props.modalClasses = /*modalClasses*/ ctx[0];
     	}
 
-    	if (/*modalStyle*/ ctx[2] !== void 0) {
-    		modal_props.modalStyle = /*modalStyle*/ ctx[2];
+    	if (/*modalStyle*/ ctx[1] !== void 0) {
+    		modal_props.modalStyle = /*modalStyle*/ ctx[1];
     	}
 
-    	if (/*transitionDuration*/ ctx[3] !== void 0) {
-    		modal_props.transitionDuration = /*transitionDuration*/ ctx[3];
+    	if (/*transitionDuration*/ ctx[2] !== void 0) {
+    		modal_props.transitionDuration = /*transitionDuration*/ ctx[2];
     	}
 
     	modal = new Modal({ props: modal_props });
     	binding_callbacks.push(() => bind(modal, "modalClasses", modal_modalClasses_binding));
     	binding_callbacks.push(() => bind(modal, "modalStyle", modal_modalStyle_binding));
     	binding_callbacks.push(() => bind(modal, "transitionDuration", modal_transitionDuration_binding));
-    	modal.$on("click", /*click_handler*/ ctx[28]);
+    	modal.$on("click", /*click_handler*/ ctx[29]);
 
     	return {
     		c() {
@@ -2013,26 +2185,27 @@
     		},
     		p(ctx, dirty) {
     			const modal_changes = {};
+    			if (dirty[0] & /*fullscreen*/ 4096) modal_changes.fullscreen = /*fullscreen*/ ctx[12];
 
-    			if (dirty[0] & /*gallery, actualTitle, actualDescription, activeImage, image, protect, portrait, imagePreset, closeButton*/ 4081 | dirty[1] & /*$$scope*/ 1) {
+    			if (dirty[0] & /*gallery, actualTitle, actualDescription, $activeImageStore, imagePreset, fullscreen, image, protect, portrait, closeButton*/ 8184 | dirty[1] & /*$$scope*/ 2) {
     				modal_changes.$$scope = { dirty, ctx };
     			}
 
-    			if (!updating_modalClasses && dirty[0] & /*modalClasses*/ 2) {
+    			if (!updating_modalClasses && dirty[0] & /*modalClasses*/ 1) {
     				updating_modalClasses = true;
-    				modal_changes.modalClasses = /*modalClasses*/ ctx[1];
+    				modal_changes.modalClasses = /*modalClasses*/ ctx[0];
     				add_flush_callback(() => updating_modalClasses = false);
     			}
 
-    			if (!updating_modalStyle && dirty[0] & /*modalStyle*/ 4) {
+    			if (!updating_modalStyle && dirty[0] & /*modalStyle*/ 2) {
     				updating_modalStyle = true;
-    				modal_changes.modalStyle = /*modalStyle*/ ctx[2];
+    				modal_changes.modalStyle = /*modalStyle*/ ctx[1];
     				add_flush_callback(() => updating_modalStyle = false);
     			}
 
-    			if (!updating_transitionDuration && dirty[0] & /*transitionDuration*/ 8) {
+    			if (!updating_transitionDuration && dirty[0] & /*transitionDuration*/ 4) {
     				updating_transitionDuration = true;
-    				modal_changes.transitionDuration = /*transitionDuration*/ ctx[3];
+    				modal_changes.transitionDuration = /*transitionDuration*/ ctx[2];
     				add_flush_callback(() => updating_transitionDuration = false);
     			}
 
@@ -2059,7 +2232,7 @@
     	let current;
 
     	function modalcover_transitionDuration_binding(value) {
-    		/*modalcover_transitionDuration_binding*/ ctx[29](value);
+    		/*modalcover_transitionDuration_binding*/ ctx[30](value);
     	}
 
     	let modalcover_props = {
@@ -2067,13 +2240,13 @@
     		$$scope: { ctx }
     	};
 
-    	if (/*transitionDuration*/ ctx[3] !== void 0) {
-    		modalcover_props.transitionDuration = /*transitionDuration*/ ctx[3];
+    	if (/*transitionDuration*/ ctx[2] !== void 0) {
+    		modalcover_props.transitionDuration = /*transitionDuration*/ ctx[2];
     	}
 
     	modalcover = new ModalCover({ props: modalcover_props });
     	binding_callbacks.push(() => bind(modalcover, "transitionDuration", modalcover_transitionDuration_binding));
-    	modalcover.$on("click", /*click_handler_1*/ ctx[30]);
+    	modalcover.$on("click", /*click_handler_1*/ ctx[31]);
 
     	return {
     		c() {
@@ -2086,13 +2259,13 @@
     		p(ctx, dirty) {
     			const modalcover_changes = {};
 
-    			if (dirty[0] & /*modalClasses, modalStyle, transitionDuration, gallery, actualTitle, actualDescription, activeImage, image, protect, portrait, imagePreset, closeButton*/ 4095 | dirty[1] & /*$$scope*/ 1) {
+    			if (dirty[0] & /*fullscreen, modalClasses, modalStyle, transitionDuration, gallery, actualTitle, actualDescription, $activeImageStore, imagePreset, image, protect, portrait, closeButton*/ 8191 | dirty[1] & /*$$scope*/ 2) {
     				modalcover_changes.$$scope = { dirty, ctx };
     			}
 
-    			if (!updating_transitionDuration && dirty[0] & /*transitionDuration*/ 8) {
+    			if (!updating_transitionDuration && dirty[0] & /*transitionDuration*/ 4) {
     				updating_transitionDuration = true;
-    				modalcover_changes.transitionDuration = /*transitionDuration*/ ctx[3];
+    				modalcover_changes.transitionDuration = /*transitionDuration*/ ctx[2];
     				add_flush_callback(() => updating_transitionDuration = false);
     			}
 
@@ -2114,6 +2287,8 @@
     }
 
     function instance$5($$self, $$props, $$invalidate) {
+    	let fullscreen;
+    	let $activeImageStore;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	const dispatch = createEventDispatcher();
     	let { modalClasses = "" } = $$props;
@@ -2125,127 +2300,129 @@
     	let { title = "" } = $$props;
     	let { description = "" } = $$props;
     	let { gallery = [] } = $$props;
-    	let { activeImage } = $$props;
     	let { imagePreset } = $$props;
     	let { closeButton } = $$props;
+    	const activeImageStore = new writable(0);
+    	component_subscribe($$self, activeImageStore, value => $$invalidate(9, $activeImageStore = value));
     	let actualTitle;
     	let actualDescription;
+    	setContext("svelte-lightbox-activeImage", activeImageStore);
 
     	function header_closeButton_binding(value) {
     		closeButton = value;
-    		$$invalidate(8, closeButton);
+    		$$invalidate(6, closeButton);
     	}
 
     	const close_handler = () => dispatch("close");
 
     	function body_image_binding(value) {
     		image = value;
-    		$$invalidate(4, image);
+    		$$invalidate(3, image);
     	}
 
     	function body_protect_binding(value) {
     		protect = value;
-    		$$invalidate(5, protect);
+    		$$invalidate(4, protect);
     	}
 
     	function body_portrait_binding(value) {
     		portrait = value;
-    		$$invalidate(6, portrait);
-    	}
-
-    	function body_imagePreset_binding(value) {
-    		imagePreset = value;
-    		$$invalidate(7, imagePreset);
+    		$$invalidate(5, portrait);
     	}
 
     	function footer_title_binding(value) {
     		actualTitle = value;
-    		(((($$invalidate(10, actualTitle), $$invalidate(13, title)), $$invalidate(9, gallery)), $$invalidate(14, description)), $$invalidate(0, activeImage));
+    		(((($$invalidate(10, actualTitle), $$invalidate(15, title)), $$invalidate(7, gallery)), $$invalidate(16, description)), $$invalidate(9, $activeImageStore));
     	}
 
     	function footer_description_binding(value) {
     		actualDescription = value;
-    		(((($$invalidate(11, actualDescription), $$invalidate(14, description)), $$invalidate(9, gallery)), $$invalidate(13, title)), $$invalidate(0, activeImage));
+    		(((($$invalidate(11, actualDescription), $$invalidate(16, description)), $$invalidate(7, gallery)), $$invalidate(15, title)), $$invalidate(9, $activeImageStore));
     	}
 
     	function footer_activeImage_binding(value) {
-    		activeImage = value;
-    		$$invalidate(0, activeImage);
+    		$activeImageStore = value;
+    		activeImageStore.set($activeImageStore);
     	}
 
     	function modal_modalClasses_binding(value) {
     		modalClasses = value;
-    		$$invalidate(1, modalClasses);
+    		$$invalidate(0, modalClasses);
     	}
 
     	function modal_modalStyle_binding(value) {
     		modalStyle = value;
-    		$$invalidate(2, modalStyle);
+    		$$invalidate(1, modalStyle);
     	}
 
     	function modal_transitionDuration_binding(value) {
     		transitionDuration = value;
-    		$$invalidate(3, transitionDuration);
+    		$$invalidate(2, transitionDuration);
     	}
 
     	const click_handler = () => dispatch("modalClick");
 
     	function modalcover_transitionDuration_binding(value) {
     		transitionDuration = value;
-    		$$invalidate(3, transitionDuration);
+    		$$invalidate(2, transitionDuration);
     	}
 
     	const click_handler_1 = () => dispatch("topModalClick");
 
     	$$self.$$set = $$props => {
-    		if ("modalClasses" in $$props) $$invalidate(1, modalClasses = $$props.modalClasses);
-    		if ("modalStyle" in $$props) $$invalidate(2, modalStyle = $$props.modalStyle);
-    		if ("transitionDuration" in $$props) $$invalidate(3, transitionDuration = $$props.transitionDuration);
-    		if ("image" in $$props) $$invalidate(4, image = $$props.image);
-    		if ("protect" in $$props) $$invalidate(5, protect = $$props.protect);
-    		if ("portrait" in $$props) $$invalidate(6, portrait = $$props.portrait);
-    		if ("title" in $$props) $$invalidate(13, title = $$props.title);
-    		if ("description" in $$props) $$invalidate(14, description = $$props.description);
-    		if ("gallery" in $$props) $$invalidate(9, gallery = $$props.gallery);
-    		if ("activeImage" in $$props) $$invalidate(0, activeImage = $$props.activeImage);
-    		if ("imagePreset" in $$props) $$invalidate(7, imagePreset = $$props.imagePreset);
-    		if ("closeButton" in $$props) $$invalidate(8, closeButton = $$props.closeButton);
-    		if ("$$scope" in $$props) $$invalidate(31, $$scope = $$props.$$scope);
+    		if ("modalClasses" in $$props) $$invalidate(0, modalClasses = $$props.modalClasses);
+    		if ("modalStyle" in $$props) $$invalidate(1, modalStyle = $$props.modalStyle);
+    		if ("transitionDuration" in $$props) $$invalidate(2, transitionDuration = $$props.transitionDuration);
+    		if ("image" in $$props) $$invalidate(3, image = $$props.image);
+    		if ("protect" in $$props) $$invalidate(4, protect = $$props.protect);
+    		if ("portrait" in $$props) $$invalidate(5, portrait = $$props.portrait);
+    		if ("title" in $$props) $$invalidate(15, title = $$props.title);
+    		if ("description" in $$props) $$invalidate(16, description = $$props.description);
+    		if ("gallery" in $$props) $$invalidate(7, gallery = $$props.gallery);
+    		if ("imagePreset" in $$props) $$invalidate(8, imagePreset = $$props.imagePreset);
+    		if ("closeButton" in $$props) $$invalidate(6, closeButton = $$props.closeButton);
+    		if ("$$scope" in $$props) $$invalidate(32, $$scope = $$props.$$scope);
     	};
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*title*/ 8192) {
+    		if ($$self.$$.dirty[0] & /*title*/ 32768) {
     			// For variable title and description, we need to define this auxiliary variables
     			$$invalidate(10, actualTitle = title);
     		}
 
-    		if ($$self.$$.dirty[0] & /*description*/ 16384) {
+    		if ($$self.$$.dirty[0] & /*description*/ 65536) {
     			$$invalidate(11, actualDescription = description);
     		}
 
-    		if ($$self.$$.dirty[0] & /*gallery, title, description, activeImage*/ 25089) {
+    		if ($$self.$$.dirty[0] & /*gallery, title, description, $activeImageStore*/ 98944) {
     			// If there is not universal title or description for gallery, we will display individual title and description
     			if (gallery && !title && !description) {
-    				$$invalidate(10, actualTitle = gallery[activeImage].title);
-    				$$invalidate(11, actualDescription = gallery[activeImage].description);
+    				$$invalidate(10, actualTitle = gallery[$activeImageStore].title);
+    				$$invalidate(11, actualDescription = gallery[$activeImageStore].description);
     			}
+    		}
+
+    		if ($$self.$$.dirty[0] & /*imagePreset*/ 256) {
+    			$$invalidate(12, fullscreen = imagePreset === "fullscreen");
     		}
     	};
 
     	return [
-    		activeImage,
     		modalClasses,
     		modalStyle,
     		transitionDuration,
     		image,
     		protect,
     		portrait,
-    		imagePreset,
     		closeButton,
     		gallery,
+    		imagePreset,
+    		$activeImageStore,
     		actualTitle,
     		actualDescription,
+    		fullscreen,
     		dispatch,
+    		activeImageStore,
     		title,
     		description,
     		slots,
@@ -2254,7 +2431,6 @@
     		body_image_binding,
     		body_protect_binding,
     		body_portrait_binding,
-    		body_imagePreset_binding,
     		footer_title_binding,
     		footer_description_binding,
     		footer_activeImage_binding,
@@ -2279,18 +2455,17 @@
     			create_fragment$5,
     			safe_not_equal,
     			{
-    				modalClasses: 1,
-    				modalStyle: 2,
-    				transitionDuration: 3,
-    				image: 4,
-    				protect: 5,
-    				portrait: 6,
-    				title: 13,
-    				description: 14,
-    				gallery: 9,
-    				activeImage: 0,
-    				imagePreset: 7,
-    				closeButton: 8
+    				modalClasses: 0,
+    				modalStyle: 1,
+    				transitionDuration: 2,
+    				image: 3,
+    				protect: 4,
+    				portrait: 5,
+    				title: 15,
+    				description: 16,
+    				gallery: 7,
+    				imagePreset: 8,
+    				closeButton: 6
     			},
     			[-1, -1]
     		);
@@ -2301,8 +2476,8 @@
 
     function add_css$1() {
     	var style = element("style");
-    	style.id = "svelte-1ljh3ne-style";
-    	style.textContent = "div.svelte-1ljh3ne{max-height:inherit}.arrow.svelte-1ljh3ne{fill:none;stroke:black;stroke-linecap:round;stroke-linejoin:bevel;stroke-width:1.5px;margin:10px}button.svelte-1ljh3ne{background:transparent;color:black;border:none;font-size:1rem;width:50%;height:100%}button.svelte-1ljh3ne:active{background:transparent}button.svelte-1ljh3ne:disabled{color:gray}.wrapper.svelte-1ljh3ne{position:relative;display:flex;width:auto;height:auto}.previous-button.svelte-1ljh3ne{position:absolute;top:0;bottom:0;left:0;right:50%;z-index:4;text-align:left}.slot.svelte-1ljh3ne{order:1;display:flex;justify-content:center}.next-button.svelte-1ljh3ne{position:absolute;top:0;bottom:0;right:0;z-index:4;text-align:right}svg.svelte-1ljh3ne{height:5rem}";
+    	style.id = "svelte-1lrmlbr-style";
+    	style.textContent = "div.svelte-1lrmlbr{max-height:inherit}div.fullscreen.svelte-1lrmlbr{height:100%;width:100%}.arrow.svelte-1lrmlbr{fill:none;stroke:var(--svelte-lightbox-arrows-color);stroke-linecap:round;stroke-linejoin:bevel;stroke-width:1.5px;margin:10px}button.svelte-1lrmlbr{background:transparent;border:none;font-size:1rem;width:50%;height:100%}button.svelte-1lrmlbr:active{background:transparent}button.svelte-1lrmlbr:disabled{color:gray}button:disabled.hideDisabled.svelte-1lrmlbr{visibility:hidden}.wrapper.svelte-1lrmlbr{position:relative;display:flex;width:auto;height:auto}.previous-button.svelte-1lrmlbr{position:absolute;top:0;bottom:0;left:0;right:50%;z-index:4;text-align:left}.slot.svelte-1lrmlbr{order:1;display:flex;justify-content:center}.next-button.svelte-1lrmlbr{position:absolute;top:0;bottom:0;right:0;z-index:4;text-align:right}svg.svelte-1lrmlbr{height:5rem}";
     	append(document.head, style);
     }
 
@@ -2324,8 +2499,8 @@
     	let current;
     	let mounted;
     	let dispose;
-    	const default_slot_template = /*#slots*/ ctx[6].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[5], null);
+    	const default_slot_template = /*#slots*/ ctx[19].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[18], null);
 
     	return {
     		c() {
@@ -2342,22 +2517,26 @@
     			svg1 = svg_element("svg");
     			g1 = svg_element("g");
     			path1 = svg_element("path");
-    			attr(path0, "class", "arrow svelte-1ljh3ne");
+    			attr(path0, "class", "arrow svelte-1lrmlbr");
     			attr(path0, "d", "M8.7,7.22,4.59,11.33a1,1,0,0,0,0,1.41l4,4");
     			attr(svg0, "viewBox", "0 0 24 24");
     			attr(svg0, "xmlns", "http://www.w3.org/2000/svg");
-    			attr(svg0, "class", "svelte-1ljh3ne");
-    			button0.disabled = button0_disabled_value = /*activeImage*/ ctx[0] === 0;
-    			attr(button0, "class", "previous-button svelte-1ljh3ne");
-    			attr(div0, "class", "slot svelte-1ljh3ne");
-    			attr(path1, "class", "arrow svelte-1ljh3ne");
+    			attr(svg0, "class", "svelte-1lrmlbr");
+    			button0.disabled = button0_disabled_value = /*galleryArrowsCharacter*/ ctx[4] !== "loop" && /*activeImage*/ ctx[2] === 0;
+    			attr(button0, "class", "previous-button svelte-1lrmlbr");
+    			toggle_class(button0, "hideDisabled", /*galleryArrowsCharacter*/ ctx[4] === "hide");
+    			attr(div0, "class", "slot svelte-1lrmlbr");
     			attr(path1, "d", "M15.3,16.78l4.11-4.11a1,1,0,0,0,0-1.41l-4-4");
+    			attr(path1, "class", "arrow svelte-1lrmlbr");
     			attr(svg1, "viewBox", "0 0 24 24");
     			attr(svg1, "xmlns", "http://www.w3.org/2000/svg");
-    			attr(svg1, "class", "svelte-1ljh3ne");
-    			button1.disabled = button1_disabled_value = /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1;
-    			attr(button1, "class", "next-button svelte-1ljh3ne");
-    			attr(div1, "class", "wrapper svelte-1ljh3ne");
+    			attr(svg1, "class", "svelte-1lrmlbr");
+    			button1.disabled = button1_disabled_value = /*galleryArrowsCharacter*/ ctx[4] !== "loop" && /*activeImage*/ ctx[2] === /*images*/ ctx[1]?.length - 1;
+    			attr(button1, "class", "next-button svelte-1lrmlbr");
+    			toggle_class(button1, "hideDisabled", /*galleryArrowsCharacter*/ ctx[4] === "hide");
+    			attr(div1, "class", "wrapper svelte-1lrmlbr");
+    			set_style(div1, "--svelte-lightbox-arrows-color", /*galleryArrowsColor*/ ctx[5]);
+    			toggle_class(div1, "fullscreen", /*fullscreen*/ ctx[3]);
     		},
     		m(target, anchor) {
     			insert(target, div1, anchor);
@@ -2372,7 +2551,7 @@
     				default_slot.m(div0, null);
     			}
 
-    			/*div0_binding*/ ctx[7](div0);
+    			/*div0_binding*/ ctx[21](div0);
     			append(div1, t1);
     			append(div1, button1);
     			append(button1, svg1);
@@ -2382,26 +2561,43 @@
 
     			if (!mounted) {
     				dispose = [
-    					listen(button0, "click", /*previousImage*/ ctx[3]),
-    					listen(button1, "click", /*nextImage*/ ctx[4])
+    					listen(window, "keydown", /*keydown_handler*/ ctx[20]),
+    					listen(button0, "click", /*previousImage*/ ctx[10]),
+    					listen(button1, "click", /*nextImage*/ ctx[11])
     				];
 
     				mounted = true;
     			}
     		},
     		p(ctx, [dirty]) {
-    			if (!current || dirty & /*activeImage*/ 1 && button0_disabled_value !== (button0_disabled_value = /*activeImage*/ ctx[0] === 0)) {
+    			if (!current || dirty & /*galleryArrowsCharacter, activeImage*/ 20 && button0_disabled_value !== (button0_disabled_value = /*galleryArrowsCharacter*/ ctx[4] !== "loop" && /*activeImage*/ ctx[2] === 0)) {
     				button0.disabled = button0_disabled_value;
     			}
 
+    			if (dirty & /*galleryArrowsCharacter*/ 16) {
+    				toggle_class(button0, "hideDisabled", /*galleryArrowsCharacter*/ ctx[4] === "hide");
+    			}
+
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty & /*$$scope*/ 32)) {
-    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[5], dirty, null, null);
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 262144)) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[18], dirty, null, null);
     				}
     			}
 
-    			if (!current || dirty & /*activeImage, images*/ 5 && button1_disabled_value !== (button1_disabled_value = /*activeImage*/ ctx[0] === /*images*/ ctx[2]?.length - 1)) {
+    			if (!current || dirty & /*galleryArrowsCharacter, activeImage, images*/ 22 && button1_disabled_value !== (button1_disabled_value = /*galleryArrowsCharacter*/ ctx[4] !== "loop" && /*activeImage*/ ctx[2] === /*images*/ ctx[1]?.length - 1)) {
     				button1.disabled = button1_disabled_value;
+    			}
+
+    			if (dirty & /*galleryArrowsCharacter*/ 16) {
+    				toggle_class(button1, "hideDisabled", /*galleryArrowsCharacter*/ ctx[4] === "hide");
+    			}
+
+    			if (!current || dirty & /*galleryArrowsColor*/ 32) {
+    				set_style(div1, "--svelte-lightbox-arrows-color", /*galleryArrowsColor*/ ctx[5]);
+    			}
+
+    			if (dirty & /*fullscreen*/ 8) {
+    				toggle_class(div1, "fullscreen", /*fullscreen*/ ctx[3]);
     			}
     		},
     		i(local) {
@@ -2416,7 +2612,7 @@
     		d(detaching) {
     			if (detaching) detach(div1);
     			if (default_slot) default_slot.d(detaching);
-    			/*div0_binding*/ ctx[7](null);
+    			/*div0_binding*/ ctx[21](null);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -2424,8 +2620,25 @@
     }
 
     function instance$4($$self, $$props, $$invalidate) {
+    	let activeImage;
+    	let galleryArrowsColor;
+    	let galleryArrowsCharacter;
+    	let disableKeyboardArrowsControl;
+    	let fullscreen;
+    	let $activeImageStore;
+    	let $arrowsColorStore;
+    	let $arrowsCharacterStore;
+    	let $keyboardControlStore;
     	let { $$slots: slots = {}, $$scope } = $$props;
-    	let { activeImage = 0 } = $$props;
+    	let { imagePreset = "" } = $$props;
+    	const activeImageStore = getContext("svelte-lightbox-activeImage");
+    	component_subscribe($$self, activeImageStore, value => $$invalidate(14, $activeImageStore = value));
+    	const arrowsColorStore = new writable("black");
+    	component_subscribe($$self, arrowsColorStore, value => $$invalidate(15, $arrowsColorStore = value));
+    	const arrowsCharacterStore = new writable("unset");
+    	component_subscribe($$self, arrowsCharacterStore, value => $$invalidate(16, $arrowsCharacterStore = value));
+    	const keyboardControlStore = new writable(false);
+    	component_subscribe($$self, keyboardControlStore, value => $$invalidate(17, $keyboardControlStore = value));
 
     	// Here will be stored markup that will user put inside of this component
     	let slotContent;
@@ -2433,38 +2646,87 @@
     	// Auxiliary variable for storing elements with image that user has provided
     	let images;
 
-    	/*
-    Those functions move between active image, we dont need condition to disable their role, because this is already
-    implemented in the element section by conditionally disabling buttons, that call this function.
-
-     */
     	const previousImage = () => {
-    		$$invalidate(0, activeImage--, activeImage);
+    		if (activeImage === 0) {
+    			if (galleryArrowsCharacter === "loop") {
+    				activeImageStore.set(images.length - 1);
+    			}
+    		} else {
+    			activeImageStore.set(activeImage - 1);
+    		}
     	};
 
     	const nextImage = () => {
-    		$$invalidate(0, activeImage++, activeImage);
+    		if (activeImage === images.length - 1) {
+    			if (galleryArrowsCharacter === "loop") {
+    				activeImageStore.set(0);
+    			}
+    		} else {
+    			activeImageStore.set(activeImage + 1);
+    		}
     	};
+
+    	const handleKey = event => {
+    		if (!disableKeyboardArrowsControl) {
+    			switch (event.key) {
+    				case "ArrowLeft":
+    					{
+    						previousImage();
+    						break;
+    					}
+    				case "ArrowRight":
+    					{
+    						nextImage();
+    						break;
+    					}
+    			}
+    		}
+    	};
+
+    	setContext("svelte-lightbox-galleryArrowsColor", arrowsColorStore);
+    	setContext("svelte-lightbox-galleryArrowsCharacter", arrowsCharacterStore);
+    	setContext("svelte-lightbox-disableKeyboardArrowsControl", keyboardControlStore);
+    	const keydown_handler = event => handleKey(event);
 
     	function div0_binding($$value) {
     		binding_callbacks[$$value ? "unshift" : "push"](() => {
     			slotContent = $$value;
-    			$$invalidate(1, slotContent);
+    			$$invalidate(0, slotContent);
     		});
     	}
 
     	$$self.$$set = $$props => {
-    		if ("activeImage" in $$props) $$invalidate(0, activeImage = $$props.activeImage);
-    		if ("$$scope" in $$props) $$invalidate(5, $$scope = $$props.$$scope);
+    		if ("imagePreset" in $$props) $$invalidate(13, imagePreset = $$props.imagePreset);
+    		if ("$$scope" in $$props) $$invalidate(18, $$scope = $$props.$$scope);
     	};
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*slotContent*/ 2) {
-    			// Every time, when contents of this component changes, images will be updated
-    			$$invalidate(2, images = slotContent?.children);
+    		if ($$self.$$.dirty & /*$activeImageStore*/ 16384) {
+    			$$invalidate(2, activeImage = $activeImageStore);
     		}
 
-    		if ($$self.$$.dirty & /*images, activeImage*/ 5) {
+    		if ($$self.$$.dirty & /*$arrowsColorStore*/ 32768) {
+    			$$invalidate(5, galleryArrowsColor = $arrowsColorStore);
+    		}
+
+    		if ($$self.$$.dirty & /*$arrowsCharacterStore*/ 65536) {
+    			$$invalidate(4, galleryArrowsCharacter = $arrowsCharacterStore);
+    		}
+
+    		if ($$self.$$.dirty & /*$keyboardControlStore*/ 131072) {
+    			disableKeyboardArrowsControl = $keyboardControlStore;
+    		}
+
+    		if ($$self.$$.dirty & /*slotContent*/ 1) {
+    			// Every time, when contents of this component changes, images will be updated
+    			$$invalidate(1, images = slotContent?.children);
+    		}
+
+    		if ($$self.$$.dirty & /*imagePreset*/ 8192) {
+    			$$invalidate(3, fullscreen = imagePreset === "fullscreen");
+    		}
+
+    		if ($$self.$$.dirty & /*images, activeImage, fullscreen*/ 14) {
     			{
     				/*
     When activeImage or images array changes, checks if active image points to existing image and then displays it,
@@ -2477,7 +2739,9 @@
     						return img;
     					});
 
-    					$$invalidate(2, images[activeImage].hidden = false, images);
+    					if (!fullscreen) {
+    						$$invalidate(1, images[activeImage].hidden = false, images);
+    					}
     				} else if (images && activeImage >= images.length) {
     					console.error("LightboxGallery: Selected image doesn't exist, invalid activeImage");
     				}
@@ -2486,13 +2750,27 @@
     	};
 
     	return [
-    		activeImage,
     		slotContent,
     		images,
+    		activeImage,
+    		fullscreen,
+    		galleryArrowsCharacter,
+    		galleryArrowsColor,
+    		activeImageStore,
+    		arrowsColorStore,
+    		arrowsCharacterStore,
+    		keyboardControlStore,
     		previousImage,
     		nextImage,
+    		handleKey,
+    		imagePreset,
+    		$activeImageStore,
+    		$arrowsColorStore,
+    		$arrowsCharacterStore,
+    		$keyboardControlStore,
     		$$scope,
     		slots,
+    		keydown_handler,
     		div0_binding
     	];
     }
@@ -2500,8 +2778,8 @@
     class InternalGallery extends SvelteComponent {
     	constructor(options) {
     		super();
-    		if (!document.getElementById("svelte-1ljh3ne-style")) add_css$1();
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { activeImage: 0 });
+    		if (!document.getElementById("svelte-1lrmlbr-style")) add_css$1();
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { imagePreset: 13 });
     	}
     }
 
@@ -2614,11 +2892,11 @@
     const get_thumbnail_slot_changes = dirty => ({});
     const get_thumbnail_slot_context = ctx => ({});
 
-    // (84:4) {:else}
+    // (81:1) {:else}
     function create_else_block_1(ctx) {
     	let current;
     	const default_slot_template = /*#slots*/ ctx[22].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[39], null);
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[37], null);
 
     	return {
     		c() {
@@ -2633,8 +2911,8 @@
     		},
     		p(ctx, dirty) {
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 256)) {
-    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[39], dirty, null, null);
+    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 64)) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[37], dirty, null, null);
     				}
     			}
     		},
@@ -2653,11 +2931,11 @@
     	};
     }
 
-    // (82:4) {#if thumbnail || gallery}
-    function create_if_block_3(ctx) {
+    // (79:1) {#if thumbnail || gallery}
+    function create_if_block_4(ctx) {
     	let current;
     	const thumbnail_slot_template = /*#slots*/ ctx[22].thumbnail;
-    	const thumbnail_slot = create_slot(thumbnail_slot_template, ctx, /*$$scope*/ ctx[39], get_thumbnail_slot_context);
+    	const thumbnail_slot = create_slot(thumbnail_slot_template, ctx, /*$$scope*/ ctx[37], get_thumbnail_slot_context);
 
     	return {
     		c() {
@@ -2672,8 +2950,8 @@
     		},
     		p(ctx, dirty) {
     			if (thumbnail_slot) {
-    				if (thumbnail_slot.p && (!current || dirty[1] & /*$$scope*/ 256)) {
-    					update_slot(thumbnail_slot, thumbnail_slot_template, ctx, /*$$scope*/ ctx[39], dirty, get_thumbnail_slot_changes, get_thumbnail_slot_context);
+    				if (thumbnail_slot.p && (!current || dirty[1] & /*$$scope*/ 64)) {
+    					update_slot(thumbnail_slot, thumbnail_slot_template, ctx, /*$$scope*/ ctx[37], dirty, get_thumbnail_slot_changes, get_thumbnail_slot_context);
     				}
     			}
     		},
@@ -2692,17 +2970,17 @@
     	};
     }
 
-    // (81:0) <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
+    // (78:0) <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
     function create_default_slot_3(ctx) {
     	let current_block_type_index;
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_3, create_else_block_1];
+    	const if_block_creators = [create_if_block_4, create_else_block_1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
-    		if (/*thumbnail*/ ctx[15] || /*gallery*/ ctx[5]) return 0;
+    		if (/*thumbnail*/ ctx[14] || /*gallery*/ ctx[4]) return 0;
     		return 1;
     	}
 
@@ -2762,7 +3040,7 @@
     	};
     }
 
-    // (89:0) {#if isVisible}
+    // (86:0) {#if isVisible}
     function create_if_block(ctx) {
     	let bodychild;
     	let current;
@@ -2785,7 +3063,7 @@
     		p(ctx, dirty) {
     			const bodychild_changes = {};
 
-    			if (dirty[0] & /*modalClasses, modalStyle, transitionDuration, image, protect, portrait, title, description, gallery, activeImage, imagePreset, closeButton, thumbnail*/ 49148 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*modalClasses, modalStyle, transitionDuration, image, protect, portrait, title, description, gallery, imagePreset, closeButton, thumbnail, $$slots*/ 548860 | dirty[1] & /*$$scope*/ 64) {
     				bodychild_changes.$$scope = { dirty, ctx };
     			}
 
@@ -2806,11 +3084,11 @@
     	};
     }
 
-    // (102:3) {:else}
+    // (103:3) {:else}
     function create_else_block(ctx) {
     	let current;
     	const default_slot_template = /*#slots*/ ctx[22].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[39], null);
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[37], null);
 
     	return {
     		c() {
@@ -2825,8 +3103,8 @@
     		},
     		p(ctx, dirty) {
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 256)) {
-    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[39], dirty, null, null);
+    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 64)) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[37], dirty, null, null);
     				}
     			}
     		},
@@ -2845,27 +3123,18 @@
     	};
     }
 
-    // (96:21) 
+    // (93:21) 
     function create_if_block_2(ctx) {
     	let internalgallery;
-    	let updating_activeImage;
     	let current;
 
-    	function internalgallery_activeImage_binding(value) {
-    		/*internalgallery_activeImage_binding*/ ctx[26](value);
-    	}
-
-    	let internalgallery_props = {
-    		$$slots: { default: [create_default_slot_2] },
-    		$$scope: { ctx }
-    	};
-
-    	if (/*activeImage*/ ctx[4] !== void 0) {
-    		internalgallery_props.activeImage = /*activeImage*/ ctx[4];
-    	}
-
-    	internalgallery = new InternalGallery({ props: internalgallery_props });
-    	binding_callbacks.push(() => bind(internalgallery, "activeImage", internalgallery_activeImage_binding));
+    	internalgallery = new InternalGallery({
+    			props: {
+    				imagePreset: /*imagePreset*/ ctx[11],
+    				$$slots: { default: [create_default_slot_2] },
+    				$$scope: { ctx }
+    			}
+    		});
 
     	return {
     		c() {
@@ -2877,15 +3146,10 @@
     		},
     		p(ctx, dirty) {
     			const internalgallery_changes = {};
+    			if (dirty[0] & /*imagePreset*/ 2048) internalgallery_changes.imagePreset = /*imagePreset*/ ctx[11];
 
-    			if (dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*$$slots*/ 524288 | dirty[1] & /*$$scope*/ 64) {
     				internalgallery_changes.$$scope = { dirty, ctx };
-    			}
-
-    			if (!updating_activeImage && dirty[0] & /*activeImage*/ 16) {
-    				updating_activeImage = true;
-    				internalgallery_changes.activeImage = /*activeImage*/ ctx[4];
-    				add_flush_callback(() => updating_activeImage = false);
     			}
 
     			internalgallery.$set(internalgallery_changes);
@@ -2905,11 +3169,11 @@
     	};
     }
 
-    // (94:3) {#if thumbnail}
+    // (91:3) {#if thumbnail}
     function create_if_block_1(ctx) {
     	let current;
     	const image_slot_template = /*#slots*/ ctx[22].image;
-    	const image_slot = create_slot(image_slot_template, ctx, /*$$scope*/ ctx[39], get_image_slot_context);
+    	const image_slot = create_slot(image_slot_template, ctx, /*$$scope*/ ctx[37], get_image_slot_context);
 
     	return {
     		c() {
@@ -2924,8 +3188,8 @@
     		},
     		p(ctx, dirty) {
     			if (image_slot) {
-    				if (image_slot.p && (!current || dirty[1] & /*$$scope*/ 256)) {
-    					update_slot(image_slot, image_slot_template, ctx, /*$$scope*/ ctx[39], dirty, get_image_slot_changes, get_image_slot_context);
+    				if (image_slot.p && (!current || dirty[1] & /*$$scope*/ 64)) {
+    					update_slot(image_slot, image_slot_template, ctx, /*$$scope*/ ctx[37], dirty, get_image_slot_changes, get_image_slot_context);
     				}
     			}
     		},
@@ -2944,26 +3208,66 @@
     	};
     }
 
-    // (97:4) <InternalGallery bind:activeImage>
-    function create_default_slot_2(ctx) {
-    	let t;
+    // (95:5) {#if $$slots.thumbnail}
+    function create_if_block_3(ctx) {
+    	let div;
     	let current;
     	const thumbnail_slot_template = /*#slots*/ ctx[22].thumbnail;
-    	const thumbnail_slot = create_slot(thumbnail_slot_template, ctx, /*$$scope*/ ctx[39], get_thumbnail_slot_context_1);
-    	const default_slot_template = /*#slots*/ ctx[22].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[39], null);
+    	const thumbnail_slot = create_slot(thumbnail_slot_template, ctx, /*$$scope*/ ctx[37], get_thumbnail_slot_context_1);
 
     	return {
     		c() {
+    			div = element("div");
     			if (thumbnail_slot) thumbnail_slot.c();
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+
+    			if (thumbnail_slot) {
+    				thumbnail_slot.m(div, null);
+    			}
+
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (thumbnail_slot) {
+    				if (thumbnail_slot.p && (!current || dirty[1] & /*$$scope*/ 64)) {
+    					update_slot(thumbnail_slot, thumbnail_slot_template, ctx, /*$$scope*/ ctx[37], dirty, get_thumbnail_slot_changes_1, get_thumbnail_slot_context_1);
+    				}
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(thumbnail_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(thumbnail_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div);
+    			if (thumbnail_slot) thumbnail_slot.d(detaching);
+    		}
+    	};
+    }
+
+    // (94:4) <InternalGallery {imagePreset}>
+    function create_default_slot_2(ctx) {
+    	let t;
+    	let current;
+    	let if_block = /*$$slots*/ ctx[19].thumbnail && create_if_block_3(ctx);
+    	const default_slot_template = /*#slots*/ ctx[22].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[37], null);
+
+    	return {
+    		c() {
+    			if (if_block) if_block.c();
     			t = space();
     			if (default_slot) default_slot.c();
     		},
     		m(target, anchor) {
-    			if (thumbnail_slot) {
-    				thumbnail_slot.m(target, anchor);
-    			}
-
+    			if (if_block) if_block.m(target, anchor);
     			insert(target, t, anchor);
 
     			if (default_slot) {
@@ -2973,38 +3277,55 @@
     			current = true;
     		},
     		p(ctx, dirty) {
-    			if (thumbnail_slot) {
-    				if (thumbnail_slot.p && (!current || dirty[1] & /*$$scope*/ 256)) {
-    					update_slot(thumbnail_slot, thumbnail_slot_template, ctx, /*$$scope*/ ctx[39], dirty, get_thumbnail_slot_changes_1, get_thumbnail_slot_context_1);
+    			if (/*$$slots*/ ctx[19].thumbnail) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty[0] & /*$$slots*/ 524288) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block_3(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t.parentNode, t);
     				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
     			}
 
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 256)) {
-    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[39], dirty, null, null);
+    				if (default_slot.p && (!current || dirty[1] & /*$$scope*/ 64)) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[37], dirty, null, null);
     				}
     			}
     		},
     		i(local) {
     			if (current) return;
-    			transition_in(thumbnail_slot, local);
+    			transition_in(if_block);
     			transition_in(default_slot, local);
     			current = true;
     		},
     		o(local) {
-    			transition_out(thumbnail_slot, local);
+    			transition_out(if_block);
     			transition_out(default_slot, local);
     			current = false;
     		},
     		d(detaching) {
-    			if (thumbnail_slot) thumbnail_slot.d(detaching);
+    			if (if_block) if_block.d(detaching);
     			if (detaching) detach(t);
     			if (default_slot) default_slot.d(detaching);
     		}
     	};
     }
 
-    // (91:2) <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect          bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton          on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
+    // (88:2) <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect          bind:portrait bind:title bind:description bind:gallery bind:imagePreset bind:closeButton          on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
     function create_default_slot_1(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -3014,8 +3335,8 @@
     	const if_blocks = [];
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*thumbnail*/ ctx[15]) return 0;
-    		if (/*gallery*/ ctx[5]) return 1;
+    		if (/*thumbnail*/ ctx[14]) return 0;
+    		if (/*gallery*/ ctx[4]) return 1;
     		return 2;
     	}
 
@@ -3075,7 +3396,7 @@
     	};
     }
 
-    // (90:1) <BodyChild>
+    // (87:1) <BodyChild>
     function create_default_slot(ctx) {
     	let modal;
     	let updating_modalClasses;
@@ -3087,57 +3408,52 @@
     	let updating_title;
     	let updating_description;
     	let updating_gallery;
-    	let updating_activeImage;
     	let updating_imagePreset;
     	let updating_closeButton;
     	let current;
 
     	function modal_modalClasses_binding(value) {
-    		/*modal_modalClasses_binding*/ ctx[27](value);
+    		/*modal_modalClasses_binding*/ ctx[26](value);
     	}
 
     	function modal_modalStyle_binding(value) {
-    		/*modal_modalStyle_binding*/ ctx[28](value);
+    		/*modal_modalStyle_binding*/ ctx[27](value);
     	}
 
     	function modal_transitionDuration_binding(value) {
-    		/*modal_transitionDuration_binding*/ ctx[29](value);
+    		/*modal_transitionDuration_binding*/ ctx[28](value);
     	}
 
     	function modal_image_binding(value) {
-    		/*modal_image_binding*/ ctx[30](value);
+    		/*modal_image_binding*/ ctx[29](value);
     	}
 
     	function modal_protect_binding(value) {
-    		/*modal_protect_binding*/ ctx[31](value);
+    		/*modal_protect_binding*/ ctx[30](value);
     	}
 
     	function modal_portrait_binding(value) {
-    		/*modal_portrait_binding*/ ctx[32](value);
+    		/*modal_portrait_binding*/ ctx[31](value);
     	}
 
     	function modal_title_binding(value) {
-    		/*modal_title_binding*/ ctx[33](value);
+    		/*modal_title_binding*/ ctx[32](value);
     	}
 
     	function modal_description_binding(value) {
-    		/*modal_description_binding*/ ctx[34](value);
+    		/*modal_description_binding*/ ctx[33](value);
     	}
 
     	function modal_gallery_binding(value) {
-    		/*modal_gallery_binding*/ ctx[35](value);
-    	}
-
-    	function modal_activeImage_binding(value) {
-    		/*modal_activeImage_binding*/ ctx[36](value);
+    		/*modal_gallery_binding*/ ctx[34](value);
     	}
 
     	function modal_imagePreset_binding(value) {
-    		/*modal_imagePreset_binding*/ ctx[37](value);
+    		/*modal_imagePreset_binding*/ ctx[35](value);
     	}
 
     	function modal_closeButton_binding(value) {
-    		/*modal_closeButton_binding*/ ctx[38](value);
+    		/*modal_closeButton_binding*/ ctx[36](value);
     	}
 
     	let modal_props = {
@@ -3153,44 +3469,40 @@
     		modal_props.modalStyle = /*modalStyle*/ ctx[3];
     	}
 
-    	if (/*transitionDuration*/ ctx[8] !== void 0) {
-    		modal_props.transitionDuration = /*transitionDuration*/ ctx[8];
+    	if (/*transitionDuration*/ ctx[7] !== void 0) {
+    		modal_props.transitionDuration = /*transitionDuration*/ ctx[7];
     	}
 
-    	if (/*image*/ ctx[10] !== void 0) {
-    		modal_props.image = /*image*/ ctx[10];
+    	if (/*image*/ ctx[9] !== void 0) {
+    		modal_props.image = /*image*/ ctx[9];
     	}
 
-    	if (/*protect*/ ctx[9] !== void 0) {
-    		modal_props.protect = /*protect*/ ctx[9];
+    	if (/*protect*/ ctx[8] !== void 0) {
+    		modal_props.protect = /*protect*/ ctx[8];
     	}
 
-    	if (/*portrait*/ ctx[11] !== void 0) {
-    		modal_props.portrait = /*portrait*/ ctx[11];
+    	if (/*portrait*/ ctx[10] !== void 0) {
+    		modal_props.portrait = /*portrait*/ ctx[10];
     	}
 
-    	if (/*title*/ ctx[6] !== void 0) {
-    		modal_props.title = /*title*/ ctx[6];
+    	if (/*title*/ ctx[5] !== void 0) {
+    		modal_props.title = /*title*/ ctx[5];
     	}
 
-    	if (/*description*/ ctx[7] !== void 0) {
-    		modal_props.description = /*description*/ ctx[7];
+    	if (/*description*/ ctx[6] !== void 0) {
+    		modal_props.description = /*description*/ ctx[6];
     	}
 
-    	if (/*gallery*/ ctx[5] !== void 0) {
-    		modal_props.gallery = /*gallery*/ ctx[5];
+    	if (/*gallery*/ ctx[4] !== void 0) {
+    		modal_props.gallery = /*gallery*/ ctx[4];
     	}
 
-    	if (/*activeImage*/ ctx[4] !== void 0) {
-    		modal_props.activeImage = /*activeImage*/ ctx[4];
+    	if (/*imagePreset*/ ctx[11] !== void 0) {
+    		modal_props.imagePreset = /*imagePreset*/ ctx[11];
     	}
 
-    	if (/*imagePreset*/ ctx[12] !== void 0) {
-    		modal_props.imagePreset = /*imagePreset*/ ctx[12];
-    	}
-
-    	if (/*closeButton*/ ctx[13] !== void 0) {
-    		modal_props.closeButton = /*closeButton*/ ctx[13];
+    	if (/*closeButton*/ ctx[12] !== void 0) {
+    		modal_props.closeButton = /*closeButton*/ ctx[12];
     	}
 
     	modal = new Index({ props: modal_props });
@@ -3203,12 +3515,11 @@
     	binding_callbacks.push(() => bind(modal, "title", modal_title_binding));
     	binding_callbacks.push(() => bind(modal, "description", modal_description_binding));
     	binding_callbacks.push(() => bind(modal, "gallery", modal_gallery_binding));
-    	binding_callbacks.push(() => bind(modal, "activeImage", modal_activeImage_binding));
     	binding_callbacks.push(() => bind(modal, "imagePreset", modal_imagePreset_binding));
     	binding_callbacks.push(() => bind(modal, "closeButton", modal_closeButton_binding));
-    	modal.$on("close", /*close*/ ctx[17]);
-    	modal.$on("topModalClick", /*coverClick*/ ctx[18]);
-    	modal.$on("modalClick", /*modalClick*/ ctx[19]);
+    	modal.$on("close", /*close*/ ctx[16]);
+    	modal.$on("topModalClick", /*coverClick*/ ctx[17]);
+    	modal.$on("modalClick", /*modalClick*/ ctx[18]);
 
     	return {
     		c() {
@@ -3221,7 +3532,7 @@
     		p(ctx, dirty) {
     			const modal_changes = {};
 
-    			if (dirty[0] & /*thumbnail, activeImage, gallery*/ 32816 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*thumbnail, imagePreset, $$slots, gallery*/ 542736 | dirty[1] & /*$$scope*/ 64) {
     				modal_changes.$$scope = { dirty, ctx };
     			}
 
@@ -3237,63 +3548,57 @@
     				add_flush_callback(() => updating_modalStyle = false);
     			}
 
-    			if (!updating_transitionDuration && dirty[0] & /*transitionDuration*/ 256) {
+    			if (!updating_transitionDuration && dirty[0] & /*transitionDuration*/ 128) {
     				updating_transitionDuration = true;
-    				modal_changes.transitionDuration = /*transitionDuration*/ ctx[8];
+    				modal_changes.transitionDuration = /*transitionDuration*/ ctx[7];
     				add_flush_callback(() => updating_transitionDuration = false);
     			}
 
-    			if (!updating_image && dirty[0] & /*image*/ 1024) {
+    			if (!updating_image && dirty[0] & /*image*/ 512) {
     				updating_image = true;
-    				modal_changes.image = /*image*/ ctx[10];
+    				modal_changes.image = /*image*/ ctx[9];
     				add_flush_callback(() => updating_image = false);
     			}
 
-    			if (!updating_protect && dirty[0] & /*protect*/ 512) {
+    			if (!updating_protect && dirty[0] & /*protect*/ 256) {
     				updating_protect = true;
-    				modal_changes.protect = /*protect*/ ctx[9];
+    				modal_changes.protect = /*protect*/ ctx[8];
     				add_flush_callback(() => updating_protect = false);
     			}
 
-    			if (!updating_portrait && dirty[0] & /*portrait*/ 2048) {
+    			if (!updating_portrait && dirty[0] & /*portrait*/ 1024) {
     				updating_portrait = true;
-    				modal_changes.portrait = /*portrait*/ ctx[11];
+    				modal_changes.portrait = /*portrait*/ ctx[10];
     				add_flush_callback(() => updating_portrait = false);
     			}
 
-    			if (!updating_title && dirty[0] & /*title*/ 64) {
+    			if (!updating_title && dirty[0] & /*title*/ 32) {
     				updating_title = true;
-    				modal_changes.title = /*title*/ ctx[6];
+    				modal_changes.title = /*title*/ ctx[5];
     				add_flush_callback(() => updating_title = false);
     			}
 
-    			if (!updating_description && dirty[0] & /*description*/ 128) {
+    			if (!updating_description && dirty[0] & /*description*/ 64) {
     				updating_description = true;
-    				modal_changes.description = /*description*/ ctx[7];
+    				modal_changes.description = /*description*/ ctx[6];
     				add_flush_callback(() => updating_description = false);
     			}
 
-    			if (!updating_gallery && dirty[0] & /*gallery*/ 32) {
+    			if (!updating_gallery && dirty[0] & /*gallery*/ 16) {
     				updating_gallery = true;
-    				modal_changes.gallery = /*gallery*/ ctx[5];
+    				modal_changes.gallery = /*gallery*/ ctx[4];
     				add_flush_callback(() => updating_gallery = false);
     			}
 
-    			if (!updating_activeImage && dirty[0] & /*activeImage*/ 16) {
-    				updating_activeImage = true;
-    				modal_changes.activeImage = /*activeImage*/ ctx[4];
-    				add_flush_callback(() => updating_activeImage = false);
-    			}
-
-    			if (!updating_imagePreset && dirty[0] & /*imagePreset*/ 4096) {
+    			if (!updating_imagePreset && dirty[0] & /*imagePreset*/ 2048) {
     				updating_imagePreset = true;
-    				modal_changes.imagePreset = /*imagePreset*/ ctx[12];
+    				modal_changes.imagePreset = /*imagePreset*/ ctx[11];
     				add_flush_callback(() => updating_imagePreset = false);
     			}
 
-    			if (!updating_closeButton && dirty[0] & /*closeButton*/ 8192) {
+    			if (!updating_closeButton && dirty[0] & /*closeButton*/ 4096) {
     				updating_closeButton = true;
-    				modal_changes.closeButton = /*closeButton*/ ctx[13];
+    				modal_changes.closeButton = /*closeButton*/ ctx[12];
     				add_flush_callback(() => updating_closeButton = false);
     			}
 
@@ -3348,16 +3653,16 @@
     		thumbnail_1_props.thumbnailStyle = /*thumbnailStyle*/ ctx[1];
     	}
 
-    	if (/*protect*/ ctx[9] !== void 0) {
-    		thumbnail_1_props.protect = /*protect*/ ctx[9];
+    	if (/*protect*/ ctx[8] !== void 0) {
+    		thumbnail_1_props.protect = /*protect*/ ctx[8];
     	}
 
     	thumbnail_1 = new LightboxThumbnail({ props: thumbnail_1_props });
     	binding_callbacks.push(() => bind(thumbnail_1, "thumbnailClasses", thumbnail_1_thumbnailClasses_binding));
     	binding_callbacks.push(() => bind(thumbnail_1, "thumbnailStyle", thumbnail_1_thumbnailStyle_binding));
     	binding_callbacks.push(() => bind(thumbnail_1, "protect", thumbnail_1_protect_binding));
-    	thumbnail_1.$on("click", /*toggle*/ ctx[16]);
-    	let if_block = /*isVisible*/ ctx[14] && create_if_block(ctx);
+    	thumbnail_1.$on("click", /*toggle*/ ctx[15]);
+    	let if_block = /*isVisible*/ ctx[13] && create_if_block(ctx);
 
     	return {
     		c() {
@@ -3376,7 +3681,7 @@
     		p(ctx, dirty) {
     			const thumbnail_1_changes = {};
 
-    			if (dirty[0] & /*thumbnail, gallery*/ 32800 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*thumbnail, gallery*/ 16400 | dirty[1] & /*$$scope*/ 64) {
     				thumbnail_1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -3392,19 +3697,19 @@
     				add_flush_callback(() => updating_thumbnailStyle = false);
     			}
 
-    			if (!updating_protect && dirty[0] & /*protect*/ 512) {
+    			if (!updating_protect && dirty[0] & /*protect*/ 256) {
     				updating_protect = true;
-    				thumbnail_1_changes.protect = /*protect*/ ctx[9];
+    				thumbnail_1_changes.protect = /*protect*/ ctx[8];
     				add_flush_callback(() => updating_protect = false);
     			}
 
     			thumbnail_1.$set(thumbnail_1_changes);
 
-    			if (/*isVisible*/ ctx[14]) {
+    			if (/*isVisible*/ ctx[13]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty[0] & /*isVisible*/ 16384) {
+    					if (dirty[0] & /*isVisible*/ 8192) {
     						transition_in(if_block, 1);
     					}
     				} else {
@@ -3445,11 +3750,11 @@
 
     function instance$2($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
+    	const $$slots = compute_slots(slots);
     	let { thumbnailClasses = "" } = $$props;
     	let { thumbnailStyle = "" } = $$props;
     	let { modalClasses = "" } = $$props;
     	let { modalStyle = "" } = $$props;
-    	let { activeImage = 0 } = $$props;
     	let { gallery = false } = $$props;
     	let { title = "" } = $$props;
     	let { description = "" } = $$props;
@@ -3466,12 +3771,12 @@
     	let modalClicked = false;
 
     	const toggle = () => {
-    		$$invalidate(14, isVisible = !isVisible);
+    		$$invalidate(13, isVisible = !isVisible);
     		toggleScroll();
     	};
 
     	const close = () => {
-    		$$invalidate(14, isVisible = false);
+    		$$invalidate(13, isVisible = false);
     		toggleScroll();
     	};
 
@@ -3519,12 +3824,7 @@
 
     	function thumbnail_1_protect_binding(value) {
     		protect = value;
-    		$$invalidate(9, protect);
-    	}
-
-    	function internalgallery_activeImage_binding(value) {
-    		activeImage = value;
-    		$$invalidate(4, activeImage);
+    		$$invalidate(8, protect);
     	}
 
     	function modal_modalClasses_binding(value) {
@@ -3539,52 +3839,47 @@
 
     	function modal_transitionDuration_binding(value) {
     		transitionDuration = value;
-    		$$invalidate(8, transitionDuration);
+    		$$invalidate(7, transitionDuration);
     	}
 
     	function modal_image_binding(value) {
     		image = value;
-    		$$invalidate(10, image);
+    		$$invalidate(9, image);
     	}
 
     	function modal_protect_binding(value) {
     		protect = value;
-    		$$invalidate(9, protect);
+    		$$invalidate(8, protect);
     	}
 
     	function modal_portrait_binding(value) {
     		portrait = value;
-    		$$invalidate(11, portrait);
+    		$$invalidate(10, portrait);
     	}
 
     	function modal_title_binding(value) {
     		title = value;
-    		$$invalidate(6, title);
+    		$$invalidate(5, title);
     	}
 
     	function modal_description_binding(value) {
     		description = value;
-    		$$invalidate(7, description);
+    		$$invalidate(6, description);
     	}
 
     	function modal_gallery_binding(value) {
     		gallery = value;
-    		$$invalidate(5, gallery);
-    	}
-
-    	function modal_activeImage_binding(value) {
-    		activeImage = value;
-    		$$invalidate(4, activeImage);
+    		$$invalidate(4, gallery);
     	}
 
     	function modal_imagePreset_binding(value) {
     		imagePreset = value;
-    		$$invalidate(12, imagePreset);
+    		$$invalidate(11, imagePreset);
     	}
 
     	function modal_closeButton_binding(value) {
     		closeButton = value;
-    		$$invalidate(13, closeButton);
+    		$$invalidate(12, closeButton);
     	}
 
     	$$self.$$set = $$props => {
@@ -3592,21 +3887,20 @@
     		if ("thumbnailStyle" in $$props) $$invalidate(1, thumbnailStyle = $$props.thumbnailStyle);
     		if ("modalClasses" in $$props) $$invalidate(2, modalClasses = $$props.modalClasses);
     		if ("modalStyle" in $$props) $$invalidate(3, modalStyle = $$props.modalStyle);
-    		if ("activeImage" in $$props) $$invalidate(4, activeImage = $$props.activeImage);
-    		if ("gallery" in $$props) $$invalidate(5, gallery = $$props.gallery);
-    		if ("title" in $$props) $$invalidate(6, title = $$props.title);
-    		if ("description" in $$props) $$invalidate(7, description = $$props.description);
-    		if ("transitionDuration" in $$props) $$invalidate(8, transitionDuration = $$props.transitionDuration);
-    		if ("protect" in $$props) $$invalidate(9, protect = $$props.protect);
-    		if ("image" in $$props) $$invalidate(10, image = $$props.image);
-    		if ("portrait" in $$props) $$invalidate(11, portrait = $$props.portrait);
+    		if ("gallery" in $$props) $$invalidate(4, gallery = $$props.gallery);
+    		if ("title" in $$props) $$invalidate(5, title = $$props.title);
+    		if ("description" in $$props) $$invalidate(6, description = $$props.description);
+    		if ("transitionDuration" in $$props) $$invalidate(7, transitionDuration = $$props.transitionDuration);
+    		if ("protect" in $$props) $$invalidate(8, protect = $$props.protect);
+    		if ("image" in $$props) $$invalidate(9, image = $$props.image);
+    		if ("portrait" in $$props) $$invalidate(10, portrait = $$props.portrait);
     		if ("noScroll" in $$props) $$invalidate(20, noScroll = $$props.noScroll);
-    		if ("thumbnail" in $$props) $$invalidate(15, thumbnail = $$props.thumbnail);
-    		if ("imagePreset" in $$props) $$invalidate(12, imagePreset = $$props.imagePreset);
+    		if ("thumbnail" in $$props) $$invalidate(14, thumbnail = $$props.thumbnail);
+    		if ("imagePreset" in $$props) $$invalidate(11, imagePreset = $$props.imagePreset);
     		if ("clickToClose" in $$props) $$invalidate(21, clickToClose = $$props.clickToClose);
-    		if ("closeButton" in $$props) $$invalidate(13, closeButton = $$props.closeButton);
-    		if ("isVisible" in $$props) $$invalidate(14, isVisible = $$props.isVisible);
-    		if ("$$scope" in $$props) $$invalidate(39, $$scope = $$props.$$scope);
+    		if ("closeButton" in $$props) $$invalidate(12, closeButton = $$props.closeButton);
+    		if ("isVisible" in $$props) $$invalidate(13, isVisible = $$props.isVisible);
+    		if ("$$scope" in $$props) $$invalidate(37, $$scope = $$props.$$scope);
     	};
 
     	return [
@@ -3614,7 +3908,6 @@
     		thumbnailStyle,
     		modalClasses,
     		modalStyle,
-    		activeImage,
     		gallery,
     		title,
     		description,
@@ -3630,13 +3923,13 @@
     		close,
     		coverClick,
     		modalClick,
+    		$$slots,
     		noScroll,
     		clickToClose,
     		slots,
     		thumbnail_1_thumbnailClasses_binding,
     		thumbnail_1_thumbnailStyle_binding,
     		thumbnail_1_protect_binding,
-    		internalgallery_activeImage_binding,
     		modal_modalClasses_binding,
     		modal_modalStyle_binding,
     		modal_transitionDuration_binding,
@@ -3646,7 +3939,6 @@
     		modal_title_binding,
     		modal_description_binding,
     		modal_gallery_binding,
-    		modal_activeImage_binding,
     		modal_imagePreset_binding,
     		modal_closeButton_binding,
     		$$scope
@@ -3668,20 +3960,19 @@
     				thumbnailStyle: 1,
     				modalClasses: 2,
     				modalStyle: 3,
-    				activeImage: 4,
-    				gallery: 5,
-    				title: 6,
-    				description: 7,
-    				transitionDuration: 8,
-    				protect: 9,
-    				image: 10,
-    				portrait: 11,
+    				gallery: 4,
+    				title: 5,
+    				description: 6,
+    				transitionDuration: 7,
+    				protect: 8,
+    				image: 9,
+    				portrait: 10,
     				noScroll: 20,
-    				thumbnail: 15,
-    				imagePreset: 12,
+    				thumbnail: 14,
+    				imagePreset: 11,
     				clickToClose: 21,
-    				closeButton: 13,
-    				isVisible: 14
+    				closeButton: 12,
+    				isVisible: 13
     			},
     			[-1, -1]
     		);
@@ -3779,15 +4070,14 @@
     }
 
     /* src/Gallery/ExternalGallery.svelte generated by Svelte v3.38.2 */
-
     const get_default_slot_spread_changes = dirty => dirty & /*$$restProps*/ 1 > 0 ? -1 : 0;
     const get_default_slot_changes = dirty => ({});
     const get_default_slot_context = ctx => ({ .../*$$restProps*/ ctx[0] });
 
     function create_fragment(ctx) {
     	let current;
-    	const default_slot_template = /*#slots*/ ctx[2].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[1], get_default_slot_context);
+    	const default_slot_template = /*#slots*/ ctx[6].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[5], get_default_slot_context);
 
     	return {
     		c() {
@@ -3802,8 +4092,8 @@
     		},
     		p(ctx, [dirty]) {
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty & /*$$scope, $$restProps*/ 3)) {
-    					update_slot_spread(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[1], dirty, get_default_slot_changes, get_default_slot_spread_changes, get_default_slot_context);
+    				if (default_slot.p && (!current || dirty & /*$$scope, $$restProps*/ 33)) {
+    					update_slot_spread(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[5], dirty, get_default_slot_changes, get_default_slot_spread_changes, get_default_slot_context);
     				}
     			}
     		},
@@ -3823,23 +4113,70 @@
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	const omit_props_names = [];
+    	const omit_props_names = [
+    		"activeImage","galleryArrowsColor","galleryArrowsCharacter","disableKeyboardArrowsControl"
+    	];
+
     	let $$restProps = compute_rest_props($$props, omit_props_names);
     	let { $$slots: slots = {}, $$scope } = $$props;
+    	let { activeImage = 0 } = $$props;
+    	let { galleryArrowsColor = "black" } = $$props;
+    	let { galleryArrowsCharacter = "unset" } = $$props;
+    	let { disableKeyboardArrowsControl = false } = $$props;
+    	const activeImageStore = getContext("svelte-lightbox-activeImage");
+    	const arrowsColorStore = getContext("svelte-lightbox-galleryArrowsColor");
+    	const arrowsCharacterStore = getContext("svelte-lightbox-galleryArrowsCharacter");
+    	const keyboardControlStore = getContext("svelte-lightbox-disableKeyboardArrowsControl");
 
     	$$self.$$set = $$new_props => {
     		$$props = assign(assign({}, $$props), exclude_internal_props($$new_props));
     		$$invalidate(0, $$restProps = compute_rest_props($$props, omit_props_names));
-    		if ("$$scope" in $$new_props) $$invalidate(1, $$scope = $$new_props.$$scope);
+    		if ("activeImage" in $$new_props) $$invalidate(1, activeImage = $$new_props.activeImage);
+    		if ("galleryArrowsColor" in $$new_props) $$invalidate(2, galleryArrowsColor = $$new_props.galleryArrowsColor);
+    		if ("galleryArrowsCharacter" in $$new_props) $$invalidate(3, galleryArrowsCharacter = $$new_props.galleryArrowsCharacter);
+    		if ("disableKeyboardArrowsControl" in $$new_props) $$invalidate(4, disableKeyboardArrowsControl = $$new_props.disableKeyboardArrowsControl);
+    		if ("$$scope" in $$new_props) $$invalidate(5, $$scope = $$new_props.$$scope);
     	};
 
-    	return [$$restProps, $$scope, slots];
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*activeImage*/ 2) {
+    			activeImageStore.set(activeImage);
+    		}
+
+    		if ($$self.$$.dirty & /*galleryArrowsColor*/ 4) {
+    			arrowsColorStore.set(galleryArrowsColor);
+    		}
+
+    		if ($$self.$$.dirty & /*galleryArrowsCharacter*/ 8) {
+    			arrowsCharacterStore.set(galleryArrowsCharacter);
+    		}
+
+    		if ($$self.$$.dirty & /*disableKeyboardArrowsControl*/ 16) {
+    			keyboardControlStore.set(disableKeyboardArrowsControl);
+    		}
+    	};
+
+    	return [
+    		$$restProps,
+    		activeImage,
+    		galleryArrowsColor,
+    		galleryArrowsCharacter,
+    		disableKeyboardArrowsControl,
+    		$$scope,
+    		slots
+    	];
     }
 
     class ExternalGallery extends SvelteComponent {
     	constructor(options) {
     		super();
-    		init(this, options, instance, create_fragment, safe_not_equal, {});
+
+    		init(this, options, instance, create_fragment, safe_not_equal, {
+    			activeImage: 1,
+    			galleryArrowsColor: 2,
+    			galleryArrowsCharacter: 3,
+    			disableKeyboardArrowsControl: 4
+    		});
     	}
     }
 
