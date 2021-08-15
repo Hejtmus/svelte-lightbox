@@ -132,11 +132,6 @@ So, there are options for customizing your Lightbox component.
 
 These props are customizable:
 
-### thumbnail `boolean`
-
-Enables thumbnail to be different from an actual image. In that case thumbnail has to be included as child component with
-prop slot equal to "thumbnail". Default `false`.
-
 ### thumbnailClasses `string`
 
 Standard HTML "class" for lightbox thumbnail parent div, this class applies to both, automatically generated thumbnail 
@@ -192,11 +187,6 @@ Disables body scrolling while in lightbox mode, default `true`.
 
 Array containing objects with Lightbox descriptions and titles. Optional, if you don't need image specific title and 
 description, you can specify universal by passing props *title* and *description* to `<Lightbox>` component.
-  
-### activeImage `number` 
-
-Number that points set visibility of image. Also optional, this is used for programmatic selecting of visible image when 
-Lightbox is opened.
 
 ### imagePreset `string` 
 
@@ -241,6 +231,11 @@ Standard HTML "class" for lightbox thumbnail, classes are separated by space, ju
 Standard HTML "style" for lightbox thumbnail, similar to thumbnailStyle. 
 
 ## `<LightboxGallery>`
+
+### activeImage `number`
+
+Number that points set visibility of image. Also optional, this is used for programmatic selecting of visible image when
+Lightbox is opened.
 
 ### galleryArrowsColor `string`
 

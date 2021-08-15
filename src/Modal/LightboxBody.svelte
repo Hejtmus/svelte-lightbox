@@ -22,6 +22,9 @@
                       imageElement = imageWrapper[i].firstChild
                   }
               }
+              if (!imageElement) {
+                  imageElement = imageWrapper[1].firstChild
+              }
           } else {
               // In case of classic lightbox, we just grab image that is first child
               imageElement = imageParent.firstChild;

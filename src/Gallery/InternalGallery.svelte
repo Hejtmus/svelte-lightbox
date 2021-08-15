@@ -3,8 +3,8 @@
     import {getContext, setContext} from "svelte";
     import {writable} from "svelte/store";
 
-    export let activeImage = 0;
     export let imagePreset = '';
+    const activeImageStore = new writable(0);
     const arrowsColorStore = new writable('black');
     const arrowsCharacterStore = new writable('unset');
     const keyboardControlStore = new writable(false);
@@ -46,10 +46,12 @@
         }
     };
 
+    setContext('svelte-lightbox-activeImage', activeImageStore)
     setContext('svelte-lightbox-galleryArrowsColor', arrowsColorStore)
     setContext('svelte-lightbox-galleryArrowsCharacter', arrowsCharacterStore)
     setContext('svelte-lightbox-disableKeyboardArrowsControl', keyboardControlStore)
 
+    $: activeImage = $activeImageStore;
     $: galleryArrowsColor = $arrowsColorStore;
     $: galleryArrowsCharacter = $arrowsCharacterStore;
     $: disableKeyboardArrowsControl = $keyboardControlStore;

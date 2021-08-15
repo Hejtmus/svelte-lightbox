@@ -11,8 +11,6 @@
     //exporting classes, for passing classes into wrapper
     export let modalClasses = '';
     export let modalStyle = '';
-    //number that hold which image is active
-    export let activeImage = 0;
     //array with image descriptions
     export let gallery = false;
     //getting universal title and descriptions
@@ -28,7 +26,6 @@
     export let portrait = false;
     //disables scrolling <body>
     export let noScroll = true;
-    export let thumbnail = false;
     export let imagePreset = false;
     export let clickToClose = false;
     export let closeButton = true;
@@ -78,11 +75,11 @@
 </script>
 
 <Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
-    {#if thumbnail || gallery}
-        <slot name="thumbnail"/>
-    {:else}
-        <slot/>
-    {/if}
+	{#if $$slots.thumbnail || gallery}
+		<slot name="thumbnail"/>
+	{:else}
+		<slot/>
+	{/if}
 </Thumbnail>
 
 {#if isVisible}
@@ -90,13 +87,15 @@
 		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
 		       bind:portrait bind:title bind:description bind:gallery bind:activeImage bind:imagePreset bind:closeButton
 		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-			{#if thumbnail}
+			{#if $$slots.thumbnail}
 				<slot name="image"/>
 			{:else if gallery}
-				<InternalGallery bind:activeImage {imagePreset}>
-					<div>
-						<slot name="thumbnail"/>
-					</div>
+				<InternalGallery {imagePreset}>
+					{#if $$slots.thumbnail}
+						<div>
+							<slot name="thumbnail"/>
+						</div>
+					{/if}
 					<slot>
 					</slot>
 				</InternalGallery>
