@@ -1,0 +1,19 @@
+{
+    "fit": {
+        "width": "",
+        "maxWidth": "80vw",
+        "height": "",
+        "maxHeight": "80vh"
+    },
+    "expand": {
+        "width": "100%",
+        "maxWidth": "",
+        "height": "auto",
+        "maxHeight": ""
+    },
+    "scroll": {
+        "width": "auto",
+        "height": "auto",
+        "overflow": "scroll"
+    }
+}

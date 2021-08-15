@@ -1,28 +1,10 @@
 <script>
+    import presets from './presets.json';
     export let image = {};
     export let protect = false;
     export let portrait = false;
     export let imagePreset = false;
     let imageParent;
-    const presets = {
-        fit: {
-            width: '',
-            maxWidth: '80vw',
-            height: '',
-            maxHeight: '80vh'
-        },
-        expand: {
-            width: '100%',
-            maxWidth: '',
-            height: 'auto',
-            maxHeight: ''
-        },
-        scroll: {
-            width: 'auto',
-            height: 'auto',
-            overflow: 'scroll'
-        }
-    }
 
     $: if (imageParent && imagePreset && presets[imagePreset]) {
         const imageStyle = imageParent.firstChild.style;
