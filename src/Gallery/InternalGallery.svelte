@@ -1,12 +1,58 @@
 <script>
     // Gives option for user to control displayed image
+    import {getContext, setContext} from "svelte";
+    import {writable} from "svelte/store";
+
     export let activeImage = 0;
     export let imagePreset = '';
+    const arrowsColorStore = new writable('black');
+    const arrowsCharacterStore = new writable('unset');
+    const keyboardControlStore = new writable(false);
     // Here will be stored markup that will user put inside of this component
     let slotContent;
     // Auxiliary variable for storing elements with image that user has provided
     let images;
 
+    const previousImage = () => {
+        if (activeImage === 0) {
+            if (galleryArrowsCharacter !== 'hide') {
+                activeImage = images.length - 1
+            }
+        } else {
+            activeImage--
+        }
+    }
+    const nextImage = () => {
+        if (activeImage === images.length - 1) {
+            if (galleryArrowsCharacter !== 'hide') {
+                activeImage = 0;
+            }
+        } else {
+            activeImage++
+        }
+    }
+    const handleKey = (event) => {
+        if (!disableKeyboardArrowsControl) {
+            switch (event.key) {
+                case 'ArrowLeft': {
+                    previousImage();
+                    break;
+                }
+                case 'ArrowRight': {
+                    nextImage();
+                    break;
+                }
+            }
+        }
+    };
+
+    setContext('svelte-lightbox-galleryArrowsColor', arrowsColorStore)
+    setContext('svelte-lightbox-galleryArrowsCharacter', arrowsCharacterStore)
+    setContext('svelte-lightbox-disableKeyboardArrowsControl', keyboardControlStore)
+
+    $: galleryArrowsColor = $arrowsColorStore;
+    $: galleryArrowsCharacter = $arrowsCharacterStore;
+    $: disableKeyboardArrowsControl = $keyboardControlStore;
     // Every time, when contents of this component changes, images will be updated
     $: images = slotContent?.children
 
@@ -27,25 +73,16 @@
         }
     }
 
-    /*
-    Those functions move between active image, we dont need condition to disable their role, because this is already
-    implemented in the element section by conditionally disabling buttons, that call this function.
-
-     */
-    const previousImage = () => {
-        activeImage--
-    }
-
-    const nextImage = () => {
-        activeImage++
-    }
-
     $: fullscreen = imagePreset === 'fullscreen';
+    $: console.log(galleryArrowsColor, galleryArrowsCharacter, disableKeyboardArrowsControl)
 </script>
 
-<div class="wrapper" class:fullscreen>
+<svelte:window on:keydown={ (event)=> handleKey(event) }/>
+
+<div class="wrapper" class:fullscreen style="--svelte-lightbox-arrows-color: {galleryArrowsColor}">
     <!-- Left arrow -->
-    <button on:click={previousImage} disabled={activeImage === 0} class="previous-button">
+    <button on:click={previousImage} disabled={galleryArrowsCharacter !== 'loop' && activeImage === 0}
+            class="previous-button" class:hideDisabled={galleryArrowsCharacter === 'hide'}>
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g>
                 <path class="arrow" d="M8.7,7.22,4.59,11.33a1,1,0,0,0,0,1.41l4,4"/>
@@ -60,10 +97,11 @@
     </div>
 
     <!-- Right arrow -->
-    <button on:click={nextImage} disabled={activeImage === images?.length-1} class="next-button">
+    <button on:click={nextImage} disabled={galleryArrowsCharacter !== 'loop' && activeImage === images?.length-1}
+            class="next-button" class:hideDisabled={galleryArrowsCharacter === 'hide'}>
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g>
-                <path class="arrow" d="M15.3,16.78l4.11-4.11a1,1,0,0,0,0-1.41l-4-4"/>
+                <path d="M15.3,16.78l4.11-4.11a1,1,0,0,0,0-1.41l-4-4" class="arrow"/>
             </g>
         </svg>
     </button>
@@ -80,7 +118,7 @@
 	}
     .arrow{
         fill:none;
-        stroke: black;
+        stroke: var(--svelte-lightbox-arrows-color);
         stroke-linecap:round;
         stroke-linejoin:bevel;
         stroke-width:1.5px;
@@ -88,7 +126,6 @@
     }
     button {
         background: transparent;
-        color: black;
         border: none;
         font-size: 1rem;
         width: 50%;
@@ -99,6 +136,9 @@
     }
     button:disabled {
         color: gray;
+    }
+    button:disabled.hideDisabled {
+	    visibility: hidden;
     }
     .wrapper {
         position: relative;
