@@ -74,7 +74,6 @@
     }
 
     $: fullscreen = imagePreset === 'fullscreen';
-    $: console.log(galleryArrowsColor, galleryArrowsCharacter, disableKeyboardArrowsControl)
 </script>
 
 <svelte:window on:keydown={ (event)=> handleKey(event) }/>

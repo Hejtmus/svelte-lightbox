@@ -16,7 +16,6 @@
 	$: arrowsColorStore.set(galleryArrowsColor);
 	$: arrowsCharacterStore.set(galleryArrowsCharacter);
 	$: keyboardControlStore.set(disableKeyboardArrowsControl);
-	$: console.log($arrowsColorStore, $arrowsCharacterStore, $keyboardControlStore)
 </script>
 
 <slot {...$$restProps}>
