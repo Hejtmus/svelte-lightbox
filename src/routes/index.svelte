@@ -1,5 +1,4 @@
 <script>
-    import "bootstrap/dist/css/bootstrap.css";
     import { Lightbox } from '$lib';
 </script>
 
