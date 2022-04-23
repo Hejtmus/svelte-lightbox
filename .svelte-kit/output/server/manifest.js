@@ -3,7 +3,7 @@ export const manifest = {
 	assets: new Set([".nojekyll","bootstrap.css","bootstrap.css.map","bootstrap.min.css","bootstrap.min.css.map","favicon.png","img/test1.png","img/test2.png","img/test3.png"]),
 	mimeTypes: {".css":"text/css",".map":"application/json",".png":"image/png"},
 	_: {
-		entry: {"file":"start-d854f25f.js","js":["start-d854f25f.js","chunks/index-93e59907.js","chunks/index-df832915.js"],"css":[]},
+		entry: {"file":"start-8a76a2cb.js","js":["start-8a76a2cb.js","chunks/index-93e59907.js","chunks/index-df832915.js"],"css":[]},
 		nodes: [
 			() => import('./nodes/0.js'),
 			() => import('./nodes/1.js'),
