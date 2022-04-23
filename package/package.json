@@ -1,6 +1,6 @@
 {
   "name": "svelte-lightbox",
-  "version": "0.6.1-next",
+  "version": "0.6.1-next.2",
   "license": "MIT",
   "author": {
     "name": "Filip Holčík",
@@ -8,9 +8,9 @@
   },
   "repository": "https://github.com/Hejtmus/svelte-lightbox",
   "homepage": "https://github.com/Hejtmus/svelte-lightbox#readme",
-  "svelte": "package/index.js",
-  "main": "package/index.js",
-  "types": "package/index.d.ts",
+  "svelte": "index.js",
+  "main": "index.js",
+  "types": "index.d.ts",
   "devDependencies": {
     "@sveltejs/adapter-static": "^1.0.0-next.29",
     "@sveltejs/kit": "next",
@@ -35,10 +35,6 @@
     "lightbox",
     "gallery",
     "modal"
-  ],
-  "files": [
-    "src",
-    "package"
   ],
   "type": "module",
   "exports": {
