@@ -2,7 +2,7 @@
 
 Lightweight Lightbox Svelte component
 
-***In development, stable, tested***
+***In development, stable, tested using latest svelte (3.47.0) and svelteKit (next.320)***
 
 Lightweight Lightbox Svelte component, no vanilla JS or jQuery, just pure Svelte component. There is also support for
 mobile devices. Tested on Svelte and Sapper. Note that this component is in development, expect bugs, if you notice some, 

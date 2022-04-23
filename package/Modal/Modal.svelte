@@ -14,7 +14,7 @@
     }
 </script>
 
-<div class={modalClasses} class:fullscreen transition:fade={{duration:transitionDuration}}
+<div class={modalClasses} style={modalStyle} class:fullscreen transition:fade={{duration:transitionDuration}}
      on:click>
     <slot>
     </slot>
