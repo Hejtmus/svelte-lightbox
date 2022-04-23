@@ -1,0 +1,62 @@
+{
+  "name": "svelte-lightbox",
+  "version": "0.6.1@next",
+  "license": "MIT",
+  "author": {
+    "name": "Filip Holčík",
+    "email": "filip.holcik.official@gmail.com"
+  },
+  "repository": "https://github.com/Hejtmus/svelte-lightbox",
+  "homepage": "https://github.com/Hejtmus/svelte-lightbox#readme",
+  "svelte": "package/index.js",
+  "main": "package/index.js",
+  "types": "package/index.d.ts",
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^1.0.0-next.29",
+    "@sveltejs/kit": "next",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "bootstrap": "^5.1.3",
+    "eslint": "^7.32.0",
+    "eslint-plugin-svelte3": "^3.2.1",
+    "svelte": "^3.44.0",
+    "svelte-check": "^2.2.6",
+    "svelte-preprocess": "^4.10.1",
+    "svelte2tsx": "^0.5.9",
+    "tslib": "^2.3.1",
+    "typescript": "~4.6.2"
+  },
+  "peerDependencies": {
+    "svelte": "^3.25.0"
+  },
+  "keywords": [
+    "svelte",
+    "sapper",
+    "ssr",
+    "lightbox",
+    "gallery",
+    "modal"
+  ],
+  "files": [
+    "src",
+    "package"
+  ],
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./Gallery/ExternalGallery.svelte": "./Gallery/ExternalGallery.svelte",
+    "./Gallery/InternalGallery.svelte": "./Gallery/InternalGallery.svelte",
+    "./Gallery/LightboxImage.svelte": "./Gallery/LightboxImage.svelte",
+    "./Lightbox.svelte": "./Lightbox.svelte",
+    "./LightboxThumbnail.svelte": "./LightboxThumbnail.svelte",
+    "./Modal/BodyChild.svelte": "./Modal/BodyChild.svelte",
+    "./Modal/Index.svelte": "./Modal/Index.svelte",
+    "./Modal/LightboxBody.svelte": "./Modal/LightboxBody.svelte",
+    "./Modal/LightboxFooter.svelte": "./Modal/LightboxFooter.svelte",
+    "./Modal/LightboxHeader.svelte": "./Modal/LightboxHeader.svelte",
+    "./Modal/Modal.svelte": "./Modal/Modal.svelte",
+    "./Modal/ModalCover.svelte": "./Modal/ModalCover.svelte",
+    "./Modal/presets": "./Modal/presets.js",
+    ".": "./index.js"
+  }
+}
