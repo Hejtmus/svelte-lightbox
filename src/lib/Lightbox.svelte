@@ -75,7 +75,7 @@
     })
 </script>
 
-<Thumbnail bind:thumbnailClasses bind:thumbnailStyle bind:protect on:click={toggle}>
+<Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
 	{#if thumbnail || gallery}
 		<slot name="thumbnail"/>
 	{:else}
