@@ -23,7 +23,7 @@ export interface LightboxProps {
     thumbnail?: boolean,
     imagePreset?: 'fit' | 'expand' | 'fullscreen' | 'scroll' | boolean,
     clickToClose?: boolean,
-    clickButton?: boolean
+    closeButton?: boolean
 }
 
 export default class Lightbox extends SvelteComponentTyped<LightboxProps> {}
