@@ -1,6 +1,6 @@
 {
 	"name": "svelte-lightbox",
-	"version": "0.6.2",
+	"version": "0.6.5",
 	"license": "MIT",
 	"author": {
 		"name": "Filip Holčík",
@@ -40,10 +40,10 @@
 	},
 	"keywords": [
 		"svelte",
-		"sapper",
-		"ssr",
+		"svelteKit",
 		"lightbox",
 		"gallery",
+		"ssr",
 		"modal"
 	],
 	"type": "module"
