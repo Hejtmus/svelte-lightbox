@@ -1,11 +1,11 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
-    const dispatch = createEventDispatcher();
+    import { createEventDispatcher } from 'svelte'
+    const dispatch = createEventDispatcher()
 
-    let classes = '';
-    export {classes as class};
-    export let style = '';
-    export let protect = false;
+    let classes = ''
+    export { classes as class }
+    export let style = ''
+    export let protect = false
 </script>
 
 <div class="clickable" on:click={ () => dispatch('click') }>

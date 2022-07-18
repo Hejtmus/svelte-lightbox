@@ -1,43 +1,43 @@
 <script>
-    import presets from './presets.js';
-    import {afterUpdate, getContext} from "svelte";
-    export let image = {};
-    export let protect = false;
-    export let portrait = false;
-    export let imagePreset = false;
-    export let fullscreen = false;
-    export let gallery = false;
-    const activeImageStore = getContext('svelte-lightbox-activeImage');
-    let imageParent;
+    import presets from './presets.js'
+    import { afterUpdate, getContext } from 'svelte'
+    export let image = {}
+    export let protect = false
+    export let portrait = false
+    export let imagePreset = false
+    export let fullscreen = false
+    export let gallery = false
+    const activeImageStore = getContext('svelte-lightbox-activeImage')
+    let imageParent
 
     const getFullscreenSrc = () => {
         // Getting image that should been displayed and taking its src
       if (imageParent) {
-          let imageElement;
+          let imageElement
           if (gallery) {
               // Getting active images src from gallery
-              imageElement = imageParent.firstChild.children[1].children[$activeImageStore].firstChild;
+              imageElement = imageParent.firstChild.children[1].children[$activeImageStore].firstChild
           } else {
               // In case of classic lightbox, we just grab image that is first child
-              imageElement = imageParent.firstChild;
+              imageElement = imageParent.firstChild
           }
           // Getting source for lightbox body background and hiding original
-          image.src = imageElement.src;
-          imageElement.style.display = 'none';
+          image.src = imageElement.src
+          imageElement.style.display = 'none'
       } else {
           queueMicrotask(getFullscreenSrc)
       }
     }
 
     $: if (imageParent && imagePreset && presets[imagePreset]) {
-        const imageStyle = imageParent.firstChild.style;
+        const imageStyle = imageParent.firstChild.style
         const styles = Object.keys(presets[imagePreset])
         for (let i = 0; i !== styles.length; i++) {
             imageStyle[styles[i]] = presets[imagePreset][i]
         }
     }
 
-    $: imageClass = `${image.class ? image.class : ''} ${imagePreset ? imagePreset : ''}`
+    $: imageClass = `${image.class ? image.class : ''} ${imagePreset || ''}`
     $: if (fullscreen && !image?.src) getFullscreenSrc()
     $: if (fullscreen) {
         // In case user uses fullscreen preset, we need to get image source from new image and hide it
@@ -50,7 +50,7 @@
 		<img src={image.src} alt={image.alt} style={image.style} class={imageClass}>
 	{:else}
 		<div bind:this={imageParent} class:svelte-lightbox-image-portrait={portrait} class:expand={imagePreset == 'expand'}
-		     class:fit={imagePreset == 'fit'} class:fullscreen>
+			 class:fit={imagePreset == 'fit'} class:fullscreen>
 			<slot />
 		</div>
 	{/if}
