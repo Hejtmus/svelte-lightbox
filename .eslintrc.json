@@ -22,5 +22,11 @@
 		"@typescript-eslint"
 	],
 	"rules": {
+		"indent": [
+			"off",
+			4
+		],
+		"import/first": "off",
+		"no-multiple-empty-lines": "off"
 	}
 }
