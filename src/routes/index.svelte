@@ -1,5 +1,5 @@
 <script>
-    import { Lightbox } from '$lib';
+    import { Lightbox } from '$lib'
 </script>
 
 <main>
