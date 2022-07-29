@@ -1,14 +1,14 @@
 <script>
-    export let title = '';
-    export let description = '';
-    export let galleryLength;
-    export let activeImage;
+    export let title = ''
+    export let description = ''
+    export let galleryLength
+    export let activeImage
 
-    export let classes = '';
-    export let style = '';
+    export let classes = ''
+    export let style = ''
 </script>
 
-<div class={"svelte-lightbox-footer " + classes} {style}>
+<div class={'svelte-lightbox-footer ' + classes} {style}>
     <h2>
         {@html title}
     </h2>
@@ -17,7 +17,7 @@
     </h5>
     {#if galleryLength}
         <p>
-            Image {activeImage+1} of {galleryLength}
+            Image {activeImage + 1} of {galleryLength}
         </p>
     {/if}
 </div>

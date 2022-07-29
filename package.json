@@ -1,6 +1,6 @@
 {
 	"name": "svelte-lightbox",
-	"version": "0.6.2",
+	"version": "0.6.5",
 	"license": "MIT",
 	"author": {
 		"name": "Filip Holčík",
@@ -15,6 +15,7 @@
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
+		"release": "npm run package && cd ./package && npm publish",
 		"preview": "svelte-kit preview",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -24,11 +25,15 @@
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.29",
 		"@sveltejs/kit": "next",
-		"@typescript-eslint/eslint-plugin": "^5.10.1",
-		"@typescript-eslint/parser": "^5.10.1",
-		"eslint": "^7.32.0",
-		"eslint-plugin-svelte3": "^3.2.1",
-		"svelte": "^3.44.0",
+		"@typescript-eslint/eslint-plugin": "^5.30.6",
+		"@typescript-eslint/parser": "^5.30.6",
+		"eslint": "^8.20.0",
+		"eslint-config-standard": "^17.0.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-n": "^15.2.4",
+		"eslint-plugin-promise": "^6.0.0",
+		"eslint-plugin-svelte3": "^3.4.1",
+		"svelte": "^3.49.0",
 		"svelte-check": "^2.2.6",
 		"svelte-preprocess": "^4.10.1",
 		"svelte2tsx": "^0.5.9",
@@ -40,10 +45,10 @@
 	},
 	"keywords": [
 		"svelte",
-		"sapper",
-		"ssr",
+		"svelteKit",
 		"lightbox",
 		"gallery",
+		"ssr",
 		"modal"
 	],
 	"type": "module"
