@@ -28,6 +28,7 @@
     export let noScroll = true
     export let thumbnail = false
     export let imagePreset = false
+	export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
 
@@ -85,8 +86,8 @@
 
 {#if isVisible}
 	<BodyChild>
-		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect
-		       bind:portrait bind:title bind:description bind:gallery bind:imagePreset bind:closeButton
+		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
+			   bind:title bind:description bind:gallery bind:imagePreset bind:escapeToClose bind:closeButton
 		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
 			{#if thumbnail}
 				<slot name="image"/>
