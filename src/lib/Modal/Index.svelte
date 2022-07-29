@@ -20,10 +20,17 @@
     export let description = ''
     export let gallery = []
     export let imagePreset
+    export let escapeToClose
     export let closeButton
     const activeImageStore = writable(0)
     let actualTitle
     let actualDescription
+
+    const handleKey = (event) => {
+        if (escapeToClose && event.key === 'Escape') {
+            dispatch('close')
+        }
+    }
 
     setContext('svelte-lightbox-activeImage', activeImageStore)
     // For variable title and description, we need to define this auxiliary variables
@@ -38,9 +45,11 @@
     $: fullscreen = imagePreset === 'fullscreen'
 </script>
 
+<svelte:window on:keydown={ (event) => handleKey(event) }/>
+
 <ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration {fullscreen} on:click={ () => dispatch('modalClick') }>
-        <Header bind:closeButton {fullscreen} on:close={ () => dispatch('close') }/>
+        <Header bind:closeButton {fullscreen} on:close/>
 
         <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} {imagePreset} {fullscreen} gallery={!!gallery.length}>
         <slot/>
