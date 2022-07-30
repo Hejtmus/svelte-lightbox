@@ -1,20 +1,13 @@
 <script>
-    import {fade} from 'svelte/transition';
-    import {createEventDispatcher} from 'svelte';
+    import { fade } from 'svelte/transition'
 
-    const dispatch = createEventDispatcher();
-
-    export let modalStyle;
-    export let modalClasses;
-    export let transitionDuration;
-    export let fullscreen = false;
-
-    const click = () => {
-        dispatch('click')
-    }
+    export let modalStyle
+    export let modalClasses
+    export let transitionDuration
+    export let fullscreen = false
 </script>
 
-<div class={modalClasses} style={modalStyle} class:fullscreen transition:fade={{duration:transitionDuration}}
+<div class={modalClasses} style={modalStyle} class:fullscreen transition:fade={{ duration: transitionDuration }}
      on:click>
     <slot>
     </slot>

@@ -1,4 +1,4 @@
-import { SvelteComponentTyped } from 'svelte';
+import { SvelteComponentTyped } from 'svelte'
 
 export interface Image {
     src: string,
@@ -22,6 +22,7 @@ export interface LightboxProps {
     noScroll?: boolean,
     thumbnail?: boolean,
     imagePreset?: 'fit' | 'expand' | 'fullscreen' | 'scroll' | boolean,
+    escapeToClose?: boolean,
     clickToClose?: boolean,
     closeButton?: boolean
 }

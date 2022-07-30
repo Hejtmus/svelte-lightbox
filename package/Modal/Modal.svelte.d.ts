@@ -7,7 +7,7 @@ export default class Modal extends SvelteComponentTyped<{
     modalClasses: any;
     fullscreen?: boolean | undefined;
 }, {
-    click: CustomEvent<any>;
+    click: MouseEvent;
 } & {
     [evt: string]: CustomEvent<any>;
 }, {
@@ -26,7 +26,7 @@ declare const __propDef: {
         fullscreen?: boolean | undefined;
     };
     events: {
-        click: CustomEvent<any>;
+        click: MouseEvent;
     } & {
         [evt: string]: CustomEvent<any>;
     };

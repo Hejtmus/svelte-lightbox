@@ -4,7 +4,7 @@
 export default class ModalCover extends SvelteComponentTyped<{
     transitionDuration: any;
 }, {
-    click: CustomEvent<any>;
+    click: MouseEvent;
 } & {
     [evt: string]: CustomEvent<any>;
 }, {
@@ -20,7 +20,7 @@ declare const __propDef: {
         transitionDuration: any;
     };
     events: {
-        click: CustomEvent<any>;
+        click: MouseEvent;
     } & {
         [evt: string]: CustomEvent<any>;
     };

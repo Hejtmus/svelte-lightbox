@@ -4,6 +4,7 @@
 export default class Index extends SvelteComponentTyped<{
     closeButton: any;
     imagePreset: any;
+    escapeToClose: any;
     protect?: boolean | undefined;
     image?: {} | undefined;
     portrait?: boolean | undefined;
@@ -14,9 +15,9 @@ export default class Index extends SvelteComponentTyped<{
     modalStyle?: string | undefined;
     modalClasses?: string | undefined;
 }, {
+    close: CustomEvent<any>;
     topModalClick: CustomEvent<any>;
     modalClick: CustomEvent<any>;
-    close: CustomEvent<any>;
 } & {
     [evt: string]: CustomEvent<any>;
 }, {
@@ -31,6 +32,7 @@ declare const __propDef: {
     props: {
         closeButton: any;
         imagePreset: any;
+        escapeToClose: any;
         protect?: boolean | undefined;
         image?: {} | undefined;
         portrait?: boolean | undefined;
@@ -42,9 +44,9 @@ declare const __propDef: {
         modalClasses?: string | undefined;
     };
     events: {
+        close: CustomEvent<any>;
         topModalClick: CustomEvent<any>;
         modalClick: CustomEvent<any>;
-        close: CustomEvent<any>;
     } & {
         [evt: string]: CustomEvent<any>;
     };

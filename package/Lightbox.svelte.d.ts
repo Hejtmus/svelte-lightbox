@@ -13,6 +13,7 @@ export default class Lightbox extends SvelteComponentTyped<{
     transitionDuration?: number | undefined;
     modalStyle?: string | undefined;
     modalClasses?: string | undefined;
+    escapeToClose?: boolean | undefined;
     thumbnail?: boolean | undefined;
     thumbnailClasses?: string | undefined;
     thumbnailStyle?: string | undefined;
@@ -44,6 +45,7 @@ declare const __propDef: {
         transitionDuration?: number | undefined;
         modalStyle?: string | undefined;
         modalClasses?: string | undefined;
+        escapeToClose?: boolean | undefined;
         thumbnail?: boolean | undefined;
         thumbnailClasses?: string | undefined;
         thumbnailStyle?: string | undefined;

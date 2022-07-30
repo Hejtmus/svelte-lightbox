@@ -1,17 +1,17 @@
 <script>
     // Gives option for user to control displayed image
-    import {getContext, setContext} from "svelte";
-    import {writable} from "svelte/store";
+    import { getContext, setContext } from 'svelte'
+    import { writable } from 'svelte/store'
 
-    export let imagePreset = '';
-    const activeImageStore = getContext('svelte-lightbox-activeImage');
-    const arrowsColorStore = new writable('black');
-    const arrowsCharacterStore = new writable('unset');
-    const keyboardControlStore = new writable(false);
+    export let imagePreset = ''
+    const activeImageStore = getContext('svelte-lightbox-activeImage')
+    const arrowsColorStore = writable('black')
+    const arrowsCharacterStore = writable('unset')
+    const keyboardControlStore = writable(false)
     // Here will be stored markup that will user put inside of this component
-    let slotContent;
+    let slotContent
     // Auxiliary variable for storing elements with image that user has provided
-    let images;
+    let images
 
     const previousImage = () => {
         if (activeImage === 0) {
@@ -35,25 +35,25 @@
         if (!disableKeyboardArrowsControl) {
             switch (event.key) {
                 case 'ArrowLeft': {
-                    previousImage();
-                    break;
+                    previousImage()
+                    break
                 }
                 case 'ArrowRight': {
-                    nextImage();
-                    break;
+                    nextImage()
+                    break
                 }
             }
         }
-    };
+    }
 
     setContext('svelte-lightbox-galleryArrowsColor', arrowsColorStore)
     setContext('svelte-lightbox-galleryArrowsCharacter', arrowsCharacterStore)
     setContext('svelte-lightbox-disableKeyboardArrowsControl', keyboardControlStore)
 
-    $: activeImage = $activeImageStore;
-    $: galleryArrowsColor = $arrowsColorStore;
-    $: galleryArrowsCharacter = $arrowsCharacterStore;
-    $: disableKeyboardArrowsControl = $keyboardControlStore;
+    $: activeImage = $activeImageStore
+    $: galleryArrowsColor = $arrowsColorStore
+    $: galleryArrowsCharacter = $arrowsCharacterStore
+    $: disableKeyboardArrowsControl = $keyboardControlStore
     // Every time, when contents of this component changes, images will be updated
     $: images = slotContent?.children
 
@@ -64,22 +64,22 @@
         activeImage is controlled programmatically
          */
         if (images && activeImage < images.length) {
-            Object.values(images).forEach(img=>{
-                img.hidden = true;
+            Object.values(images).forEach(img => {
+                img.hidden = true
                 return img
             })
-	        if (!fullscreen) {
-                images[activeImage].hidden = false;
-	        }
+            if (!fullscreen) {
+                images[activeImage].hidden = false
+            }
         } else if (images && activeImage >= images.length) {
-            console.error("LightboxGallery: Selected image doesn't exist, invalid activeImage")
+            console.error('LightboxGallery: Selected image doesn\'t exist, invalid activeImage')
         }
     }
 
-    $: fullscreen = imagePreset === 'fullscreen';
+    $: fullscreen = imagePreset === 'fullscreen'
 </script>
 
-<svelte:window on:keydown={ (event)=> handleKey(event) }/>
+<svelte:window on:keydown={ (event) => handleKey(event) }/>
 
 <div class="wrapper" class:fullscreen style="--svelte-lightbox-arrows-color: {galleryArrowsColor}">
     <!-- Left arrow -->
@@ -99,7 +99,7 @@
     </div>
 
     <!-- Right arrow -->
-    <button on:click={nextImage} disabled={galleryArrowsCharacter !== 'loop' && activeImage === images?.length-1}
+    <button on:click={nextImage} disabled={galleryArrowsCharacter !== 'loop' && activeImage === images?.length - 1}
             class="next-button" class:hideDisabled={galleryArrowsCharacter === 'hide'}>
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -111,21 +111,24 @@
 
 
 <style>
-	div {
-		max-height: inherit;
-	}
-	div.fullscreen {
-		height: 100%;
-		width: 100%;
-	}
-    .arrow{
-        fill:none;
+    div {
+        max-height: inherit;
+    }
+
+    div.fullscreen {
+        height: 100%;
+        width: 100%;
+    }
+
+    .arrow {
+        fill: none;
         stroke: var(--svelte-lightbox-arrows-color);
-        stroke-linecap:round;
-        stroke-linejoin:bevel;
-        stroke-width:1.5px;
+        stroke-linecap: round;
+        stroke-linejoin: bevel;
+        stroke-width: 1.5px;
         margin: 10px;
     }
+
     button {
         background: transparent;
         border: none;
@@ -133,21 +136,26 @@
         width: 50%;
         height: 100%;
     }
+
     button:active {
         background: transparent;
     }
+
     button:disabled {
         color: gray;
     }
+
     button:disabled.hideDisabled {
-	    visibility: hidden;
+        visibility: hidden;
     }
+
     .wrapper {
         position: relative;
         display: flex;
         width: auto;
         height: auto;
     }
+
     .previous-button {
         position: absolute;
         top: 0;
@@ -157,11 +165,13 @@
         z-index: 4;
         text-align: left;
     }
+
     .slot {
         order: 1;
-	    display: flex;
-	    justify-content: center;
+        display: flex;
+        justify-content: center;
     }
+
     .next-button {
         position: absolute;
         top: 0;
@@ -170,6 +180,7 @@
         z-index: 4;
         text-align: right;
     }
+
     svg {
         height: 5rem;
     }

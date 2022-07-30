@@ -1,4 +1,4 @@
-import { SvelteComponentTyped } from 'svelte';
+import { SvelteComponentTyped } from 'svelte'
 
 export interface LightboxThumbnailProps {
     class?: string,
