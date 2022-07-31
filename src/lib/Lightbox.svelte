@@ -1,7 +1,6 @@
 <script>
 	import Thumbnail from './LightboxThumbnail.svelte'
     import Modal from './Modal/Index.svelte'
-    import InternalGallery from './Gallery/InternalGallery.svelte'
     import BodyChild from './Modal/BodyChild.svelte'
     import { onMount } from 'svelte'
 
@@ -11,8 +10,6 @@
     // exporting classes, for passing classes into wrapper
     export let modalClasses = ''
     export let modalStyle = ''
-    // array with image descriptions
-    export let gallery = false
     // getting universal title and descriptions
     export let title = ''
     export let description = ''
@@ -77,7 +74,7 @@
 </script>
 
 <Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
-	{#if thumbnail || gallery}
+	{#if thumbnail}
 		<slot name="thumbnail"/>
 	{:else}
 		<slot/>
@@ -87,20 +84,10 @@
 {#if isVisible}
 	<BodyChild>
 		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
-			   bind:title bind:description bind:gallery bind:imagePreset bind:escapeToClose bind:closeButton
+			   bind:title bind:description bind:imagePreset bind:escapeToClose bind:closeButton
 		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
 			{#if thumbnail}
 				<slot name="image"/>
-			{:else if gallery}
-				<InternalGallery {imagePreset}>
-					{#if $$slots.thumbnail}
-						<div>
-							<slot name="thumbnail"/>
-						</div>
-					{/if}
-					<slot>
-					</slot>
-				</InternalGallery>
 			{:else}
 				<slot/>
 			{/if}

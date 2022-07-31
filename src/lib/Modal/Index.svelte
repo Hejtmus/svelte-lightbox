@@ -1,12 +1,11 @@
 <script>
-    import { createEventDispatcher, setContext } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
 
     import Header from './LightboxHeader.svelte'
     import Body from './LightboxBody.svelte'
     import Footer from './LightboxFooter.svelte'
     import ModalCover from './ModalCover.svelte'
     import Modal from './Modal.svelte'
-    import { writable } from 'svelte/store'
 
     const dispatch = createEventDispatcher()
 
@@ -18,13 +17,9 @@
     export let portrait = false
     export let title = ''
     export let description = ''
-    export let gallery = []
     export let imagePreset
     export let escapeToClose
     export let closeButton
-    const activeImageStore = writable(0)
-    let actualTitle
-    let actualDescription
 
     const handleKey = (event) => {
         if (escapeToClose && event.key === 'Escape') {
@@ -32,16 +27,6 @@
         }
     }
 
-    setContext('svelte-lightbox-activeImage', activeImageStore)
-    // For variable title and description, we need to define this auxiliary variables
-    $: actualTitle = title
-    $: actualDescription = description
-
-    // If there is no universal title or description for gallery, we will display individual title and description
-    $: if (gallery && !title && !description) {
-        actualTitle = gallery[$activeImageStore].title
-        actualDescription = gallery[$activeImageStore].description
-    }
     $: fullscreen = imagePreset === 'fullscreen'
 </script>
 
@@ -51,13 +36,12 @@
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration {fullscreen} on:click={ () => dispatch('modalClick') }>
         <Header bind:closeButton {fullscreen} on:close/>
 
-        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} {imagePreset} {fullscreen} gallery={!!gallery.length}>
+        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} {imagePreset} {fullscreen}>
         <slot/>
         </Body>
 
 
-        <Footer bind:title={actualTitle} bind:description={actualDescription} galleryLength={gallery ? gallery.length : false}
-                bind:activeImage={$activeImageStore}/>
+        <Footer bind:title bind:description/>
     </Modal>
 </ModalCover>
 
