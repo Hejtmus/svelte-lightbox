@@ -1,5 +1,5 @@
 <script>
-    import { Lightbox } from '$lib'
+    import { Lightbox, LightboxGallery, LightboxImage } from '$lib'
     import { base } from '$app/paths'
 </script>
 
@@ -27,9 +27,21 @@
     </div>
     <div class="row">
         <div class="col col-12">
-            <Lightbox description="Simple lightbox">
-                <img src="{base}/img/test3.png" alt="Simple lightbox" class="img-fluid">
-            </Lightbox>
+            <LightboxGallery>
+                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">
+                <LightboxImage>
+                    <img src="{base}/img/gallery/1.jpg" alt="Simple lightbox">
+                </LightboxImage>
+                <LightboxImage>
+                    <img src="{base}/img/gallery/2.jpg" alt="Simple lightbox">
+                </LightboxImage>
+                <LightboxImage>
+                    <img src="{base}/img/gallery/3.jpg" alt="Simple lightbox">
+                </LightboxImage>
+                <LightboxImage>
+                    <img src="{base}/img/gallery/4.jpg" alt="Simple lightbox">
+                </LightboxImage>
+            </LightboxGallery>
         </div>
     </div>
 </main>

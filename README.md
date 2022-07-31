@@ -103,23 +103,18 @@ please report them to this component's GitHub repo to the 'Issues' section.
     </Lightbox>
 
 
-    <Lightbox {gallery}>
-        <!-- Important thing to mention: 
-        lightbox gallery needs some thumbnail, you can set it like this, dont worry, this image will be displayed within gallery
-         -->
+    <LightboxGallery>
         <img slot="thumbnail" src="./image.png" alt="Simple lightbox">
-        <LightboxGallery>
-            <LightboxImage>
-                <img src="./image.jpg" alt="Simple lightbox">
-            </LightboxImage>
-            <LightboxImage>
-                <img src="./image.png" alt="Simple lightbox">
-            </LightboxImage>
-            <LightboxImage>
-                <img src="./image.png" alt="Simple lightbox">
-            </LightboxImage>
-        </LightboxGallery>
-    </Lightbox>
+        <LightboxImage>
+            <img src="./image.jpg" alt="Simple lightbox">
+        </LightboxImage>
+        <LightboxImage>
+            <img src="./image.png" alt="Simple lightbox">
+        </LightboxImage>
+        <LightboxImage>
+            <img src="./image.png" alt="Simple lightbox">
+        </LightboxImage>
+    </LightboxGallery>
 
 ```
 
