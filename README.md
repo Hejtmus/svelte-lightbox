@@ -75,16 +75,16 @@ please report them to this component's GitHub repo to the 'Issues' section.
 	
     const gallery = [
      {
-      title: 'Cat is eating mouse',
-      description: 'Pretty cruel, ieurgv eoirhe hgioh vihvieh vn  if neib '
+      title: 'Lorem ipsum',
+      description: 'dolor sit amet, consectetur adipisicing elit.'
      },
      {
-      title: 'Bike is driven',
-      description: `LOL, What a sentence, eriugherheh ioghieo `
+      title: 'Alias aspernatur at,',
+      description: `cum cupiditate fugit laudantium minima perspiciatis quae quibusdam quos recusandae soluta tempore voluptas. `
      },
      {
-      title: 'JS components are downloaded from npm',
-      description: 'Obviously, jrgoer iojre oigejgi heiruoiqevj eoirhjv ioehh ve'
+      title: 'Debitis dignissimos eius esse fugiat sed.',
+      description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
      },
      {
       title: 'This component is under development',
