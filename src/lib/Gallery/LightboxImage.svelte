@@ -1,20 +1,20 @@
 <script>
     import { getContext } from 'svelte'
 
-    const activeImageStore = getContext('svelte-lightbox-activeImage')
-    const imageId = (getContext('svelte-lightbox-galleryImageCounter'))()
+    export let thumbnailProps
 
-    /*
-    This component exists because it helps user imagine what and how are images displayed in gallery,
-    also we need every picture in gallery to be hidden until they are active, and by making this component
-    we don't bother user with setting it manually.
-     */
+    const activeImageStore = getContext('svelte-lightbox-activeImage')
+    const imageId = (getContext('svelte-lightbox-galleryImageCounter'))({
+        thumbnailProps: {
+            ...$$restProps,
+            ...thumbnailProps
+        }
+    })
+
 </script>
 
 {#if $activeImageStore === imageId}
-    <div {...$$restProps}>
-        <slot/>
-    </div>
+    <img {...$$restProps}/>
 {/if}
 
 <style>

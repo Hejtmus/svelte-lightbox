@@ -1,10 +1,13 @@
-<script>
-    import { onMount, setContext } from 'svelte'
-    import { writable } from 'svelte/store'
+<script lang="ts">
+    import {getContext, hasContext, onMount, setContext} from 'svelte'
+    import { writable} from 'svelte/store'
     import BodyChild from '../Modal/BodyChild.svelte'
     import Modal from '../Modal/Index.svelte'
-    import InternalGallery from './InternalGallery.svelte'
+    import GalleryController from './GalleryController.svelte'
     import Thumbnail from '../LightboxThumbnail.svelte'
+    import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte'
+    import type { Writable} from 'svelte/store'
+    import type { GalleryImage } from './Types'
 
     // Lightbox props --------------------------------------------------------------------------------------------------
 
@@ -33,7 +36,7 @@
     export let clickToClose = false
     export let closeButton = true
 
-    export let isVisible = false
+    export let isVisible =true
 
     // Gallery props ---------------------------------------------------------------------------------------------------
 
@@ -44,14 +47,27 @@
     export let arrowsCharacter = 'unset'
     // Disables controlling gallery with keyboard
     export let disableKeyboardArrowsControl = false
-    let galleryImageCount = 0
-    let modalClicked = false
 
-    const galleryImageCountStore = writable(galleryImageCount)
-    const activeImageStore = writable(activeImage)
-    const arrowsColorStore = writable(arrowsColor)
-    const arrowsCharacterStore = writable(arrowsCharacter)
-    const keyboardControlStore = writable(disableKeyboardArrowsControl)
+    // TODO: finish managing gallery IDs (controller and images)
+    const galleryId: number = (() => {
+        const galleryContext = 'svelte-lightbox-galleryCount'
+        if (hasContext(galleryContext)) {
+            const galleryStore = getContext(galleryContext)
+            return $galleryStore++
+        } else {
+            setContext(galleryContext, writable(0))
+            return 0
+        }
+    })()
+
+    let modalClicked = false
+    let images: Array<GalleryImage> = []
+
+    const galleryImageCountStore: Writable<number> = writable(images.length)
+    const activeImageStore: Writable<number> = writable(activeImage)
+    const arrowsColorStore: Writable<string> = writable(arrowsColor)
+    const arrowsCharacterStore: Writable<string> = writable(arrowsCharacter)
+    const keyboardControlStore: Writable<boolean> = writable(disableKeyboardArrowsControl)
 
     const toggle = () => {
         isVisible = !isVisible
@@ -79,8 +95,13 @@
     let toggleScroll = () => {
     }
 
-    setContext('svelte-lightbox-galleryImageCounter', () => {
-        $galleryImageCountStore++
+    setContext('svelte-lightbox-galleryImageCounter', (image: GalleryImage) => {
+        image.id = images.length
+        images = [
+            ...images,
+            image
+        ]
+        $galleryImageCountStore = images.length
         return $galleryImageCountStore - 1
     })
     setContext('svelte-lightbox-galleryImageCount', galleryImageCountStore)
@@ -108,23 +129,23 @@
     })
 </script>
 
-<Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
-    {#if $$slots.thumbnail}
+{#if $$slots.thumbnail}
+    <Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
         <slot name="thumbnail"/>
-    {:else}
-        <slot/>
-    {/if}
-</Thumbnail>
+    </Thumbnail>
+{:else}
+    <FallbackThumbnailGenerator bind:isVisible bind:activeImage {images}/>
+{/if}
 
-{#if isVisible}
-    <BodyChild>
+<BodyChild>
+    <div style="display: {isVisible?'block':'none'}">
         <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
                bind:title bind:description bind:imagePreset bind:escapeToClose bind:closeButton
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-            <InternalGallery>
+            <GalleryController id={galleryId}>
                 <slot {...$$restProps}>
                 </slot>
-            </InternalGallery>
+            </GalleryController>
         </Modal>
-    </BodyChild>
-{/if}
+    </div>
+</BodyChild>

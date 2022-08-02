@@ -1,8 +1,7 @@
 <script>
     export let title = ''
     export let description = ''
-    export let galleryLength
-    export let activeImage
+    export let gallery = null
 
     export let classes = ''
     export let style = ''
@@ -15,9 +14,9 @@
     <h5>
         {@html description}
     </h5>
-    {#if galleryLength}
+    {#if gallery !== null}
         <p>
-            Image {activeImage + 1} of {galleryLength}
+            Image {gallery.activeImage + 1} of {gallery.imageCount}
         </p>
     {/if}
 </div>

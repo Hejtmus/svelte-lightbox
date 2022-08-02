@@ -8,7 +8,6 @@ export default class Index extends SvelteComponentTyped<{
     protect?: boolean | undefined;
     image?: {} | undefined;
     portrait?: boolean | undefined;
-    gallery?: any[] | undefined;
     title?: string | undefined;
     description?: string | undefined;
     transitionDuration?: number | undefined;
@@ -36,7 +35,6 @@ declare const __propDef: {
         protect?: boolean | undefined;
         image?: {} | undefined;
         portrait?: boolean | undefined;
-        gallery?: any[] | undefined;
         title?: string | undefined;
         description?: string | undefined;
         transitionDuration?: number | undefined;

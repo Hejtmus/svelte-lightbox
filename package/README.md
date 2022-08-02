@@ -18,79 +18,38 @@ please report them to this component's GitHub repo to the 'Issues' section.
 
 1. Make Svelte page
 
+### Standard lightbox
+
 2. Include `import { Lightbox } from 'svelte-lightbox';` into that file.
 
 3. Make `<Lightbox>` component and image you need to display put inside slot (as its child).
-
-### Standard lightbox
 
 4. You can **check if everything is working**, if you use **Sapper**, don't forget to make this component **SSR**, just include
    it like this `import Lightbox from 'svelte-lightbox/src/Lightbox.svelte'` (this step is not needed in SvelteKit).
    
 ### Lightbox with gallery
 
-4. Go to import from step `2.` and include `LightboxGallery` and `LightboxImage` as well.
+2. Include `import { LightboxGallery } from 'svelte-lightbox';` into that file.
 
-5. Define new array that will contain objects with all descriptions and titles of all images, insert them into
-   Lightbox component, example `<Lightbox gallery={myGallery}`.
-   ```js
-    GalleryArray: [
-        GalleryImage,
-        GalleryImage,
-        ...
-    ]
-    GalleryImage: {
-        title: String /*(supports HTML)*/,
-        description: String /*(supports HTML)*/
-    }
-    ```
-6. Put `<img slot="thumbnail">` with prop slot equal to thumbnail inside `<Lightbox>`. This will be the main image, that 
-   will users see.
+3. Make `<LightboxGallery>` component and images you need to display put inside slot (as its children).
 
-6. Make `<LightboxGallery>` and put it into `<Lightbox>`.
+4. Put `<img slot="thumbnail">` with prop slot equal to thumbnail inside `<LightboxGallery>`. This works same as `<Lightbox>`
+   thumbnail, but when gallery is left without thumbnail, it will generate multiple thumbnails out of its content.
 
-7. Make `<LightboxImage>`, put your `<img>` into it and then make, pass it to your `<LightboxGallery>`.
-
-8. Test functionality and eventually post issue to [this project repository](https://github.com/Hejtmus/svelte-lightbox).
+5. Test functionality and eventually post issue to [this project repository](https://github.com/Hejtmus/svelte-lightbox).
     If you use sapper, don't forget to make imports SSR compatible (this step is not needed in SvelteKit).
    
 
 ### Something copyable
 
-```html
+```sveltehtml
 <script>
     //Svelte import
     import { 
         Lightbox,
         LightboxImage,
         LightboxGallery
-    } from 'svelte-lightbox';
-    //Sapper import
-	import Lightbox from 'svelte-lightbox/src/Lightbox.svelte';
-
-    /*
-    Include all titles and descriptions of your images, this field is optional, and you can set universal 
-    title and description by setting it as Lightbox prop.
-    */
-	
-    const gallery = [
-     {
-      title: 'Cat is eating mouse',
-      description: 'Pretty cruel, ieurgv eoirhe hgioh vihvieh vn  if neib '
-     },
-     {
-      title: 'Bike is driven',
-      description: `LOL, What a sentence, eriugherheh ioghieo `
-     },
-     {
-      title: 'JS components are downloaded from npm',
-      description: 'Obviously, jrgoer iojre oigejgi heiruoiqevj eoirhjv ioehh ve'
-     },
-     {
-      title: 'This component is under development',
-      description: `So don't stake your life on it, but it should be pretty stable`
-     }
-    ];
+    } from 'svelte-lightbox'
 </script>
 
     <Lightbox description="Simple lightbox">
@@ -103,23 +62,12 @@ please report them to this component's GitHub repo to the 'Issues' section.
     </Lightbox>
 
 
-    <Lightbox {gallery}>
-        <!-- Important thing to mention: 
-        lightbox gallery needs some thumbnail, you can set it like this, dont worry, this image will be displayed within gallery
-         -->
+    <LightboxGallery>
         <img slot="thumbnail" src="./image.png" alt="Simple lightbox">
-        <LightboxGallery>
-            <LightboxImage>
-                <img src="./image.jpg" alt="Simple lightbox">
-            </LightboxImage>
-            <LightboxImage>
-                <img src="./image.png" alt="Simple lightbox">
-            </LightboxImage>
-            <LightboxImage>
-                <img src="./image.png" alt="Simple lightbox">
-            </LightboxImage>
-        </LightboxGallery>
-    </Lightbox>
+        <LightboxImage src="./image.jpg" alt="Simple lightbox"/>
+        <LightboxImage src="./image.png" alt="Simple lightbox"/>
+        <LightboxImage src="./image.png" alt="Simple lightbox"/>
+    </LightboxGallery>
 
 ```
 
@@ -236,6 +184,8 @@ Standard HTML "class" for lightbox thumbnail, classes are separated by space, ju
 Standard HTML "style" for lightbox thumbnail, similar to thumbnailStyle. 
 
 ## `<LightboxGallery>`
+
+Gallery is inherited from `<Lightbox>` and has this additional props:
 
 ### activeImage `number`
 

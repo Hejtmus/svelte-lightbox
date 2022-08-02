@@ -7,17 +7,16 @@ export default class Lightbox extends SvelteComponentTyped<{
     image?: {} | undefined;
     portrait?: boolean | undefined;
     imagePreset?: boolean | undefined;
-    gallery?: boolean | undefined;
     title?: string | undefined;
     description?: string | undefined;
     transitionDuration?: number | undefined;
     modalStyle?: string | undefined;
     modalClasses?: string | undefined;
     escapeToClose?: boolean | undefined;
-    thumbnail?: boolean | undefined;
     thumbnailClasses?: string | undefined;
     thumbnailStyle?: string | undefined;
     noScroll?: boolean | undefined;
+    thumbnail?: boolean | undefined;
     clickToClose?: boolean | undefined;
     isVisible?: boolean | undefined;
 }, {
@@ -39,17 +38,16 @@ declare const __propDef: {
         image?: {} | undefined;
         portrait?: boolean | undefined;
         imagePreset?: boolean | undefined;
-        gallery?: boolean | undefined;
         title?: string | undefined;
         description?: string | undefined;
         transitionDuration?: number | undefined;
         modalStyle?: string | undefined;
         modalClasses?: string | undefined;
         escapeToClose?: boolean | undefined;
-        thumbnail?: boolean | undefined;
         thumbnailClasses?: string | undefined;
         thumbnailStyle?: string | undefined;
         noScroll?: boolean | undefined;
+        thumbnail?: boolean | undefined;
         clickToClose?: boolean | undefined;
         isVisible?: boolean | undefined;
     };

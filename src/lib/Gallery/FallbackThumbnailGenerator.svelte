@@ -1,0 +1,20 @@
+<script lang="ts">
+    import Thumbnail from '$lib/LightboxThumbnail.svelte'
+    import type { GalleryImage } from './Types'
+
+    export let images: Array<GalleryImage>
+    export let activeImage: number
+    export let isVisible: boolean
+
+    const selectImage = (selectedImageId: number) => {
+        activeImage = selectedImageId
+        isVisible = true
+    }
+    console.log(images)
+</script>
+
+{#each images as image}
+    <Thumbnail on:click={() => selectImage(image.id)}>
+        <img {...image.thumbnailProps}>
+    </Thumbnail>
+{/each}

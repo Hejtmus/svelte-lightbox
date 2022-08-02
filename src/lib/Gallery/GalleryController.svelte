@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
     import { getContext } from 'svelte'
     import PreviousImageButton from './PreviousImageButton.svelte'
     import NextImageButton from './NextImageButton.svelte'
 
     export let imagePreset = ''
+    export let id: number
     const imageCountStore = getContext('svelte-lightbox-galleryImageCount')
     const activeImageStore = getContext('svelte-lightbox-activeImage')
     const arrowsColorStore = getContext('svelte-lightbox-galleryArrowsColor')
