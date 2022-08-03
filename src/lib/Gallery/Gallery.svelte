@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {getContext, hasContext, onMount, setContext} from 'svelte'
+    import { onMount, setContext} from 'svelte'
     import { writable} from 'svelte/store'
     import BodyChild from '../Modal/BodyChild.svelte'
     import Modal from '../Modal/Index.svelte'
@@ -36,7 +36,7 @@
     export let clickToClose = false
     export let closeButton = true
 
-    export let isVisible =true
+    export let isVisible = false
 
     // Gallery props ---------------------------------------------------------------------------------------------------
 
@@ -48,22 +48,10 @@
     // Disables controlling gallery with keyboard
     export let disableKeyboardArrowsControl = false
 
-    // TODO: finish managing gallery IDs (controller and images)
-    const galleryId: number = (() => {
-        const galleryContext = 'svelte-lightbox-galleryCount'
-        if (hasContext(galleryContext)) {
-            const galleryStore = getContext(galleryContext)
-            return $galleryStore++
-        } else {
-            setContext(galleryContext, writable(0))
-            return 0
-        }
-    })()
-
     let modalClicked = false
     let images: Array<GalleryImage> = []
 
-    const galleryImageCountStore: Writable<number> = writable(images.length)
+    const imageCountStore: Writable<number> = writable(images.length)
     const activeImageStore: Writable<number> = writable(activeImage)
     const arrowsColorStore: Writable<string> = writable(arrowsColor)
     const arrowsCharacterStore: Writable<string> = writable(arrowsCharacter)
@@ -74,6 +62,10 @@
         toggleScroll()
     }
 
+    const open = () => {
+        isVisible = true
+        toggleScroll()
+    }
     const close = () => {
         isVisible = false
         toggleScroll()
@@ -92,23 +84,28 @@
         modalClicked = true
     }
 
-    let toggleScroll = () => {
-    }
+    let toggleScroll = () => {}
 
-    setContext('svelte-lightbox-galleryImageCounter', (image: GalleryImage) => {
+    export const programmaticController = {
+        toggle,
+        open,
+        close,
+        openImage: (imageId) => {
+            console.log('a')
+            open()
+            activeImage = imageId
+        }
+    }
+    setContext('activeImage', activeImageStore)
+    setContext('imageCounter', (image: GalleryImage) => {
         image.id = images.length
         images = [
             ...images,
             image
         ]
-        $galleryImageCountStore = images.length
-        return $galleryImageCountStore - 1
+        $imageCountStore = images.length
+        return $imageCountStore - 1
     })
-    setContext('svelte-lightbox-galleryImageCount', galleryImageCountStore)
-    setContext('svelte-lightbox-activeImage', activeImageStore)
-    setContext('svelte-lightbox-galleryArrowsColor', arrowsColorStore)
-    setContext('svelte-lightbox-galleryArrowsCharacter', arrowsCharacterStore)
-    setContext('svelte-lightbox-disableKeyboardArrowsControl', keyboardControlStore)
 
     $: activeImageStore.set(activeImage)
     $: arrowsColorStore.set(arrowsColor)
@@ -138,11 +135,12 @@
 {/if}
 
 <BodyChild>
-    <div style="display: {isVisible?'block':'none'}">
+    <div style="display: {isVisible ? 'block' : 'none'}">
         <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
                bind:title bind:description bind:imagePreset bind:escapeToClose bind:closeButton
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-            <GalleryController id={galleryId}>
+            <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
+                               {arrowsColorStore} {keyboardControlStore}>
                 <slot {...$$restProps}>
                 </slot>
             </GalleryController>

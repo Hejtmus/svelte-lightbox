@@ -1,15 +1,14 @@
 <script lang="ts">
-    import { getContext } from 'svelte'
     import PreviousImageButton from './PreviousImageButton.svelte'
     import NextImageButton from './NextImageButton.svelte'
+    import type { Writable } from 'svelte/store'
 
     export let imagePreset = ''
-    export let id: number
-    const imageCountStore = getContext('svelte-lightbox-galleryImageCount')
-    const activeImageStore = getContext('svelte-lightbox-activeImage')
-    const arrowsColorStore = getContext('svelte-lightbox-galleryArrowsColor')
-    const arrowsCharacterStore = getContext('svelte-lightbox-galleryArrowsCharacter')
-    const keyboardControlStore = getContext('svelte-lightbox-disableKeyboardArrowsControl')
+    export let imageCountStore: Writable<number>
+    export let activeImageStore: Writable<number>
+    export let arrowsColorStore: Writable<string>
+    export let arrowsCharacterStore: Writable<string>
+    export let keyboardControlStore: Writable<boolean>
 
     const previousImage = () => {
         if ($activeImageStore === 0) {

@@ -3,8 +3,8 @@
 
     export let thumbnailProps
 
-    const activeImageStore = getContext('svelte-lightbox-activeImage')
-    const imageId = (getContext('svelte-lightbox-galleryImageCounter'))({
+    const activeImageStore = getContext('activeImage')
+    const imageId = (getContext('imageCounter'))({
         thumbnailProps: {
             ...$$restProps,
             ...thumbnailProps
@@ -23,4 +23,5 @@
 		display: flex;
 		justify-content: center;
 	}
+
 </style>

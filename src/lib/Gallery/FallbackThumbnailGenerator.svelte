@@ -10,7 +10,6 @@
         activeImage = selectedImageId
         isVisible = true
     }
-    console.log(images)
 </script>
 
 {#each images as image}
@@ -18,3 +17,10 @@
         <img {...image.thumbnailProps}>
     </Thumbnail>
 {/each}
+
+<style>
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>

@@ -1,6 +1,8 @@
 <script>
     import { Lightbox, LightboxGallery, LightboxImage } from '$lib'
     import { base } from '$app/paths'
+
+    let galleryController
 </script>
 
 <main>
@@ -27,12 +29,28 @@
     </div>
     <div class="row">
         <div class="col col-12">
+            <button on:click={() => galleryController.openImage(1)} class="btn btn-dark">
+                Open image 2 from gallery 2
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-12">
             <LightboxGallery>
 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
-                <LightboxImage src="{base}/img/gallery/1.jpg" alt="Simple lightbox"/>
-                <LightboxImage src="{base}/img/gallery/2.jpg" alt="Simple lightbox"/>
+                <div class="col-6">
+                    <LightboxImage src="{base}/img/gallery/1.jpg" alt="Simple lightbox"/>
+                </div>
+                <div class="col-6">
+                    <LightboxImage src="{base}/img/gallery/2.jpg" alt="Simple lightbox"/>
+                </div>
                 <LightboxImage src="{base}/img/gallery/3.jpg" alt="Simple lightbox"/>
-                <LightboxImage src="{base}/img/gallery/4.jpg" alt="Simple lightbox" style="width: 5rem"/>
+                <LightboxImage src="{base}/img/gallery/4.jpg" alt="Simple lightbox"/>
+            </LightboxGallery>
+            <LightboxGallery bind:programmaticController={galleryController}>
+                <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
+                <LightboxImage src="{base}/img/test1.png" alt="Simple lightbox"/>
+                <LightboxImage src="{base}/img/test2.png" alt="Simple lightbox"/>
             </LightboxGallery>
         </div>
     </div>
