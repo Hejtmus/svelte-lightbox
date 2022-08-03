@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
     import { getContext } from 'svelte'
 
-    export let thumbnailProps
+    export let thumbnailProps: HTMLImageElement
 
     const activeImageStore = getContext('activeImage')
     const imageId = (getContext('imageCounter'))({

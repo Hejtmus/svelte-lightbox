@@ -47,9 +47,11 @@
     export let arrowsCharacter = 'unset'
     // Disables controlling gallery with keyboard
     export let disableKeyboardArrowsControl = false
+    export let generateFallbackThumbnails = true
 
     let modalClicked = false
     let images: Array<GalleryImage> = []
+    let thumbnailCount = 0
 
     const imageCountStore: Writable<number> = writable(images.length)
     const activeImageStore: Writable<number> = writable(activeImage)
@@ -66,6 +68,11 @@
         isVisible = true
         toggleScroll()
     }
+    const openImage = (imageId) => {
+        open()
+        activeImage = imageId
+    }
+
     const close = () => {
         isVisible = false
         toggleScroll()
@@ -90,11 +97,7 @@
         toggle,
         open,
         close,
-        openImage: (imageId) => {
-            console.log('a')
-            open()
-            activeImage = imageId
-        }
+        openImage
     }
     setContext('activeImage', activeImageStore)
     setContext('imageCounter', (image: GalleryImage) => {
@@ -106,6 +109,10 @@
         $imageCountStore = images.length
         return $imageCountStore - 1
     })
+    setContext('thumbnailCounter', () => {
+        return thumbnailCount++
+    })
+    setContext('openImage', openImage)
 
     $: activeImageStore.set(activeImage)
     $: arrowsColorStore.set(arrowsColor)
@@ -127,10 +134,8 @@
 </script>
 
 {#if $$slots.thumbnail}
-    <Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
-        <slot name="thumbnail"/>
-    </Thumbnail>
-{:else}
+    <slot name="thumbnail"/>
+{:else if generateFallbackThumbnails}
     <FallbackThumbnailGenerator bind:isVisible bind:activeImage {images}/>
 {/if}
 
@@ -141,8 +146,11 @@
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
             <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
                                {arrowsColorStore} {keyboardControlStore}>
-                <slot {...$$restProps}>
-                </slot>
+                {#if $$slots.lightbox}
+                    <slot name="lightbox"/>
+                {:else}
+                    <slot {...$$restProps}/>
+                {/if}
             </GalleryController>
         </Modal>
     </div>
