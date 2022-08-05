@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte'
 
     import Header from './LightboxHeader.svelte'
@@ -6,6 +6,7 @@
     import Footer from './LightboxFooter.svelte'
     import ModalCover from './ModalCover.svelte'
     import Modal from './Modal.svelte'
+    import type { GalleryState } from '$lib/Types'
 
     const dispatch = createEventDispatcher()
 
@@ -13,6 +14,7 @@
     export let modalStyle = ''
     export let transitionDuration = 500
     export let image = {}
+    export let gallery: GalleryState = null
     export let protect = false
     export let portrait = false
     export let title = ''
@@ -40,7 +42,7 @@
         <slot/>
         </Body>
 
-        <Footer {title} {description}/>
+        <Footer {title} {description} {gallery}/>
     </Modal>
 </ModalCover>
 

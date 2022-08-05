@@ -4,7 +4,12 @@ interface GalleryImage {
     title: string,
     description: string
 }
+interface GalleryState {
+    imageCount: number,
+    activeImage: number
+}
 
 export type {
-    GalleryImage
+    GalleryImage,
+    GalleryState
 }

@@ -6,7 +6,7 @@
     import GalleryController from './GalleryController.svelte'
     import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte'
     import type { Writable} from 'svelte/store'
-    import type { GalleryImage } from './Types'
+    import type { GalleryImage } from '$lib/Types'
 
     // Lightbox props --------------------------------------------------------------------------------------------------
 
@@ -142,7 +142,7 @@
     <div style="display: {isVisible ? 'block' : 'none'}">
         <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
                title={images[$activeImageStore]?.title || ''} description={images[$activeImageStore]?.description || ''}
-               bind:imagePreset bind:escapeToClose bind:closeButton
+               bind:imagePreset bind:escapeToClose bind:closeButton gallery={{imageCount: $imageCountStore, activeImage: $activeImageStore}}
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
             <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
                                {arrowsColorStore} {keyboardControlStore}>

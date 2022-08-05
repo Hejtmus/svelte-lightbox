@@ -1,7 +1,9 @@
-<script>
+<script lang="ts">
+    import type { GalleryState } from '$lib/Types'
+
     export let title = ''
     export let description = ''
-    export let gallery = null
+    export let gallery: GalleryState = null
 
     export let classes = ''
     export let style = ''

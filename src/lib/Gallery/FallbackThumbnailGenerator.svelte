@@ -1,6 +1,6 @@
 <script lang="ts">
     import Thumbnail from '$lib/LightboxThumbnail.svelte'
-    import type { GalleryImage } from './Types'
+    import type { GalleryImage } from '$lib/Types'
 
     export let images: Array<GalleryImage>
     export let activeImage: number
