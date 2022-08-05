@@ -6,22 +6,21 @@
     import Footer from './LightboxFooter.svelte'
     import ModalCover from './ModalCover.svelte'
     import Modal from './Modal.svelte'
-    import type { GalleryState } from '$lib/Types'
+    import type { GalleryState, ImagePreset } from '$lib/Types'
 
     const dispatch = createEventDispatcher()
 
     export let modalClasses = ''
     export let modalStyle = ''
     export let transitionDuration = 500
-    export let image = {}
     export let gallery: GalleryState = null
     export let protect = false
     export let portrait = false
     export let title = ''
     export let description = ''
-    export let imagePreset
-    export let escapeToClose
-    export let closeButton
+    export let imagePreset: ImagePreset
+    export let escapeToClose: boolean
+    export let closeButton: boolean
 
     const handleKey = (event) => {
         if (escapeToClose && event.key === 'Escape') {
@@ -38,7 +37,7 @@
     <Modal bind:modalClasses bind:modalStyle bind:transitionDuration {fullscreen} on:click={ () => dispatch('modalClick') }>
         <Header bind:closeButton {fullscreen} on:close/>
 
-        <Body bind:image={image} bind:protect={protect} bind:portrait={portrait} {imagePreset} {fullscreen}>
+        <Body bind:protect={protect} bind:portrait={portrait} {imagePreset} {fullscreen} isGallery={gallery !== null}>
         <slot/>
         </Body>
 

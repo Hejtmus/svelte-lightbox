@@ -13,7 +13,7 @@
   "types": "index.d.ts",
   "devDependencies": {
     "@sveltejs/adapter-static": "^1.0.0-next.38",
-    "@sveltejs/kit": "1.0.0-next.398",
+    "@sveltejs/kit": "1.0.0-next.403",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "eslint": "^8.20.0",
@@ -47,10 +47,10 @@
     "./Gallery/FallbackThumbnailGenerator.svelte": "./Gallery/FallbackThumbnailGenerator.svelte",
     "./Gallery/Gallery.svelte": "./Gallery/Gallery.svelte",
     "./Gallery/GalleryController.svelte": "./Gallery/GalleryController.svelte",
-    "./Gallery/LightboxImage.svelte": "./Gallery/LightboxImage.svelte",
+    "./Gallery/GalleryImage.svelte": "./Gallery/GalleryImage.svelte",
+    "./Gallery/GalleryThumbnail.svelte": "./Gallery/GalleryThumbnail.svelte",
     "./Gallery/NextImageButton.svelte": "./Gallery/NextImageButton.svelte",
     "./Gallery/PreviousImageButton.svelte": "./Gallery/PreviousImageButton.svelte",
-    "./Gallery/Types": "./Gallery/Types.js",
     "./Lightbox.svelte": "./Lightbox.svelte",
     "./LightboxThumbnail.svelte": "./LightboxThumbnail.svelte",
     "./Modal/BodyChild.svelte": "./Modal/BodyChild.svelte",
@@ -61,6 +61,7 @@
     "./Modal/Modal.svelte": "./Modal/Modal.svelte",
     "./Modal/ModalCover.svelte": "./Modal/ModalCover.svelte",
     "./Modal/presets": "./Modal/presets.js",
+    "./Types": "./Types.js",
     ".": "./index.js"
   }
 }

@@ -6,7 +6,7 @@
     import GalleryController from './GalleryController.svelte'
     import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte'
     import type { Writable} from 'svelte/store'
-    import type { GalleryImage } from '$lib/Types'
+    import type { GalleryImage, GalleryArrowCharacter, ImagePreset } from '$lib/Types'
 
     // Lightbox props --------------------------------------------------------------------------------------------------
 
@@ -23,14 +23,11 @@
     export let transitionDuration = 500
     // bool that enables drag n drop protection
     export let protect = false
-    // enables other image than in slot
-    export let image = {}
     // enables portrait mode
     export let portrait = false
     // disables scrolling <body>
     export let noScroll = true
-    export let thumbnail = false
-    export let imagePreset = false
+    export let imagePreset: ImagePreset | '' = ''
     export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -43,7 +40,7 @@
     // Possible any CSS color
     export let arrowsColor = 'black'
     // Possible string with value: 'unset', 'loop', 'hide'
-    export let arrowsCharacter = 'unset'
+    export let arrowsCharacter: GalleryArrowCharacter = 'unset'
     // Disables controlling gallery with keyboard
     export let disableKeyboardArrowsControl = false
     export let generateFallbackThumbnails = true
@@ -140,7 +137,7 @@
 
 <BodyChild>
     <div style="display: {isVisible ? 'block' : 'none'}">
-        <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
+        <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:protect bind:portrait
                title={images[$activeImageStore]?.title || ''} description={images[$activeImageStore]?.description || ''}
                bind:imagePreset bind:escapeToClose bind:closeButton gallery={{imageCount: $imageCountStore, activeImage: $activeImageStore}}
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>

@@ -1,6 +1,5 @@
-<script>
-    export let activeImage
-    export let character
+<script>export let activeImage;
+export let character;
 </script>
 
 <button on:click disabled={character !== 'loop' && activeImage === 0} class="previous-button"

@@ -1,8 +1,10 @@
 <script>import Thumbnail from '../LightboxThumbnail.svelte';
 export let images;
 export let activeImage;
+export let isVisible;
 const selectImage = (selectedImageId) => {
     activeImage = selectedImageId;
+    isVisible = true;
 };
 </script>
 
@@ -11,3 +13,10 @@ const selectImage = (selectedImageId) => {
         <img {...image.thumbnailProps}>
     </Thumbnail>
 {/each}
+
+<style>
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>

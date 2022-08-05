@@ -1,9 +1,10 @@
 import { SvelteComponentTyped } from "svelte";
-import type { GalleryImage } from './Types';
+import type { GalleryImage } from '../Types';
 declare const __propDef: {
     props: {
         images: Array<GalleryImage>;
         activeImage: number;
+        isVisible: boolean;
     };
     events: {
         [evt: string]: CustomEvent<any>;

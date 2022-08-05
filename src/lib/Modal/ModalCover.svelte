@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
     import { fade } from 'svelte/transition'
 
-    export let transitionDuration
+    export let transitionDuration: number
 </script>
 
 <div on:click in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }}>

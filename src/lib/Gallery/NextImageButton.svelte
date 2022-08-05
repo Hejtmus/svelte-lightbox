@@ -1,7 +1,9 @@
-<script>
-    export let activeImage
-    export let character
-    export let imageCount
+<script lang="ts">
+    import type { GalleryArrowCharacter } from '$lib/Types'
+
+    export let imageCount: number
+    export let activeImage: number
+    export let character: GalleryArrowCharacter
 </script>
 
 <button on:click disabled={character !== 'loop' && activeImage === imageCount - 1}

@@ -9,7 +9,12 @@ interface GalleryState {
     activeImage: number
 }
 
+type ImagePreset = 'fit' | 'expand' | 'fullscreen' | 'scroll'
+type GalleryArrowCharacter = 'unset' | 'hide' | 'loop'
+
 export type {
     GalleryImage,
-    GalleryState
+    GalleryState,
+    ImagePreset,
+    GalleryArrowCharacter
 }

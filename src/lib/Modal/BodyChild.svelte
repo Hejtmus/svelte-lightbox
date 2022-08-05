@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
     import { onMount, onDestroy } from 'svelte'
 
-    let targetElement
-    let child
+    let targetElement: HTMLDivElement
+    let child: HTMLDivElement
 
     const stackTarget = () => {
         child = document.createElement('div')

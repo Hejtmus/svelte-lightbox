@@ -1,7 +1,6 @@
-<script>
-    export let activeImage
-    export let character
-    export let imageCount
+<script>export let imageCount;
+export let activeImage;
+export let character;
 </script>
 
 <button on:click disabled={character !== 'loop' && activeImage === imageCount - 1}

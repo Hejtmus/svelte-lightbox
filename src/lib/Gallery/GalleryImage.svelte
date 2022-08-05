@@ -1,7 +1,7 @@
 <script lang="ts">
     import { getContext } from 'svelte'
 
-    export let thumbnailProps: HTMLImageElement
+    export let thumbnailProps: HTMLImageElement | {} = {}
     export let title: string = ''
     export let description: string = ''
 

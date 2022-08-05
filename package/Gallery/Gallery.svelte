@@ -1,9 +1,8 @@
 <script>import { onMount, setContext } from 'svelte';
-import { Writable, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import BodyChild from '../Modal/BodyChild.svelte';
 import Modal from '../Modal/Index.svelte';
-import InternalGallery from './GalleryController.svelte';
-import Thumbnail from '../LightboxThumbnail.svelte';
+import GalleryController from './GalleryController.svelte';
 import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte';
 // Lightbox props --------------------------------------------------------------------------------------------------
 // exporting classes, for passing classes into thumbnail
@@ -19,14 +18,11 @@ export let description = '';
 export let transitionDuration = 500;
 // bool that enables drag n drop protection
 export let protect = false;
-// enables other image than in slot
-export let image = {};
 // enables portrait mode
 export let portrait = false;
 // disables scrolling <body>
 export let noScroll = true;
-export let thumbnail = false;
-export let imagePreset = false;
+export let imagePreset = '';
 export let escapeToClose = true;
 export let clickToClose = false;
 export let closeButton = true;
@@ -39,9 +35,11 @@ export let arrowsColor = 'black';
 export let arrowsCharacter = 'unset';
 // Disables controlling gallery with keyboard
 export let disableKeyboardArrowsControl = false;
+export let generateFallbackThumbnails = true;
 let modalClicked = false;
 let images = [];
-const galleryImageCountStore = writable(images.length);
+let thumbnailCount = 0;
+const imageCountStore = writable(images.length);
 const activeImageStore = writable(activeImage);
 const arrowsColorStore = writable(arrowsColor);
 const arrowsCharacterStore = writable(arrowsCharacter);
@@ -49,6 +47,14 @@ const keyboardControlStore = writable(disableKeyboardArrowsControl);
 const toggle = () => {
     isVisible = !isVisible;
     toggleScroll();
+};
+const open = () => {
+    isVisible = true;
+    toggleScroll();
+};
+const openImage = (imageId) => {
+    open();
+    activeImage = imageId;
 };
 const close = () => {
     isVisible = false;
@@ -65,22 +71,27 @@ const modalClick = () => {
     // console.log('modalClick')
     modalClicked = true;
 };
-let toggleScroll = () => {
+let toggleScroll = () => { };
+export const programmaticController = {
+    toggle,
+    open,
+    close,
+    openImage
 };
-setContext('svelte-lightbox-galleryImageCounter', (image) => {
+setContext('activeImage', activeImageStore);
+setContext('imageCounter', (image) => {
     image.id = images.length;
     images = [
         ...images,
         image
     ];
-    $galleryImageCountStore = images.length;
-    return $galleryImageCountStore - 1;
+    $imageCountStore = images.length;
+    return $imageCountStore - 1;
 });
-setContext('svelte-lightbox-galleryImageCount', galleryImageCountStore);
-setContext('svelte-lightbox-activeImage', activeImageStore);
-setContext('svelte-lightbox-galleryArrowsColor', arrowsColorStore);
-setContext('svelte-lightbox-galleryArrowsCharacter', arrowsCharacterStore);
-setContext('svelte-lightbox-disableKeyboardArrowsControl', keyboardControlStore);
+setContext('thumbnailCounter', () => {
+    return thumbnailCount++;
+});
+setContext('openImage', openImage);
 $: activeImageStore.set(activeImage);
 $: arrowsColorStore.set(arrowsColor);
 $: arrowsCharacterStore.set(arrowsCharacter);
@@ -101,22 +112,25 @@ onMount(() => {
 </script>
 
 {#if $$slots.thumbnail}
-    <Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
-        <slot name="thumbnail"/>
-    </Thumbnail>
-{:else}
-    <FallbackThumbnailGenerator bind:activeImage {images}/>
+    <slot name="thumbnail"/>
+{:else if generateFallbackThumbnails}
+    <FallbackThumbnailGenerator bind:isVisible bind:activeImage {images}/>
 {/if}
 
-{#if isVisible}
-    <BodyChild>
-        <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
-               bind:title bind:description bind:imagePreset bind:escapeToClose bind:closeButton
+<BodyChild>
+    <div style="display: {isVisible ? 'block' : 'none'}">
+        <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:protect bind:portrait
+               title={images[$activeImageStore]?.title || ''} description={images[$activeImageStore]?.description || ''}
+               bind:imagePreset bind:escapeToClose bind:closeButton gallery={{imageCount: $imageCountStore, activeImage: $activeImageStore}}
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-            <InternalGallery>
-                <slot {...$$restProps}>
-                </slot>
-            </InternalGallery>
+            <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
+                               {arrowsColorStore} {keyboardControlStore}>
+                {#if $$slots.lightbox}
+                    <slot name="lightbox"/>
+                {:else}
+                    <slot {...$$restProps}/>
+                {/if}
+            </GalleryController>
         </Modal>
-    </BodyChild>
-{/if}
+    </div>
+</BodyChild>

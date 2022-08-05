@@ -1,9 +1,4 @@
-import Lightbox from './Lightbox'
-import LightboxImage from './Gallery/LightboxImage'
-import LightboxGallery from './Gallery/ExternalGallery'
-
-export {
-    Lightbox,
-    LightboxImage,
-    LightboxGallery
-}
+export { default as Lightbox } from './Lightbox.svelte';
+export { default as LightboxGallery } from './Gallery/Gallery.svelte';
+export { default as GalleryThumbnail } from './Gallery/GalleryThumbnail.svelte';
+export { default as GalleryImage } from './Gallery/GalleryImage.svelte';

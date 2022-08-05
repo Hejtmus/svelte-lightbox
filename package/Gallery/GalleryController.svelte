@@ -1,12 +1,11 @@
-<script>import { getContext } from 'svelte';
-import PreviousImageButton from './PreviousImageButton.svelte';
+<script>import PreviousImageButton from './PreviousImageButton.svelte';
 import NextImageButton from './NextImageButton.svelte';
 export let imagePreset = '';
-const imageCountStore = getContext('svelte-lightbox-galleryImageCount');
-const activeImageStore = getContext('svelte-lightbox-activeImage');
-const arrowsColorStore = getContext('svelte-lightbox-galleryArrowsColor');
-const arrowsCharacterStore = getContext('svelte-lightbox-galleryArrowsCharacter');
-const keyboardControlStore = getContext('svelte-lightbox-disableKeyboardArrowsControl');
+export let imageCountStore;
+export let activeImageStore;
+export let arrowsColorStore;
+export let arrowsCharacterStore;
+export let keyboardControlStore;
 const previousImage = () => {
     if ($activeImageStore === 0) {
         if ($arrowsCharacterStore === 'loop') {

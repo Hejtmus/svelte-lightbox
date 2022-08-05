@@ -1,25 +1,23 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte'
     const dispatch = createEventDispatcher()
 
-    export let size = 'xs'
-    export let style = ''
-    export let headerClasses = ''
-    export let buttonClasses = ''
+    export let headerProps: HTMLDivElement | {} = {}
+    export let headerButtonProps: HTMLButtonElement | {} = {}
     export let closeButton = true
-    export let fullscreen = false
+    export let fullscreen: boolean
 </script>
 
-<div class={'svelte-lightbox-header ' + headerClasses} class:fullscreen>
+<div class:fullscreen {...headerProps}>
     {#if closeButton}
-        <button on:click={ () => dispatch('close')} {size} {style} class={buttonClasses} class:fullscreen>
+        <button on:click={ () => dispatch('close')} class:fullscreen {...headerButtonProps}>
             ×
         </button>
     {/if}
 </div>
 
 <style>
-    div.svelte-lightbox-header {
+    div {
         width: auto;
         height: 3rem;
         display: flex;

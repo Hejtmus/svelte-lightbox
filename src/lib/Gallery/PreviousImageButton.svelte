@@ -1,6 +1,8 @@
-<script>
-    export let activeImage
-    export let character
+<script lang="ts">
+    import type { GalleryArrowCharacter } from '$lib/Types'
+
+    export let activeImage: number
+    export let character: GalleryArrowCharacter
 </script>
 
 <button on:click disabled={character !== 'loop' && activeImage === 0} class="previous-button"

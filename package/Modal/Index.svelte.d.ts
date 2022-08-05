@@ -1,45 +1,18 @@
-/** @typedef {typeof __propDef.props}  IndexProps */
-/** @typedef {typeof __propDef.events}  IndexEvents */
-/** @typedef {typeof __propDef.slots}  IndexSlots */
-export default class Index extends SvelteComponentTyped<{
-    closeButton: any;
-    imagePreset: any;
-    escapeToClose: any;
-    protect?: boolean | undefined;
-    image?: {} | undefined;
-    portrait?: boolean | undefined;
-    title?: string | undefined;
-    description?: string | undefined;
-    transitionDuration?: number | undefined;
-    modalStyle?: string | undefined;
-    modalClasses?: string | undefined;
-}, {
-    close: CustomEvent<any>;
-    topModalClick: CustomEvent<any>;
-    modalClick: CustomEvent<any>;
-} & {
-    [evt: string]: CustomEvent<any>;
-}, {
-    default: {};
-}> {
-}
-export type IndexProps = typeof __propDef.props;
-export type IndexEvents = typeof __propDef.events;
-export type IndexSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
+import type { GalleryState, ImagePreset } from '../Types';
 declare const __propDef: {
     props: {
-        closeButton: any;
-        imagePreset: any;
-        escapeToClose: any;
+        modalClasses?: string | undefined;
+        modalStyle?: string | undefined;
+        transitionDuration?: number | undefined;
+        gallery?: GalleryState | undefined;
         protect?: boolean | undefined;
-        image?: {} | undefined;
         portrait?: boolean | undefined;
         title?: string | undefined;
         description?: string | undefined;
-        transitionDuration?: number | undefined;
-        modalStyle?: string | undefined;
-        modalClasses?: string | undefined;
+        imagePreset: ImagePreset;
+        escapeToClose: boolean;
+        closeButton: boolean;
     };
     events: {
         close: CustomEvent<any>;
@@ -52,4 +25,9 @@ declare const __propDef: {
         default: {};
     };
 };
+export declare type IndexProps = typeof __propDef.props;
+export declare type IndexEvents = typeof __propDef.events;
+export declare type IndexSlots = typeof __propDef.slots;
+export default class Index extends SvelteComponentTyped<IndexProps, IndexEvents, IndexSlots> {
+}
 export {};

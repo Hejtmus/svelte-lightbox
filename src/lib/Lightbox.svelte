@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Thumbnail from './LightboxThumbnail.svelte'
     import Modal from './Modal/Index.svelte'
     import BodyChild from './Modal/BodyChild.svelte'
@@ -17,13 +17,10 @@
     export let transitionDuration = 500
     // bool that enables drag n drop protection
     export let protect = false
-    // enables other image than in slot
-    export let image = {}
     // enables portrait mode
     export let portrait = false
     // disables scrolling <body>
     export let noScroll = true
-    export let thumbnail = false
     export let imagePreset = false
 	export let escapeToClose = true
     export let clickToClose = false
@@ -74,7 +71,7 @@
 </script>
 
 <Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
-	{#if thumbnail}
+	{#if $$slots.thumbnail}
 		<slot name="thumbnail"/>
 	{:else}
 		<slot/>
@@ -83,10 +80,10 @@
 
 {#if isVisible}
 	<BodyChild>
-		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
+		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:protect bind:portrait
 			   bind:title bind:description bind:imagePreset bind:escapeToClose bind:closeButton
 		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-			{#if thumbnail}
+			{#if $$slots.thumbnail}
 				<slot name="image"/>
 			{:else}
 				<slot/>
