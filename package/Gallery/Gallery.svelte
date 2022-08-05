@@ -5,19 +5,12 @@ import Modal from '../Modal/Index.svelte';
 import GalleryController from './GalleryController.svelte';
 import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte';
 // Lightbox props --------------------------------------------------------------------------------------------------
-// exporting classes, for passing classes into thumbnail
-export let thumbnailClasses = '';
-export let thumbnailStyle = '';
-// exporting classes, for passing classes into wrapper
-export let modalClasses = '';
-export let modalStyle = '';
+export let customization = {};
 // getting universal title and descriptions
 export let title = '';
 export let description = '';
 // exporting duration of fade transition
 export let transitionDuration = 500;
-// bool that enables drag n drop protection
-export let protect = false;
 // enables portrait mode
 export let portrait = false;
 // disables scrolling <body>
@@ -96,6 +89,9 @@ $: activeImageStore.set(activeImage);
 $: arrowsColorStore.set(arrowsColor);
 $: arrowsCharacterStore.set(arrowsCharacter);
 $: keyboardControlStore.set(disableKeyboardArrowsControl);
+$: activeImageTitle = images[$activeImageStore]?.title || title || '';
+$: activeImageDescription = images[$activeImageStore]?.description || description || '';
+$: gallery = { imageCount: $imageCountStore, activeImage: $activeImageStore };
 onMount(() => {
     const defaultOverflow = document.body.style.overflow;
     toggleScroll = () => {
@@ -114,14 +110,13 @@ onMount(() => {
 {#if $$slots.thumbnail}
     <slot name="thumbnail"/>
 {:else if generateFallbackThumbnails}
-    <FallbackThumbnailGenerator bind:isVisible bind:activeImage {images}/>
+    <FallbackThumbnailGenerator bind:isVisible bind:activeImage {images} {...(customization?.thumbnailProps || {})}/>
 {/if}
 
 <BodyChild>
     <div style="display: {isVisible ? 'block' : 'none'}">
-        <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:protect bind:portrait
-               title={images[$activeImageStore]?.title || ''} description={images[$activeImageStore]?.description || ''}
-               bind:imagePreset bind:escapeToClose bind:closeButton gallery={{imageCount: $imageCountStore, activeImage: $activeImageStore}}
+        <Modal {transitionDuration} {portrait} {imagePreset} {escapeToClose} {closeButton} title={activeImageTitle}
+               description={activeImageDescription} {gallery} {customization}
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
             <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
                                {arrowsColorStore} {keyboardControlStore}>

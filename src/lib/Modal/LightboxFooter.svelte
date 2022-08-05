@@ -4,12 +4,9 @@
     export let title = ''
     export let description = ''
     export let gallery: GalleryState = null
-
-    export let classes = ''
-    export let style = ''
 </script>
 
-<div class={'svelte-lightbox-footer ' + classes} {style}>
+<div {...$$restProps}>
     <h2>
         {@html title}
     </h2>
@@ -24,7 +21,7 @@
 </div>
 
 <style>
-    div.svelte-lightbox-footer {
+    div {
         position: absolute;
         background-color: transparent;
         color: white;

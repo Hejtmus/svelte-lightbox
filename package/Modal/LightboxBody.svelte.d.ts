@@ -1,7 +1,6 @@
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        protect?: boolean | undefined;
         portrait?: boolean | undefined;
         imagePreset?: string | null | undefined;
         fullscreen?: boolean | undefined;

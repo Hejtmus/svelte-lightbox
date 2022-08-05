@@ -1,12 +1,10 @@
 import { SvelteComponentTyped } from "svelte";
-import type { GalleryState, ImagePreset } from '../Types';
+import type { LightboxCustomization, GalleryState, ImagePreset } from '../Types';
 declare const __propDef: {
     props: {
-        modalClasses?: string | undefined;
-        modalStyle?: string | undefined;
+        customization: LightboxCustomization;
         transitionDuration?: number | undefined;
         gallery?: GalleryState | undefined;
-        protect?: boolean | undefined;
         portrait?: boolean | undefined;
         title?: string | undefined;
         description?: string | undefined;

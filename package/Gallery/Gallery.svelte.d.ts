@@ -1,16 +1,12 @@
 import { SvelteComponentTyped } from "svelte";
-import type { GalleryArrowCharacter, ImagePreset } from '../Types';
+import type { LightboxCustomization, GalleryArrowCharacter, ImagePreset } from '../Types';
 declare const __propDef: {
     props: {
         [x: string]: any;
-        thumbnailClasses?: string | undefined;
-        thumbnailStyle?: string | undefined;
-        modalClasses?: string | undefined;
-        modalStyle?: string | undefined;
+        customization?: {} | LightboxCustomization | undefined;
         title?: string | undefined;
         description?: string | undefined;
         transitionDuration?: number | undefined;
-        protect?: boolean | undefined;
         portrait?: boolean | undefined;
         noScroll?: boolean | undefined;
         imagePreset?: "" | ImagePreset | undefined;

@@ -1,8 +1,8 @@
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        headerProps?: {} | HTMLDivElement | undefined;
-        headerButtonProps?: {} | HTMLButtonElement | undefined;
+        [x: string]: any;
+        closeButtonProps?: {} | HTMLButtonElement | undefined;
         closeButton?: boolean | undefined;
         fullscreen: boolean;
     };

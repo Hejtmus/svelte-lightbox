@@ -1,14 +1,13 @@
 <script>import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();
-export let headerProps = {};
-export let headerButtonProps = {};
+export let closeButtonProps = {};
 export let closeButton = true;
 export let fullscreen;
 </script>
 
-<div class:fullscreen {...headerProps}>
+<div class:fullscreen {...$$restProps}>
     {#if closeButton}
-        <button on:click={ () => dispatch('close')} class:fullscreen {...headerButtonProps}>
+        <button on:click={ () => dispatch('close')} class:fullscreen {...closeButtonProps}>
             ×
         </button>
     {/if}

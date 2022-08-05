@@ -9,7 +9,7 @@ const selectImage = (selectedImageId) => {
 </script>
 
 {#each images as image}
-    <Thumbnail on:click={() => selectImage(image.id)}>
+    <Thumbnail on:click={() => selectImage(image.id)} {...$$restProps}>
         <img {...image.thumbnailProps}>
     </Thumbnail>
 {/each}

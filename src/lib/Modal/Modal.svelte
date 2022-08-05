@@ -1,14 +1,11 @@
 <script lang="ts">
     import { fade } from 'svelte/transition'
 
-    export let modalStyle: string
-    export let modalClasses: string
     export let transitionDuration: number
     export let fullscreen: boolean
 </script>
 
-<div class={modalClasses} style={modalStyle} class:fullscreen transition:fade={{ duration: transitionDuration }}
-     on:click>
+<div class:fullscreen transition:fade={{ duration: transitionDuration }} on:click {...$$restProps}>
     <slot>
     </slot>
 </div>

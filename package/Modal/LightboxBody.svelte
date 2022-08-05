@@ -1,6 +1,5 @@
 <script>import presets from './presets.js';
 import { afterUpdate, getContext } from 'svelte';
-export let protect = false;
 export let portrait = false;
 export let imagePreset = null;
 export let fullscreen = false;
@@ -43,7 +42,7 @@ $: if (fullscreen) {
 }
 </script>
 
-<div class="svelte-lightbox-body" class:svelte-lightbox-unselectable={protect} class:fullscreen style="{fullscreen ? `background-image: url(${image.src || ''})` : ''}">
+<div class="svelte-lightbox-body" class:fullscreen style="{fullscreen ? `background-image: url(${image.src || ''})` : ''}">
 	<div bind:this={imageParent} class:svelte-lightbox-image-portrait={portrait} class:expand={imagePreset === 'expand'}
 		 class:fit={imagePreset === 'fit'} class:fullscreen>
 		<slot />
@@ -67,10 +66,6 @@ $: if (fullscreen) {
 	    max-width: inherit;
         height: inherit;
         max-height: inherit;
-    }
-    div.svelte-lightbox-unselectable {
-        user-select: none;
-        pointer-events: none;
     }
     div.svelte-lightbox-image-portrait{
         height: 90vh;

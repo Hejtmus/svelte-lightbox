@@ -80,7 +80,7 @@
                     </GalleryImage>
                 </div>
             </LightboxGallery>
-            <LightboxGallery bind:programmaticController={galleryController}>
+            <LightboxGallery title="Gallery with unified title" bind:programmaticController={galleryController}>
                 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
                 <GalleryImage>
                     <img src="{base}/img/test1.png" alt="Simple lightbox">

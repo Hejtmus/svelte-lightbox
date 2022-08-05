@@ -2,11 +2,10 @@ import { SvelteComponentTyped } from "svelte";
 import type { GalleryState } from '../Types';
 declare const __propDef: {
     props: {
+        [x: string]: any;
         title?: string | undefined;
         description?: string | undefined;
         gallery?: GalleryState | undefined;
-        classes?: string | undefined;
-        style?: string | undefined;
     };
     events: {
         [evt: string]: CustomEvent<any>;

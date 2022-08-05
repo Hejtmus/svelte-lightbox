@@ -1,3 +1,10 @@
+interface LightboxCustomization {
+    closeButtonProps: HTMLButtonElement;
+    lightboxFooterProps: HTMLDivElement;
+    lightboxHeaderProps: HTMLDivElement;
+    lightboxProps: HTMLDivElement;
+    thumbnailProps: HTMLDivElement;
+}
 interface GalleryImage {
     id: number;
     thumbnailProps: HTMLImageElement;
@@ -10,4 +17,4 @@ interface GalleryState {
 }
 declare type ImagePreset = 'fit' | 'expand' | 'fullscreen' | 'scroll';
 declare type GalleryArrowCharacter = 'unset' | 'hide' | 'loop';
-export type { GalleryImage, GalleryState, ImagePreset, GalleryArrowCharacter };
+export type { LightboxCustomization, GalleryImage, GalleryState, ImagePreset, GalleryArrowCharacter };

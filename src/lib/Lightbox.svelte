@@ -3,22 +3,17 @@
     import Modal from './Modal/Index.svelte'
     import BodyChild from './Modal/BodyChild.svelte'
     import { onMount } from 'svelte'
+	import type { LightboxCustomization } from '$lib/Types'
 
-    // exporting classes, for passing classes into thumbnail
-    export let thumbnailClasses = ''
-    export let thumbnailStyle = ''
-    // exporting classes, for passing classes into wrapper
-    export let modalClasses = ''
-    export let modalStyle = ''
+	export let customization: LightboxCustomization | {} = {}
     // getting universal title and descriptions
     export let title = ''
     export let description = ''
     // exporting duration of fade transition
     export let transitionDuration = 500
-    // bool that enables drag n drop protection
-    export let protect = false
     // enables portrait mode
     export let portrait = false
+	export let fallbackThumbnailEnabled = true
     // disables scrolling <body>
     export let noScroll = true
     export let imagePreset = false
@@ -70,19 +65,20 @@
     })
 </script>
 
-<Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
-	{#if $$slots.thumbnail}
-		<slot name="thumbnail"/>
-	{:else}
-		<slot/>
-	{/if}
-</Thumbnail>
+{#if $$slots.thumbnail || fallbackThumbnailEnabled}
+	<Thumbnail {...(customization?.thumbnailProps || {})} on:click={toggle}>
+		{#if $$slots.thumbnail}
+			<slot name="thumbnail"/>
+		{:else if fallbackThumbnailEnabled}
+			<slot/>
+		{/if}
+	</Thumbnail>
+{/if}
 
 {#if isVisible}
 	<BodyChild>
-		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:protect bind:portrait
-			   bind:title bind:description bind:imagePreset bind:escapeToClose bind:closeButton
-		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
+		<Modal {transitionDuration} {portrait} {title} {description} {imagePreset} {escapeToClose} {closeButton}
+			   {customization} on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
 			{#if $$slots.thumbnail}
 				<slot name="image"/>
 			{:else}

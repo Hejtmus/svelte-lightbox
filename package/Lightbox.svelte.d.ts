@@ -1,15 +1,13 @@
 import { SvelteComponentTyped } from "svelte";
+import type { LightboxCustomization } from './Types';
 declare const __propDef: {
     props: {
-        thumbnailClasses?: string | undefined;
-        thumbnailStyle?: string | undefined;
-        modalClasses?: string | undefined;
-        modalStyle?: string | undefined;
+        customization?: {} | LightboxCustomization | undefined;
         title?: string | undefined;
         description?: string | undefined;
         transitionDuration?: number | undefined;
-        protect?: boolean | undefined;
         portrait?: boolean | undefined;
+        fallbackThumbnailEnabled?: boolean | undefined;
         noScroll?: boolean | undefined;
         imagePreset?: boolean | undefined;
         escapeToClose?: boolean | undefined;

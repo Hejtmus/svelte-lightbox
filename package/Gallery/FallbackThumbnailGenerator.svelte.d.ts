@@ -2,6 +2,7 @@ import { SvelteComponentTyped } from "svelte";
 import type { GalleryImage } from '../Types';
 declare const __propDef: {
     props: {
+        [x: string]: any;
         images: Array<GalleryImage>;
         activeImage: number;
         isVisible: boolean;

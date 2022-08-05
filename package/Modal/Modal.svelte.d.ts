@@ -1,8 +1,7 @@
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        modalStyle: string;
-        modalClasses: string;
+        [x: string]: any;
         transitionDuration: number;
         fullscreen: boolean;
     };

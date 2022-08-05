@@ -5,11 +5,9 @@ import Footer from './LightboxFooter.svelte';
 import ModalCover from './ModalCover.svelte';
 import Modal from './Modal.svelte';
 const dispatch = createEventDispatcher();
-export let modalClasses = '';
-export let modalStyle = '';
+export let customization;
 export let transitionDuration = 500;
 export let gallery = null;
-export let protect = false;
 export let portrait = false;
 export let title = '';
 export let description = '';
@@ -26,15 +24,16 @@ $: fullscreen = imagePreset === 'fullscreen';
 
 <svelte:window on:keydown={ (event) => handleKey(event) }/>
 
-<ModalCover bind:transitionDuration on:click={ () => dispatch('topModalClick') }>
-    <Modal bind:modalClasses bind:modalStyle bind:transitionDuration {fullscreen} on:click={ () => dispatch('modalClick') }>
-        <Header bind:closeButton {fullscreen} on:close/>
+<ModalCover {transitionDuration} on:click={ () => dispatch('topModalClick') }>
+    <Modal {transitionDuration} {fullscreen} on:click={ () => dispatch('modalClick') } {...(customization.lightboxProps || {})}>
+        <Header {closeButton} {fullscreen} closeButtonProps={customization.closeButtonProps} on:close
+                {...(customization.lightboxHeaderProps || {})}/>
 
-        <Body bind:protect={protect} bind:portrait={portrait} {imagePreset} {fullscreen} isGallery={gallery !== null}>
-        <slot/>
+        <Body {portrait} {imagePreset} {fullscreen} isGallery={gallery !== null}>
+            <slot/>
         </Body>
 
-        <Footer {title} {description} {gallery}/>
+        <Footer {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
     </Modal>
 </ModalCover>
 
