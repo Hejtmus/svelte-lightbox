@@ -23,6 +23,7 @@
 
 <style>
     div.svelte-lightbox-footer {
+        position: absolute;
         background-color: transparent;
         color: white;
         text-align: left;

@@ -2,19 +2,23 @@
     import { getContext } from 'svelte'
 
     export let thumbnailProps: HTMLImageElement
+    export let title: string = ''
+    export let description: string = ''
 
     const activeImageStore = getContext('activeImage')
     const imageId = (getContext('imageCounter'))({
         thumbnailProps: {
             ...$$restProps,
             ...thumbnailProps
-        }
+        },
+        title,
+        description
     })
 
 </script>
 
 {#if $activeImageStore === imageId}
-    <img {...$$restProps}/>
+    <slot {...$$restProps}/>
 {/if}
 
 <style>

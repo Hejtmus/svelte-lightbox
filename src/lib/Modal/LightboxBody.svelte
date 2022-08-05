@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
     import presets from './presets.js'
     import { afterUpdate, getContext } from 'svelte'
     export let image = {}
     export let protect = false
     export let portrait = false
-    export let imagePreset = false
+    export let imagePreset: string | null = null
     export let fullscreen = false
     export let gallery = false
     const activeImageStore = getContext('svelte-lightbox-activeImage')
@@ -49,8 +49,8 @@
 	{#if !fullscreen && image.src}
 		<img src={image.src} alt={image.alt} style={image.style} class={imageClass}>
 	{:else}
-		<div bind:this={imageParent} class:svelte-lightbox-image-portrait={portrait} class:expand={imagePreset == 'expand'}
-			 class:fit={imagePreset == 'fit'} class:fullscreen>
+		<div bind:this={imageParent} class:svelte-lightbox-image-portrait={portrait} class:expand={imagePreset === 'expand'}
+			 class:fit={imagePreset === 'fit'} class:fullscreen>
 			<slot />
 		</div>
 	{/if}

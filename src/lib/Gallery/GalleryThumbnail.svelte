@@ -9,18 +9,13 @@
     }
 </script>
 
-<button on:click={() => openImage(id)} {...$$restProps}>
+<div class="clickable" on:click={() => openImage(id)} {...$$restProps}>
     <slot/>
-</button>
+</div>
 
 <style>
-    button {
-        background: none;
-        color: inherit;
-        border: none;
-        padding: 0;
-        font: inherit;
-        cursor: pointer;
-        outline: inherit;
+    div.clickable {
+        position: static;
+        cursor: zoom-in;
     }
 </style>

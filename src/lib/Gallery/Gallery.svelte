@@ -4,7 +4,6 @@
     import BodyChild from '../Modal/BodyChild.svelte'
     import Modal from '../Modal/Index.svelte'
     import GalleryController from './GalleryController.svelte'
-    import Thumbnail from '../LightboxThumbnail.svelte'
     import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte'
     import type { Writable} from 'svelte/store'
     import type { GalleryImage } from './Types'
@@ -142,7 +141,8 @@
 <BodyChild>
     <div style="display: {isVisible ? 'block' : 'none'}">
         <Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
-               bind:title bind:description bind:imagePreset bind:escapeToClose bind:closeButton
+               title={images[$activeImageStore]?.title || ''} description={images[$activeImageStore]?.description || ''}
+               bind:imagePreset bind:escapeToClose bind:closeButton
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
             <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
                                {arrowsColorStore} {keyboardControlStore}>

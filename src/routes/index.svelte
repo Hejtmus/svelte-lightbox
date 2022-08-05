@@ -66,16 +66,28 @@
                 </div>
 
                 <div slot="lightbox">
-                    <GalleryImage src="{base}/img/gallery/1.jpg" alt="Simple lightbox"/>
-                    <GalleryImage src="{base}/img/gallery/2.jpg" alt="Simple lightbox"/>
-                    <GalleryImage src="{base}/img/gallery/3.jpg" alt="Simple lightbox"/>
-                    <GalleryImage src="{base}/img/gallery/4.jpg" alt="Simple lightbox"/>
+                    <GalleryImage>
+                        <img src="{base}/img/gallery/1.jpg" alt="Simple lightbox">
+                    </GalleryImage>
+                    <GalleryImage>
+                        <img src="{base}/img/gallery/2.jpg" alt="Simple lightbox">
+                    </GalleryImage>
+                    <GalleryImage>
+                        <img src="{base}/img/gallery/3.jpg" alt="Simple lightbox">
+                    </GalleryImage>
+                    <GalleryImage title="Too much wind" description="This happened ...">
+                        <img src="{base}/img/gallery/4.jpg" alt="Simple lightbox" class="img-fluid">
+                    </GalleryImage>
                 </div>
             </LightboxGallery>
             <LightboxGallery bind:programmaticController={galleryController}>
                 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
-                <GalleryImage src="{base}/img/test1.png" alt="Simple lightbox"/>
-                <GalleryImage src="{base}/img/test2.png" alt="Simple lightbox"/>
+                <GalleryImage>
+                    <img src="{base}/img/test1.png" alt="Simple lightbox">
+                </GalleryImage>
+                <GalleryImage>
+                    <img src="{base}/img/test2.png" alt="Simple lightbox">
+                </GalleryImage>
             </LightboxGallery>
         </div>
     </div>

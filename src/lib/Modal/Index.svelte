@@ -40,8 +40,7 @@
         <slot/>
         </Body>
 
-
-        <Footer bind:title bind:description/>
+        <Footer {title} {description}/>
     </Modal>
 </ModalCover>
 
