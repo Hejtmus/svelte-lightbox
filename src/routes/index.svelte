@@ -39,7 +39,7 @@
     </div>
     <div class="row">
         <div class="col col-12">
-            <LightboxGallery imagePreset="expand">
+            <LightboxGallery imagePreset="fullscreen">
 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
                 <div slot="thumbnail">
                     <div class="row">

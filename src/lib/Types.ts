@@ -15,8 +15,8 @@ interface GalleryState {
     activeImage: number
 }
 
-type ImagePreset = 'fit' | 'expand' | 'fullscreen' | 'scroll'
-type GalleryArrowCharacter = 'unset' | 'hide' | 'loop'
+type ImagePreset = '' | 'fullscreen' | 'scroll'
+type GalleryArrowCharacter = '' | 'hide' | 'loop'
 
 export type {
     LightboxCustomization,

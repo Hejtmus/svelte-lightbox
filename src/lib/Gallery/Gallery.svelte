@@ -21,7 +21,7 @@
     export let transitionDuration = 500
     // disables scrolling <body>
     export let noScroll = true
-    export let imagePreset: ImagePreset = 'fit'
+    export let imagePreset: ImagePreset = ''
     export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -34,7 +34,7 @@
     // Possible any CSS color
     export let arrowsColor = 'black'
     // Possible string with value: 'unset', 'loop', 'hide'
-    export let arrowsCharacter: GalleryArrowCharacter = 'unset'
+    export let arrowsCharacter: GalleryArrowCharacter = ''
     // Disables controlling gallery with keyboard
     export let disableKeyboardArrowsControl = false
 
@@ -116,7 +116,6 @@
     $: activeImageTitle = images[$activeImageStore]?.title || title || ''
     $: activeImageDescription = images[$activeImageStore]?.description || description || ''
     $: gallery = { imageCount: $imageCountStore, activeImage: $activeImageStore }
-    $: fullscreen = imagePreset === 'fullscreen'
 
     onMount(() => {
         const defaultOverflow = document.body.style.overflow
@@ -139,13 +138,13 @@
 {#if isVisible}
     <BodyChild>
         <ModalCover {transitionDuration} on:click={coverClick}>
-            <Modal {transitionDuration} {fullscreen} on:click={modalClick} {...(customization.lightboxProps || {})}>
-                <Header {closeButton} {fullscreen} closeButtonProps={customization.closeButtonProps} {escapeToClose}
+            <Modal {transitionDuration} {imagePreset} on:click={modalClick} {...(customization.lightboxProps || {})}>
+                <Header {closeButton} {imagePreset} closeButtonProps={customization.closeButtonProps} {escapeToClose}
                         {...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
                 <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
                                    {arrowsColorStore} {keyboardControlStore}>
-                    <Body {imagePreset} {fullscreen}>
+                    <Body {imagePreset}>
                     <slot/>
                     </Body>
                 </GalleryController>

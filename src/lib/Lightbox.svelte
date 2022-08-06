@@ -17,7 +17,7 @@
     export let transitionDuration = 500
     // disables scrolling <body>
     export let noScroll = true
-    export let imagePreset: ImagePreset = 'fit'
+    export let imagePreset: ImagePreset = ''
 	export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -52,8 +52,6 @@
     let toggleScroll = () => {
     }
 
-	$: fullscreen = imagePreset === 'fullscreen'
-
 	onMount(() => {
         const defaultOverflow = document.body.style.overflow
         toggleScroll = () => {
@@ -77,11 +75,11 @@
 {#if isVisible}
 	<BodyChild>
 		<ModalCover {transitionDuration} on:click={coverClick}>
-			<Modal {transitionDuration} {fullscreen} on:click={modalClick} {...(customization.lightboxProps || {})}>
-				<Header {closeButton} {fullscreen} closeButtonProps={customization.closeButtonProps} {escapeToClose}
+			<Modal {transitionDuration} {imagePreset} on:click={modalClick} {...(customization.lightboxProps || {})}>
+				<Header {closeButton} {imagePreset} closeButtonProps={customization.closeButtonProps} {escapeToClose}
 						{...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
-				<Body {imagePreset} {fullscreen}>
+				<Body {imagePreset}>
 				<slot/>
 				</Body>
 
