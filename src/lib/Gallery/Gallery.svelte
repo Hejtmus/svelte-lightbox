@@ -37,7 +37,6 @@
     export let arrowsCharacter: GalleryArrowCharacter = 'unset'
     // Disables controlling gallery with keyboard
     export let disableKeyboardArrowsControl = false
-    export let generateFallbackThumbnails = true
 
     let modalClicked = false
     let images: Array<GalleryImage> = []
@@ -81,6 +80,10 @@
         modalClicked = true
     }
 
+    const keepOrEmptyImageList = (isVisible) => {
+        if (!isVisible) images = []
+    }
+
     let toggleScroll = () => {}
 
     export const programmaticController = {
@@ -89,6 +92,7 @@
         close,
         openImage
     }
+
     setContext('activeImage', activeImageStore)
     setContext('imageCounter', (image: GalleryImage) => {
         image.id = images.length
@@ -108,6 +112,7 @@
     $: arrowsColorStore.set(arrowsColor)
     $: arrowsCharacterStore.set(arrowsCharacter)
     $: keyboardControlStore.set(disableKeyboardArrowsControl)
+    $: keepOrEmptyImageList(isVisible)
     $: activeImageTitle = images[$activeImageStore]?.title || title || ''
     $: activeImageDescription = images[$activeImageStore]?.description || description || ''
     $: gallery = { imageCount: $imageCountStore, activeImage: $activeImageStore }
@@ -131,8 +136,8 @@
     <slot name="thumbnail"/>
 {/if}
 
-<BodyChild>
-    <div style="display: {isVisible ? 'block' : 'none'}">
+{#if isVisible}
+    <BodyChild>
         <ModalCover {transitionDuration} on:click={coverClick}>
             <Modal {transitionDuration} {fullscreen} on:click={modalClick} {...(customization.lightboxProps || {})}>
                 <Header {closeButton} {fullscreen} closeButtonProps={customization.closeButtonProps} {escapeToClose}
@@ -148,5 +153,5 @@
                 <Footer {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
             </Modal>
         </ModalCover>
-    </div>
-</BodyChild>
+    </BodyChild>
+{/if}

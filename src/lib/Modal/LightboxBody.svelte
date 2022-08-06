@@ -28,14 +28,6 @@
       }
     }
 
-    $: if (imageParent && imagePreset && presets[imagePreset]) {
-        const imageStyle = imageParent.firstChild.style
-        const styles = Object.keys(presets[imagePreset])
-        for (let i = 0; i !== styles.length; i++) {
-            imageStyle[styles[i]] = presets[imagePreset][i]
-        }
-    }
-
     $: if (fullscreen) getFullscreenSrc()
     $: if (fullscreen) {
         // In case user uses fullscreen preset, we need to get image source from new image and hide it
