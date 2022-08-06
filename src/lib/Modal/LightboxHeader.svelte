@@ -3,9 +3,18 @@
     const dispatch = createEventDispatcher()
 
     export let closeButtonProps: HTMLButtonElement | {} = {}
-    export let closeButton = true
+    export let closeButton: boolean
+    export let escapeToClose: boolean
     export let fullscreen: boolean
+
+    const handleKey = (event) => {
+        if (escapeToClose && event.key === 'Escape') {
+            dispatch('close')
+        }
+    }
 </script>
+
+<svelte:window on:keydown={ (event) => handleKey(event) }/>
 
 <div class:fullscreen {...$$restProps}>
     {#if closeButton}

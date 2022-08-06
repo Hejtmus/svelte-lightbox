@@ -1,14 +1,17 @@
 <script lang="ts">
     import { onMount, setContext} from 'svelte'
     import { writable} from 'svelte/store'
-    import BodyChild from '../Modal/BodyChild.svelte'
-    import Modal from '../Modal/Index.svelte'
     import GalleryController from './GalleryController.svelte'
+    import BodyChild from '../Modal/BodyChild.svelte'
+    import Header from '../Modal/LightboxHeader.svelte'
+    import Body from '../Modal/LightboxBody.svelte'
+    import Footer from '../Modal/LightboxFooter.svelte'
+    import ModalCover from '../Modal/ModalCover.svelte'
+    import Modal from '../Modal/Modal.svelte'
     import type { Writable} from 'svelte/store'
     import type { LightboxCustomization, GalleryImage, GalleryArrowCharacter, ImagePreset } from '$lib/Types'
 
     // Lightbox props --------------------------------------------------------------------------------------------------
-
 
     export let customization: LightboxCustomization | {} = {}
     // getting universal title and descriptions
@@ -16,11 +19,9 @@
     export let description = ''
     // exporting duration of fade transition
     export let transitionDuration = 500
-    // enables portrait mode
-    export let portrait = false
     // disables scrolling <body>
     export let noScroll = true
-    export let imagePreset: ImagePreset | '' = ''
+    export let imagePreset: ImagePreset = 'fit'
     export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -110,6 +111,7 @@
     $: activeImageTitle = images[$activeImageStore]?.title || title || ''
     $: activeImageDescription = images[$activeImageStore]?.description || description || ''
     $: gallery = { imageCount: $imageCountStore, activeImage: $activeImageStore }
+    $: fullscreen = imagePreset === 'fullscreen'
 
     onMount(() => {
         const defaultOverflow = document.body.style.overflow
@@ -131,13 +133,20 @@
 
 <BodyChild>
     <div style="display: {isVisible ? 'block' : 'none'}">
-        <Modal {transitionDuration} {portrait} {imagePreset} {escapeToClose} {closeButton} title={activeImageTitle}
-               description={activeImageDescription} {gallery} {customization}
-               on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-            <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
-                               {arrowsColorStore} {keyboardControlStore}>
-                <slot/>
-            </GalleryController>
-        </Modal>
+        <ModalCover {transitionDuration} on:click={coverClick}>
+            <Modal {transitionDuration} {fullscreen} on:click={modalClick} {...(customization.lightboxProps || {})}>
+                <Header {closeButton} {fullscreen} closeButtonProps={customization.closeButtonProps} {escapeToClose}
+                        {...(customization.lightboxHeaderProps || {})} on:close={close}/>
+
+                <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
+                                   {arrowsColorStore} {keyboardControlStore}>
+                    <Body {imagePreset} {fullscreen}>
+                    <slot/>
+                    </Body>
+                </GalleryController>
+
+                <Footer {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
+            </Modal>
+        </ModalCover>
     </div>
 </BodyChild>

@@ -1,9 +1,13 @@
 <script lang="ts">
 	import Thumbnail from './LightboxThumbnail.svelte'
-    import Modal from './Modal/Index.svelte'
     import BodyChild from './Modal/BodyChild.svelte'
-    import { onMount } from 'svelte'
-	import type { LightboxCustomization } from '$lib/Types'
+	import Header from './Modal/LightboxHeader.svelte'
+	import Body from './Modal/LightboxBody.svelte'
+	import Footer from './Modal/LightboxFooter.svelte'
+	import ModalCover from './Modal/ModalCover.svelte'
+	import Modal from './Modal/Modal.svelte'
+	import { onMount } from 'svelte'
+	import type { LightboxCustomization, ImagePreset } from '$lib/Types'
 
 	export let customization: LightboxCustomization | {} = {}
     // getting universal title and descriptions
@@ -11,11 +15,9 @@
     export let description = ''
     // exporting duration of fade transition
     export let transitionDuration = 500
-    // enables portrait mode
-    export let portrait = false
     // disables scrolling <body>
     export let noScroll = true
-    export let imagePreset = false
+    export let imagePreset: ImagePreset = 'fit'
 	export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -50,7 +52,9 @@
     let toggleScroll = () => {
     }
 
-    onMount(() => {
+	$: fullscreen = imagePreset === 'fullscreen'
+
+	onMount(() => {
         const defaultOverflow = document.body.style.overflow
         toggleScroll = () => {
             if (noScroll) {
@@ -72,9 +76,17 @@
 
 {#if isVisible}
 	<BodyChild>
-		<Modal {transitionDuration} {portrait} {title} {description} {imagePreset} {escapeToClose} {closeButton}
-			   {customization} on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-			<slot/>
-		</Modal>
+		<ModalCover {transitionDuration} on:click={coverClick}>
+			<Modal {transitionDuration} {fullscreen} on:click={modalClick} {...(customization.lightboxProps || {})}>
+				<Header {closeButton} {fullscreen} closeButtonProps={customization.closeButtonProps} {escapeToClose}
+						{...(customization.lightboxHeaderProps || {})} on:close={close}/>
+
+				<Body {imagePreset} {fullscreen}>
+				<slot/>
+				</Body>
+
+				<Footer {title} {description} {...(customization.lightboxFooterProps || {})}/>
+			</Modal>
+		</ModalCover>
 	</BodyChild>
 {/if}

@@ -2,7 +2,6 @@
     import presets from './presets.js'
     import { afterUpdate, getContext } from 'svelte'
 
-    export let portrait = false
     export let imagePreset: string | null = null
     export let fullscreen = false
     export let isGallery = false
@@ -44,8 +43,8 @@
     }
 </script>
 
-<div bind:this={imageParent} class="svelte-lightbox-body" class:fullscreen class:svelte-lightbox-image-portrait={portrait}
-	 class:expand={imagePreset === 'expand'} class:fit={imagePreset === 'fit'}
+<div bind:this={imageParent} class="svelte-lightbox-body" class:fullscreen class:expand={imagePreset === 'expand'}
+	 class:fit={imagePreset === 'fit'}
 	 style="{fullscreen ? `background-image: url(${image.src || ''})` : ''}">
 	<slot/>
 </div>
@@ -59,6 +58,7 @@
     }
 	:global(div.svelte-lightbox-body > *) {
 		max-width: 100%;
+		/*max-height: 100%;*/
 		height: auto;
 	}
     div.svelte-lightbox-body.fullscreen {
@@ -71,9 +71,6 @@
 	    max-width: inherit;
         height: inherit;
         max-height: inherit;
-    }
-    div.svelte-lightbox-image-portrait{
-        height: 90vh;
     }
     div.expand {
         width: 90vw;
