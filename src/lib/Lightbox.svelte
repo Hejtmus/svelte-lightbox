@@ -74,11 +74,7 @@
 	<BodyChild>
 		<Modal {transitionDuration} {portrait} {title} {description} {imagePreset} {escapeToClose} {closeButton}
 			   {customization} on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-			{#if $$slots.thumbnail}
-				<slot name="image"/>
-			{:else}
-				<slot/>
-			{/if}
+			<slot/>
 		</Modal>
 	</BodyChild>
 {/if}

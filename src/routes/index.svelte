@@ -25,6 +25,7 @@
     <div class="row">
         <div class="col col-12">
             <Lightbox description="Simple lightbox">
+                <img slot="thumbnail" src="{base}/img/test2.png" alt="Simple lightbox">
                 <img src="{base}/img/test2.png" alt="Simple lightbox" style="max-height: 85vh">
             </Lightbox>
         </div>
