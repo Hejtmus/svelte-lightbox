@@ -52,9 +52,8 @@
     <PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsCharacterStore}/>
 
     <!-- Image wrapper -->
-    <div class="slot">
-        <slot>
-        </slot>
+    <div class="wrapperContent">
+        <slot/>
     </div>
 
     <NextImageButton on:click={nextImage} activeImage={$activeImageStore} character={$arrowsCharacterStore} imageCount={$imageCountStore}/>
@@ -78,9 +77,10 @@
         height: auto;
     }
 
-    .slot {
+    .wrapperContent {
         order: 1;
         display: flex;
         justify-content: center;
+        max-width: 100vw;
     }
 </style>

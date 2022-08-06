@@ -14,7 +14,7 @@
 </div>
 
 <style>
-    div.clickable {
+    div {
         position: static;
         cursor: zoom-in;
     }

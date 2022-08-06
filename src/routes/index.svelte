@@ -2,6 +2,7 @@
     import { Lightbox, LightboxGallery, GalleryImage, GalleryThumbnail } from '$lib'
     import { base } from '$app/paths'
 
+    // let lightboxController
     let galleryController
 </script>
 
@@ -15,15 +16,16 @@
     </div>
     <div class="row">
         <div class="col col-12">
-            <Lightbox description="Simple lightbox">
-                <img src="{base}/img/test1.png" alt="Simple lightbox" class="img-fluid">
+<!--            <img src="{base}/img/test1.png" alt="Simple lightbox" on:click>-->
+            <Lightbox description="Lightbox without customized thumbnail">
+                <img src="{base}/img/test1.png" alt="Simple lightbox">
             </Lightbox>
         </div>
     </div>
     <div class="row">
         <div class="col col-12">
             <Lightbox description="Simple lightbox">
-                <img src="{base}/img/test2.png" alt="Simple lightbox" style="max-height: 85vh" class="img-fluid">
+                <img src="{base}/img/test2.png" alt="Simple lightbox" style="max-height: 85vh">
             </Lightbox>
         </div>
     </div>
@@ -36,7 +38,7 @@
     </div>
     <div class="row">
         <div class="col col-12">
-            <LightboxGallery>
+            <LightboxGallery imagePreset="expand">
 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
                 <div slot="thumbnail">
                     <div class="row">
@@ -65,23 +67,38 @@
                     </div>
                 </div>
 
-                <div slot="lightbox">
-                    <GalleryImage>
-                        <img src="{base}/img/gallery/1.jpg" alt="Simple lightbox">
-                    </GalleryImage>
-                    <GalleryImage>
-                        <img src="{base}/img/gallery/2.jpg" alt="Simple lightbox">
-                    </GalleryImage>
-                    <GalleryImage>
-                        <img src="{base}/img/gallery/3.jpg" alt="Simple lightbox">
-                    </GalleryImage>
-                    <GalleryImage title="Too much wind" description="This happened ...">
-                        <img src="{base}/img/gallery/4.jpg" alt="Simple lightbox" class="img-fluid">
-                    </GalleryImage>
-                </div>
+                <GalleryImage>
+                    <img src="{base}/img/gallery/1.jpg" alt="Simple lightbox">
+                </GalleryImage>
+                <GalleryImage>
+                    <img src="{base}/img/gallery/2.jpg" alt="Simple lightbox">
+                </GalleryImage>
+                <GalleryImage>
+                    <img src="{base}/img/gallery/3.jpg" alt="Simple lightbox">
+                </GalleryImage>
+                <GalleryImage title="Too much wind" description="This happened ...">
+                    <img src="{base}/img/gallery/4.jpg" alt="Simple lightbox" class="img-fluid">
+                </GalleryImage>
             </LightboxGallery>
             <LightboxGallery title="Gallery with unified title" bind:programmaticController={galleryController}>
-                <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
+                <div slot="thumbnail">
+                    <div class="row">
+                        <h3>
+                            Gallery with single thumbnail
+                        </h3>
+                    </div>
+                    <div class="row">
+                        <GalleryThumbnail class="col col-md-3">
+                            <img src="{base}/img/test1.png" alt="Simple lightbox" class="img-fluid">
+                        </GalleryThumbnail>
+                        <div class="col">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, culpa dicta eligendi fuga
+                            incidunt labore laudantium maiores, minus numquam soluta ullam voluptate, voluptates! Accusamus
+                            dolor, doloremque excepturi explicabo fugit tenetur.
+                        </div>
+                    </div>
+                </div>
+
                 <GalleryImage>
                     <img src="{base}/img/test1.png" alt="Simple lightbox">
                 </GalleryImage>

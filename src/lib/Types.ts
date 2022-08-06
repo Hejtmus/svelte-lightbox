@@ -7,7 +7,6 @@ interface LightboxCustomization {
 }
 interface GalleryImage {
     id: number,
-    thumbnailProps: HTMLImageElement,
     title: string,
     description: string
 }

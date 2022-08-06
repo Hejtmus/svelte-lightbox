@@ -4,7 +4,6 @@
     import BodyChild from '../Modal/BodyChild.svelte'
     import Modal from '../Modal/Index.svelte'
     import GalleryController from './GalleryController.svelte'
-    import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte'
     import type { Writable} from 'svelte/store'
     import type { LightboxCustomization, GalleryImage, GalleryArrowCharacter, ImagePreset } from '$lib/Types'
 
@@ -128,8 +127,6 @@
 
 {#if $$slots.thumbnail}
     <slot name="thumbnail"/>
-{:else if generateFallbackThumbnails}
-    <FallbackThumbnailGenerator bind:isVisible bind:activeImage {images} {...(customization?.thumbnailProps || {})}/>
 {/if}
 
 <BodyChild>
@@ -139,11 +136,7 @@
                on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
             <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
                                {arrowsColorStore} {keyboardControlStore}>
-                {#if $$slots.lightbox}
-                    <slot name="lightbox"/>
-                {:else}
-                    <slot {...$$restProps}/>
-                {/if}
+                <slot/>
             </GalleryController>
         </Modal>
     </div>

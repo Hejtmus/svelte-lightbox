@@ -44,11 +44,10 @@
     }
 </script>
 
-<div class="svelte-lightbox-body" class:fullscreen style="{fullscreen ? `background-image: url(${image.src || ''})` : ''}">
-	<div bind:this={imageParent} class:svelte-lightbox-image-portrait={portrait} class:expand={imagePreset === 'expand'}
-		 class:fit={imagePreset === 'fit'} class:fullscreen>
-		<slot />
-	</div>
+<div bind:this={imageParent} class="svelte-lightbox-body" class:fullscreen class:svelte-lightbox-image-portrait={portrait}
+	 class:expand={imagePreset === 'expand'} class:fit={imagePreset === 'fit'}
+	 style="{fullscreen ? `background-image: url(${image.src || ''})` : ''}">
+	<slot/>
 </div>
 
 <style>
@@ -58,6 +57,10 @@
         height: auto;
         max-height: 80vh;
     }
+	:global(div.svelte-lightbox-body > *) {
+		max-width: 100%;
+		height: auto;
+	}
     div.svelte-lightbox-body.fullscreen {
         background-size: contain;
         background-repeat: no-repeat;

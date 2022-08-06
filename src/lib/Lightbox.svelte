@@ -13,7 +13,6 @@
     export let transitionDuration = 500
     // enables portrait mode
     export let portrait = false
-	export let fallbackThumbnailEnabled = true
     // disables scrolling <body>
     export let noScroll = true
     export let imagePreset = false
@@ -65,13 +64,9 @@
     })
 </script>
 
-{#if $$slots.thumbnail || fallbackThumbnailEnabled}
+{#if $$slots.thumbnail}
 	<Thumbnail {...(customization?.thumbnailProps || {})} on:click={toggle}>
-		{#if $$slots.thumbnail}
-			<slot name="thumbnail"/>
-		{:else if fallbackThumbnailEnabled}
-			<slot/>
-		{/if}
+		<slot name="thumbnail"/>
 	</Thumbnail>
 {/if}
 
