@@ -1,24 +1,20 @@
 import { SvelteComponentTyped } from "svelte";
-import type { LightboxCustomization, GalleryArrowCharacter, ImagePreset } from '../Types';
+import type { ImagePreset, LightboxCustomization, GalleryArrowsConfig } from '../Types';
 declare const __propDef: {
     props: {
-        [x: string]: any;
-        customization?: {} | LightboxCustomization | undefined;
         title?: string | undefined;
         description?: string | undefined;
+        imagePreset?: ImagePreset | undefined;
+        customization?: {} | LightboxCustomization | undefined;
         transitionDuration?: number | undefined;
-        portrait?: boolean | undefined;
-        noScroll?: boolean | undefined;
-        imagePreset?: "" | ImagePreset | undefined;
-        escapeToClose?: boolean | undefined;
-        clickToClose?: boolean | undefined;
-        closeButton?: boolean | undefined;
+        keepBodyScroll?: boolean | undefined;
+        enableImageExpand?: boolean | undefined;
+        enableEscapeToClose?: boolean | undefined;
+        enableClickToClose?: boolean | undefined;
+        showCloseButton?: boolean | undefined;
         isVisible?: boolean | undefined;
         activeImage?: number | undefined;
-        arrowsColor?: string | undefined;
-        arrowsCharacter?: GalleryArrowCharacter | undefined;
-        disableKeyboardArrowsControl?: boolean | undefined;
-        generateFallbackThumbnails?: boolean | undefined;
+        arrowsConfig?: GalleryArrowsConfig | undefined;
         programmaticController?: {
             toggle: () => void;
             open: () => void;
@@ -31,10 +27,7 @@ declare const __propDef: {
     };
     slots: {
         thumbnail: {};
-        lightbox: {};
-        default: {
-            [x: string]: any;
-        };
+        default: {};
     };
 };
 export declare type GalleryProps = typeof __propDef.props;

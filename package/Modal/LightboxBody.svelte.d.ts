@@ -1,10 +1,9 @@
 import { SvelteComponentTyped } from "svelte";
+import type { ImagePreset } from '../Types';
 declare const __propDef: {
     props: {
-        portrait?: boolean | undefined;
-        imagePreset?: string | null | undefined;
-        fullscreen?: boolean | undefined;
-        isGallery?: boolean | undefined;
+        imagePreset: ImagePreset;
+        enableImageExpand: boolean;
     };
     events: {
         [evt: string]: CustomEvent<any>;

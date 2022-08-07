@@ -1,10 +1,12 @@
 import { SvelteComponentTyped } from "svelte";
+import type { ImagePreset } from '../Types';
 declare const __propDef: {
     props: {
         [x: string]: any;
         closeButtonProps?: {} | HTMLButtonElement | undefined;
-        closeButton?: boolean | undefined;
-        fullscreen: boolean;
+        showCloseButton: boolean;
+        enableEscapeToClose: boolean;
+        imagePreset: ImagePreset;
     };
     events: {
         close: CustomEvent<any>;

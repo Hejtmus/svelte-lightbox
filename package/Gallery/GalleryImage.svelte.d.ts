@@ -2,7 +2,6 @@ import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         [x: string]: any;
-        thumbnailProps?: {} | HTMLImageElement | undefined;
         title?: string | undefined;
         description?: string | undefined;
     };

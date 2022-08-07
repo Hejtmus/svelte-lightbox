@@ -1,42 +1,37 @@
 <script>import { onMount, setContext } from 'svelte';
 import { writable } from 'svelte/store';
-import BodyChild from '../Modal/BodyChild.svelte';
-import Modal from '../Modal/Index.svelte';
 import GalleryController from './GalleryController.svelte';
-import FallbackThumbnailGenerator from './FallbackThumbnailGenerator.svelte';
+import BodyChild from '../Modal/BodyChild.svelte';
+import Header from '../Modal/LightboxHeader.svelte';
+import Body from '../Modal/LightboxBody.svelte';
+import Footer from '../Modal/LightboxFooter.svelte';
+import ModalCover from '../Modal/ModalCover.svelte';
+import Modal from '../Modal/Modal.svelte';
 // Lightbox props --------------------------------------------------------------------------------------------------
-export let customization = {};
-// getting universal title and descriptions
 export let title = '';
 export let description = '';
-// exporting duration of fade transition
-export let transitionDuration = 500;
-// enables portrait mode
-export let portrait = false;
-// disables scrolling <body>
-export let noScroll = true;
 export let imagePreset = '';
-export let escapeToClose = true;
-export let clickToClose = false;
-export let closeButton = true;
+export let customization = {};
+export let transitionDuration = 300;
+export let keepBodyScroll = false;
+export let enableImageExpand = false;
+export let enableEscapeToClose = true;
+export let enableClickToClose = false;
+export let showCloseButton = true;
 export let isVisible = false;
 // Gallery props ---------------------------------------------------------------------------------------------------
 export let activeImage = 0;
-// Possible any CSS color
-export let arrowsColor = 'black';
-// Possible string with value: 'unset', 'loop', 'hide'
-export let arrowsCharacter = 'unset';
-// Disables controlling gallery with keyboard
-export let disableKeyboardArrowsControl = false;
-export let generateFallbackThumbnails = true;
+export let arrowsConfig = {
+    color: 'black',
+    character: '',
+    enableKeyboardControl: true
+};
 let modalClicked = false;
 let images = [];
 let thumbnailCount = 0;
 const imageCountStore = writable(images.length);
 const activeImageStore = writable(activeImage);
-const arrowsColorStore = writable(arrowsColor);
-const arrowsCharacterStore = writable(arrowsCharacter);
-const keyboardControlStore = writable(disableKeyboardArrowsControl);
+const arrowsConfigStore = writable(arrowsConfig);
 const toggle = () => {
     isVisible = !isVisible;
     toggleScroll();
@@ -54,15 +49,17 @@ const close = () => {
     toggleScroll();
 };
 const coverClick = () => {
-    // console.log('coverClick')
-    if (!modalClicked || clickToClose) {
+    if (!modalClicked || enableClickToClose) {
         close();
     }
     modalClicked = false;
 };
 const modalClick = () => {
-    // console.log('modalClick')
     modalClicked = true;
+};
+const keepOrEmptyImageList = (isVisible) => {
+    if (!isVisible)
+        images = [];
 };
 let toggleScroll = () => { };
 export const programmaticController = {
@@ -86,16 +83,15 @@ setContext('thumbnailCounter', () => {
 });
 setContext('openImage', openImage);
 $: activeImageStore.set(activeImage);
-$: arrowsColorStore.set(arrowsColor);
-$: arrowsCharacterStore.set(arrowsCharacter);
-$: keyboardControlStore.set(disableKeyboardArrowsControl);
+$: arrowsConfigStore.set(arrowsConfig);
+$: keepOrEmptyImageList(isVisible);
 $: activeImageTitle = images[$activeImageStore]?.title || title || '';
 $: activeImageDescription = images[$activeImageStore]?.description || description || '';
 $: gallery = { imageCount: $imageCountStore, activeImage: $activeImageStore };
 onMount(() => {
     const defaultOverflow = document.body.style.overflow;
     toggleScroll = () => {
-        if (noScroll) {
+        if (!keepBodyScroll) {
             if (isVisible) {
                 document.body.style.overflow = 'hidden';
             }
@@ -109,23 +105,23 @@ onMount(() => {
 
 {#if $$slots.thumbnail}
     <slot name="thumbnail"/>
-{:else if generateFallbackThumbnails}
-    <FallbackThumbnailGenerator bind:isVisible bind:activeImage {images} {...(customization?.thumbnailProps || {})}/>
 {/if}
 
-<BodyChild>
-    <div style="display: {isVisible ? 'block' : 'none'}">
-        <Modal {transitionDuration} {portrait} {imagePreset} {escapeToClose} {closeButton} title={activeImageTitle}
-               description={activeImageDescription} {gallery} {customization}
-               on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-            <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
-                               {arrowsColorStore} {keyboardControlStore}>
-                {#if $$slots.lightbox}
-                    <slot name="lightbox"/>
-                {:else}
-                    <slot {...$$restProps}/>
-                {/if}
-            </GalleryController>
-        </Modal>
-    </div>
-</BodyChild>
+{#if isVisible}
+    <BodyChild>
+        <ModalCover {transitionDuration} on:click={coverClick}>
+            <Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
+                <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
+                        {...(customization.lightboxHeaderProps || {})} on:close={close}/>
+
+                    <Body {imagePreset} {enableImageExpand}>
+                        <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
+                            <slot/>
+                        </GalleryController>
+                    </Body>
+
+                <Footer {imagePreset} {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
+            </Modal>
+        </ModalCover>
+    </BodyChild>
+{/if}

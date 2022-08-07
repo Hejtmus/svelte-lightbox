@@ -3,12 +3,10 @@ import NextImageButton from './NextImageButton.svelte';
 export let imagePreset = '';
 export let imageCountStore;
 export let activeImageStore;
-export let arrowsColorStore;
-export let arrowsCharacterStore;
-export let keyboardControlStore;
+export let arrowsConfigStore;
 const previousImage = () => {
     if ($activeImageStore === 0) {
-        if ($arrowsCharacterStore === 'loop') {
+        if ($arrowsConfigStore.character === 'loop') {
             activeImageStore.set($imageCountStore - 1);
         }
     }
@@ -18,7 +16,7 @@ const previousImage = () => {
 };
 const nextImage = () => {
     if ($activeImageStore === $imageCountStore - 1) {
-        if ($arrowsCharacterStore === 'loop') {
+        if ($arrowsConfigStore.character === 'loop') {
             activeImageStore.set(0);
         }
     }
@@ -27,7 +25,7 @@ const nextImage = () => {
     }
 };
 const handleKey = (event) => {
-    if (!$keyboardControlStore) {
+    if ($arrowsConfigStore.enableKeyboardControl) {
         switch (event.key) {
             case 'ArrowLeft': {
                 previousImage();
@@ -45,39 +43,10 @@ $: fullscreen = imagePreset === 'fullscreen';
 
 <svelte:window on:keydown={ (event) => handleKey(event) }/>
 
-<div class="wrapper" class:fullscreen style="--svelte-lightbox-arrows-color: {$arrowsColorStore}">
-    <PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsCharacterStore}/>
+<PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsConfigStore.character}
+                     --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>
 
-    <!-- Image wrapper -->
-    <div class="slot">
-        <slot>
-        </slot>
-    </div>
+<slot/>
 
-    <NextImageButton on:click={nextImage} activeImage={$activeImageStore} character={$arrowsCharacterStore} imageCount={$imageCountStore}/>
-</div>
-
-
-<style>
-    div {
-        max-height: inherit;
-    }
-
-    div.fullscreen {
-        height: 100%;
-        width: 100%;
-    }
-
-    .wrapper {
-        position: relative;
-        display: flex;
-        width: auto;
-        height: auto;
-    }
-
-    .slot {
-        order: 1;
-        display: flex;
-        justify-content: center;
-    }
-</style>
+<NextImageButton on:click={nextImage} activeImage={$activeImageStore} imageCount={$imageCountStore} character={$arrowsConfigStore.character}
+                 --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>

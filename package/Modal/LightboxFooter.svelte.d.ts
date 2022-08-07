@@ -1,8 +1,9 @@
 import { SvelteComponentTyped } from "svelte";
-import type { GalleryState } from '../Types';
+import type { GalleryState, ImagePreset } from '../Types';
 declare const __propDef: {
     props: {
         [x: string]: any;
+        imagePreset: ImagePreset;
         title?: string | undefined;
         description?: string | undefined;
         gallery?: GalleryState | undefined;

@@ -1,9 +1,10 @@
 import { SvelteComponentTyped } from "svelte";
+import type { ImagePreset } from '../Types';
 declare const __propDef: {
     props: {
         [x: string]: any;
         transitionDuration: number;
-        fullscreen: boolean;
+        imagePreset: ImagePreset;
     };
     events: {
         click: MouseEvent;

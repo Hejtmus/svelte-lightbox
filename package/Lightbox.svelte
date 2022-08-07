@@ -1,26 +1,30 @@
 <script>import Thumbnail from './LightboxThumbnail.svelte';
-import Modal from './Modal/Index.svelte';
 import BodyChild from './Modal/BodyChild.svelte';
+import Header from './Modal/LightboxHeader.svelte';
+import Body from './Modal/LightboxBody.svelte';
+import Footer from './Modal/LightboxFooter.svelte';
+import ModalCover from './Modal/ModalCover.svelte';
+import Modal from './Modal/Modal.svelte';
 import { onMount } from 'svelte';
-export let customization = {};
-// getting universal title and descriptions
 export let title = '';
 export let description = '';
-// exporting duration of fade transition
-export let transitionDuration = 500;
-// enables portrait mode
-export let portrait = false;
-export let fallbackThumbnailEnabled = true;
-// disables scrolling <body>
-export let noScroll = true;
-export let imagePreset = false;
-export let escapeToClose = true;
-export let clickToClose = false;
-export let closeButton = true;
+export let imagePreset = '';
+export let customization = {};
+export let transitionDuration = 300;
+export let keepBodyScroll = false;
+export let enableImageExpand = false;
+export let enableFallbackThumbnail = true;
+export let enableEscapeToClose = true;
+export let enableClickToClose = false;
+export let showCloseButton = true;
 export let isVisible = false;
 let modalClicked = false;
 const toggle = () => {
     isVisible = !isVisible;
+    toggleScroll();
+};
+const open = () => {
+    isVisible = true;
     toggleScroll();
 };
 const close = () => {
@@ -28,22 +32,25 @@ const close = () => {
     toggleScroll();
 };
 const coverClick = () => {
-    // console.log('coverClick')
-    if (!modalClicked || clickToClose) {
+    if (!modalClicked || enableClickToClose) {
         close();
     }
     modalClicked = false;
 };
 const modalClick = () => {
-    // console.log('modalClick')
     modalClicked = true;
 };
 let toggleScroll = () => {
 };
+export const programmaticController = {
+    toggle,
+    open,
+    close
+};
 onMount(() => {
     const defaultOverflow = document.body.style.overflow;
     toggleScroll = () => {
-        if (noScroll) {
+        if (!keepBodyScroll) {
             if (isVisible) {
                 document.body.style.overflow = 'hidden';
             }
@@ -55,11 +62,11 @@ onMount(() => {
 });
 </script>
 
-{#if $$slots.thumbnail || fallbackThumbnailEnabled}
+{#if $$slots.thumbnail || enableFallbackThumbnail}
 	<Thumbnail {...(customization?.thumbnailProps || {})} on:click={toggle}>
 		{#if $$slots.thumbnail}
 			<slot name="thumbnail"/>
-		{:else if fallbackThumbnailEnabled}
+		{:else}
 			<slot/>
 		{/if}
 	</Thumbnail>
@@ -67,13 +74,17 @@ onMount(() => {
 
 {#if isVisible}
 	<BodyChild>
-		<Modal {transitionDuration} {portrait} {title} {description} {imagePreset} {escapeToClose} {closeButton}
-			   {customization} on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-			{#if $$slots.thumbnail}
-				<slot name="image"/>
-			{:else}
+		<ModalCover {transitionDuration} on:click={coverClick}>
+			<Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
+				<Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
+						{...(customization.lightboxHeaderProps || {})} on:close={close}/>
+
+				<Body {imagePreset} {enableImageExpand}>
 				<slot/>
-			{/if}
-		</Modal>
+				</Body>
+
+				<Footer {imagePreset} {title} {description} {...(customization.lightboxFooterProps || {})}/>
+			</Modal>
+		</ModalCover>
 	</BodyChild>
 {/if}

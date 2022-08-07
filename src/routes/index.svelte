@@ -44,7 +44,7 @@
         <div class="col col-12">
             <LightboxGallery imagePreset="fullscreen">
 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
-                <div slot="thumbnail">
+                <svelte:fragment slot="thumbnail">
                     <div class="row">
                         <div class="col-6">
                             <GalleryThumbnail>
@@ -69,7 +69,7 @@
                             </GalleryThumbnail>
                         </div>
                     </div>
-                </div>
+                </svelte:fragment>
 
                 <GalleryImage>
                     <img src="{base}/img/gallery/1.jpg" alt="Simple lightbox">

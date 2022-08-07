@@ -1,13 +1,12 @@
 import { SvelteComponentTyped } from "svelte";
 import type { Writable } from 'svelte/store';
+import type { GalleryArrowsConfig } from '../Types';
 declare const __propDef: {
     props: {
         imagePreset?: string | undefined;
         imageCountStore: Writable<number>;
         activeImageStore: Writable<number>;
-        arrowsColorStore: Writable<string>;
-        arrowsCharacterStore: Writable<string>;
-        keyboardControlStore: Writable<boolean>;
+        arrowsConfigStore: Writable<GalleryArrowsConfig>;
     };
     events: {
         [evt: string]: CustomEvent<any>;
