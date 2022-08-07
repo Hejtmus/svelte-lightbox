@@ -16,9 +16,9 @@
     </div>
     <div class="row">
         <div class="col col-12">
-            <Lightbox description="Lightbox without customized thumbnail" imagePreset="fullscreen" enableExpand>
+            <Lightbox description="Lightbox without customized thumbnail" imagePreset="">
                 <img slot="thumbnail" src="{base}/img/test1.png" alt="Simple lightbox" >
-                <img src="{base}/img/test1.png" alt="Simple lightbox">
+                <img src="{base}/img/gallery/4.jpg" alt="Simple lightbox">
             </Lightbox>
         </div>
     </div>
@@ -39,7 +39,7 @@
     </div>
     <div class="row">
         <div class="col col-12">
-            <LightboxGallery>
+            <LightboxGallery imagePreset="fullscreen">
 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
                 <div slot="thumbnail">
                     <div class="row">

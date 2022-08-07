@@ -48,39 +48,10 @@
 
 <svelte:window on:keydown={ (event) => handleKey(event) }/>
 
-<div class="wrapper" class:fullscreen style="--svelte-lightbox-arrows-color: {$arrowsColorStore}">
-    <PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsCharacterStore}/>
+<PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsCharacterStore}
+                     --svelte-lightbox-arrows-color={$arrowsColorStore}/>
 
-    <!-- Image wrapper -->
-    <div class="wrapperContent">
-        <slot/>
-    </div>
+<slot/>
 
-    <NextImageButton on:click={nextImage} activeImage={$activeImageStore} character={$arrowsCharacterStore} imageCount={$imageCountStore}/>
-</div>
-
-
-<style>
-    div {
-        max-height: inherit;
-    }
-
-    div.fullscreen {
-        height: 100%;
-        width: 100%;
-    }
-
-    .wrapper {
-        position: relative;
-        display: flex;
-        width: auto;
-        height: auto;
-    }
-
-    .wrapperContent {
-        order: 1;
-        display: flex;
-        justify-content: center;
-        max-width: 100vw;
-    }
-</style>
+<NextImageButton on:click={nextImage} activeImage={$activeImageStore} character={$arrowsCharacterStore} imageCount={$imageCountStore}
+                 --svelte-lightbox-arrows-color={$arrowsColorStore}/>

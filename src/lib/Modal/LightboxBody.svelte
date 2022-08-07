@@ -30,11 +30,6 @@
 	:global(div.svelte-lightbox-body.expand > *) {
 		flex-grow: 1;
 	}
-    div.svelte-lightbox-body.fullscreen {
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
     div.fullscreen {
         width: inherit;
 	    max-width: inherit;

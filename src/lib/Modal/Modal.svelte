@@ -8,8 +8,7 @@
 
 <div class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
      transition:fade={{ duration: transitionDuration }} on:click {...$$restProps}>
-    <slot>
-    </slot>
+    <slot/>
 </div>
 
 <style>
