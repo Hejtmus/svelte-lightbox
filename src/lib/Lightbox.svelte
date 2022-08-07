@@ -33,7 +33,11 @@
         toggleScroll()
     }
 
-    const close = () => {
+	const open = () => {
+		isVisible = true
+		toggleScroll()
+	}
+	const close = () => {
         isVisible = false
         toggleScroll()
     }
@@ -52,8 +56,14 @@
     let toggleScroll = () => {
     }
 
+	export const programmaticController = {
+		toggle,
+		open,
+		close
+	}
+
 	onMount(() => {
-        const defaultOverflow = document.body.style.overflow
+		const defaultOverflow = document.body.style.overflow
         toggleScroll = () => {
             if (!keepBodyScroll) {
                 if (isVisible) {
