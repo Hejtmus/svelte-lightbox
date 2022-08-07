@@ -150,7 +150,7 @@
                     </Body>
                 </GalleryController>
 
-                <Footer {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
+                <Footer {imagePreset} {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
             </Modal>
         </ModalCover>
     </BodyChild>

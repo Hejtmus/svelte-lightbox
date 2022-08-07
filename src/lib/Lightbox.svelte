@@ -84,7 +84,7 @@
 				<slot/>
 				</Body>
 
-				<Footer {title} {description} {...(customization.lightboxFooterProps || {})}/>
+				<Footer {imagePreset} {title} {description} {...(customization.lightboxFooterProps || {})}/>
 			</Modal>
 		</ModalCover>
 	</BodyChild>
