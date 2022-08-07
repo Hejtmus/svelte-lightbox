@@ -22,10 +22,10 @@
 		max-height: 100%;
 		height: auto;
 		width: auto;
+		object-fit: contain;
 	}
 	:global(div.svelte-lightbox-body.expand > *) {
 		flex-grow: 1;
-		object-fit: contain;
 	}
     div.svelte-lightbox-body.fullscreen {
         background-size: contain;

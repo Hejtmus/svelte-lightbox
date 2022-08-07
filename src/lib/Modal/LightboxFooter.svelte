@@ -22,11 +22,9 @@
 
 <style>
     div {
-        position: absolute;
-        background-color: transparent;
+        width: 100%;
+        height: auto;
         color: white;
         text-align: left;
-        width: inherit;
-        height: auto;
     }
 </style>

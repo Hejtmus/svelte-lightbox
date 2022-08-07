@@ -15,9 +15,9 @@
 <style>
      div {
          position: relative;
-         background-color: transparent;
          height: auto;
          width: auto;
+         background-color: transparent;
     }
      .fullscreen {
 	     height: inherit;
@@ -25,8 +25,4 @@
          max-height: inherit;
          max-width: inherit;
      }
-     /*.scroll {*/
-     /*    height: inherit;*/
-     /*    max-height: inherit;*/
-     /*}*/
 </style>
