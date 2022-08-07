@@ -1,26 +1,24 @@
-<script>
+<script lang="ts">
     import { fade } from 'svelte/transition'
+    import type { ImagePreset } from '$lib/Types'
 
-    export let modalStyle
-    export let modalClasses
-    export let transitionDuration
-    export let fullscreen = false
+    export let transitionDuration: number
+    export let imagePreset: ImagePreset
 </script>
 
-<div class={modalClasses} style={modalStyle} class:fullscreen transition:fade={{ duration: transitionDuration }}
-     on:click>
-    <slot>
-    </slot>
+<div class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
+     transition:fade={{ duration: transitionDuration }} on:click {...$$restProps}>
+    <slot/>
 </div>
 
 <style>
      div {
          position: relative;
-         background-color: transparent;
-         width: auto;
+         max-width: 100%;
+         max-height: 100%;
          height: auto;
-         max-width: 90vw;
-         max-height: 90vh;
+         width: auto;
+         background-color: transparent;
     }
      .fullscreen {
 	     height: inherit;

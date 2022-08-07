@@ -1,57 +1,24 @@
-/** @typedef {typeof __propDef.props}  LightboxProps */
-/** @typedef {typeof __propDef.events}  LightboxEvents */
-/** @typedef {typeof __propDef.slots}  LightboxSlots */
-export default class Lightbox extends SvelteComponentTyped<{
-    protect?: boolean | undefined;
-    closeButton?: boolean | undefined;
-    image?: {} | undefined;
-    portrait?: boolean | undefined;
-    imagePreset?: boolean | undefined;
-    gallery?: boolean | undefined;
-    title?: string | undefined;
-    description?: string | undefined;
-    transitionDuration?: number | undefined;
-    modalStyle?: string | undefined;
-    modalClasses?: string | undefined;
-    escapeToClose?: boolean | undefined;
-    thumbnail?: boolean | undefined;
-    thumbnailClasses?: string | undefined;
-    thumbnailStyle?: string | undefined;
-    noScroll?: boolean | undefined;
-    clickToClose?: boolean | undefined;
-    isVisible?: boolean | undefined;
-}, {
-    [evt: string]: CustomEvent<any>;
-}, {
-    thumbnail: {};
-    default: {};
-    image: {};
-}> {
-}
-export type LightboxProps = typeof __propDef.props;
-export type LightboxEvents = typeof __propDef.events;
-export type LightboxSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
+import type { LightboxCustomization, ImagePreset } from './Types';
 declare const __propDef: {
     props: {
-        protect?: boolean | undefined;
-        closeButton?: boolean | undefined;
-        image?: {} | undefined;
-        portrait?: boolean | undefined;
-        imagePreset?: boolean | undefined;
-        gallery?: boolean | undefined;
         title?: string | undefined;
         description?: string | undefined;
+        imagePreset?: ImagePreset | undefined;
+        customization?: {} | LightboxCustomization | undefined;
         transitionDuration?: number | undefined;
-        modalStyle?: string | undefined;
-        modalClasses?: string | undefined;
-        escapeToClose?: boolean | undefined;
-        thumbnail?: boolean | undefined;
-        thumbnailClasses?: string | undefined;
-        thumbnailStyle?: string | undefined;
-        noScroll?: boolean | undefined;
-        clickToClose?: boolean | undefined;
+        keepBodyScroll?: boolean | undefined;
+        enableImageExpand?: boolean | undefined;
+        enableFallbackThumbnail?: boolean | undefined;
+        enableEscapeToClose?: boolean | undefined;
+        enableClickToClose?: boolean | undefined;
+        showCloseButton?: boolean | undefined;
         isVisible?: boolean | undefined;
+        programmaticController?: {
+            toggle: () => void;
+            open: () => void;
+            close: () => void;
+        } | undefined;
     };
     events: {
         [evt: string]: CustomEvent<any>;
@@ -59,7 +26,16 @@ declare const __propDef: {
     slots: {
         thumbnail: {};
         default: {};
-        image: {};
     };
 };
+export declare type LightboxProps = typeof __propDef.props;
+export declare type LightboxEvents = typeof __propDef.events;
+export declare type LightboxSlots = typeof __propDef.slots;
+export default class Lightbox extends SvelteComponentTyped<LightboxProps, LightboxEvents, LightboxSlots> {
+    get programmaticController(): {
+        toggle: () => void;
+        open: () => void;
+        close: () => void;
+    };
+}
 export {};

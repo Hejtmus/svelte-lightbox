@@ -1,25 +1,28 @@
-<script>
-    import { createEventDispatcher } from 'svelte'
-    const dispatch = createEventDispatcher()
-
-    export let size = 'xs'
-    export let style = ''
-    export let headerClasses = ''
-    export let buttonClasses = ''
-    export let closeButton = true
-    export let fullscreen = false
+<script>import { createEventDispatcher } from 'svelte';
+const dispatch = createEventDispatcher();
+export let closeButtonProps = {};
+export let showCloseButton;
+export let enableEscapeToClose;
+export let imagePreset;
+const handleKey = (event) => {
+    if (enableEscapeToClose && event.key === 'Escape') {
+        dispatch('close');
+    }
+};
 </script>
 
-<div class={'svelte-lightbox-header ' + headerClasses} class:fullscreen>
-    {#if closeButton}
-        <button on:click={ () => dispatch('close')} {size} {style} class={buttonClasses} class:fullscreen>
+<svelte:window on:keydown={ (event) => handleKey(event) }/>
+
+<div class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
+    {#if showCloseButton}
+        <button class:fullscreen={imagePreset === 'fullscreen'} on:click={ () => dispatch('close')} {...closeButtonProps}>
             ×
         </button>
     {/if}
 </div>
 
 <style>
-    div.svelte-lightbox-header {
+    div {
         width: auto;
         height: 3rem;
         display: flex;

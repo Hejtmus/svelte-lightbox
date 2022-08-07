@@ -1,23 +1,7 @@
-/** @typedef {typeof __propDef.props}  ModalCoverProps */
-/** @typedef {typeof __propDef.events}  ModalCoverEvents */
-/** @typedef {typeof __propDef.slots}  ModalCoverSlots */
-export default class ModalCover extends SvelteComponentTyped<{
-    transitionDuration: any;
-}, {
-    click: MouseEvent;
-} & {
-    [evt: string]: CustomEvent<any>;
-}, {
-    default: {};
-}> {
-}
-export type ModalCoverProps = typeof __propDef.props;
-export type ModalCoverEvents = typeof __propDef.events;
-export type ModalCoverSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        transitionDuration: any;
+        transitionDuration: number;
     };
     events: {
         click: MouseEvent;
@@ -28,4 +12,9 @@ declare const __propDef: {
         default: {};
     };
 };
+export declare type ModalCoverProps = typeof __propDef.props;
+export declare type ModalCoverEvents = typeof __propDef.events;
+export declare type ModalCoverSlots = typeof __propDef.slots;
+export default class ModalCover extends SvelteComponentTyped<ModalCoverProps, ModalCoverEvents, ModalCoverSlots> {
+}
 export {};

@@ -1,109 +1,90 @@
-<script>
-	import Thumbnail from './LightboxThumbnail.svelte'
-    import Modal from './Modal/Index.svelte'
-    import InternalGallery from './Gallery/InternalGallery.svelte'
-    import BodyChild from './Modal/BodyChild.svelte'
-    import { onMount } from 'svelte'
-
-    // exporting classes, for passing classes into thumbnail
-    export let thumbnailClasses = ''
-    export let thumbnailStyle = ''
-    // exporting classes, for passing classes into wrapper
-    export let modalClasses = ''
-    export let modalStyle = ''
-    // array with image descriptions
-    export let gallery = false
-    // getting universal title and descriptions
-    export let title = ''
-    export let description = ''
-    // exporting duration of fade transition
-    export let transitionDuration = 500
-    // bool that enables drag n drop protection
-    export let protect = false
-    // enables other image than in slot
-    export let image = {}
-    // enables portrait mode
-    export let portrait = false
-    // disables scrolling <body>
-    export let noScroll = true
-    export let thumbnail = false
-    export let imagePreset = false
-	export let escapeToClose = true
-    export let clickToClose = false
-    export let closeButton = true
-
-    export let isVisible = false
-
-    let modalClicked = false
-
-    const toggle = () => {
-        isVisible = !isVisible
-        toggleScroll()
+<script>import Thumbnail from './LightboxThumbnail.svelte';
+import BodyChild from './Modal/BodyChild.svelte';
+import Header from './Modal/LightboxHeader.svelte';
+import Body from './Modal/LightboxBody.svelte';
+import Footer from './Modal/LightboxFooter.svelte';
+import ModalCover from './Modal/ModalCover.svelte';
+import Modal from './Modal/Modal.svelte';
+import { onMount } from 'svelte';
+export let title = '';
+export let description = '';
+export let imagePreset = '';
+export let customization = {};
+export let transitionDuration = 300;
+export let keepBodyScroll = false;
+export let enableImageExpand = false;
+export let enableFallbackThumbnail = true;
+export let enableEscapeToClose = true;
+export let enableClickToClose = false;
+export let showCloseButton = true;
+export let isVisible = false;
+let modalClicked = false;
+const toggle = () => {
+    isVisible = !isVisible;
+    toggleScroll();
+};
+const open = () => {
+    isVisible = true;
+    toggleScroll();
+};
+const close = () => {
+    isVisible = false;
+    toggleScroll();
+};
+const coverClick = () => {
+    if (!modalClicked || enableClickToClose) {
+        close();
     }
-
-    const close = () => {
-        isVisible = false
-        toggleScroll()
-    }
-
-    const coverClick = () => {
-        // console.log('coverClick')
-        if (!modalClicked || clickToClose) {
-            close()
-        }
-        modalClicked = false
-    }
-
-    const modalClick = () => {
-        // console.log('modalClick')
-        modalClicked = true
-    }
-
-    let toggleScroll = () => {
-    }
-
-    onMount(() => {
-        const defaultOverflow = document.body.style.overflow
-        toggleScroll = () => {
-            if (noScroll) {
-                if (isVisible) {
-                    document.body.style.overflow = 'hidden'
-                } else {
-                    document.body.style.overflow = defaultOverflow
-                }
+    modalClicked = false;
+};
+const modalClick = () => {
+    modalClicked = true;
+};
+let toggleScroll = () => {
+};
+export const programmaticController = {
+    toggle,
+    open,
+    close
+};
+onMount(() => {
+    const defaultOverflow = document.body.style.overflow;
+    toggleScroll = () => {
+        if (!keepBodyScroll) {
+            if (isVisible) {
+                document.body.style.overflow = 'hidden';
+            }
+            else {
+                document.body.style.overflow = defaultOverflow;
             }
         }
-    })
+    };
+});
 </script>
 
-<Thumbnail bind:class={thumbnailClasses} bind:style={thumbnailStyle} bind:protect on:click={toggle}>
-	{#if thumbnail || gallery}
-		<slot name="thumbnail"/>
-	{:else}
-		<slot/>
-	{/if}
-</Thumbnail>
+{#if $$slots.thumbnail || enableFallbackThumbnail}
+	<Thumbnail {...(customization?.thumbnailProps || {})} on:click={toggle}>
+		{#if $$slots.thumbnail}
+			<slot name="thumbnail"/>
+		{:else}
+			<slot/>
+		{/if}
+	</Thumbnail>
+{/if}
 
 {#if isVisible}
 	<BodyChild>
-		<Modal bind:modalClasses bind:modalStyle bind:transitionDuration bind:image bind:protect bind:portrait
-			   bind:title bind:description bind:gallery bind:imagePreset bind:escapeToClose bind:closeButton
-		       on:close={close} on:topModalClick={coverClick} on:modalClick={modalClick}>
-			{#if thumbnail}
-				<slot name="image"/>
-			{:else if gallery}
-				<InternalGallery {imagePreset}>
-					{#if $$slots.thumbnail}
-						<div>
-							<slot name="thumbnail"/>
-						</div>
-					{/if}
-					<slot>
-					</slot>
-				</InternalGallery>
-			{:else}
+		<ModalCover {transitionDuration} on:click={coverClick}>
+			<Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
+				<Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
+						{...(customization.lightboxHeaderProps || {})} on:close={close}/>
+
+				<Body {imagePreset} {enableImageExpand}>
 				<slot/>
-			{/if}
-		</Modal>
+				</Body>
+
+				<Footer {imagePreset} {title} {description} {...(customization.lightboxFooterProps || {})}/>
+			</Modal>
+		</ModalCover>
 	</BodyChild>
 {/if}
