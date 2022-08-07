@@ -12,7 +12,7 @@
 
 <style>
     div.svelte-lightbox-body {
-        background-color: transparent;
+		position: relative;
         width: auto;
         height: auto;
 		/* TODO: mitigate this hardcode by using flexbox in lightbox modal <Modal.svelte> */

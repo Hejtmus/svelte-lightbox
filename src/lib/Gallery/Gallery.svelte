@@ -141,11 +141,11 @@
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                         {...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
-                <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
                     <Body {imagePreset} {enableImageExpand}>
-                    <slot/>
+                        <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
+                            <slot/>
+                        </GalleryController>
                     </Body>
-                </GalleryController>
 
                 <Footer {imagePreset} {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
             </Modal>
