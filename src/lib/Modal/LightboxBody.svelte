@@ -15,6 +15,7 @@
         background-color: transparent;
         width: auto;
         height: auto;
+		/* TODO: mitigate this hardcode by using flexbox in lightbox modal <Modal.svelte> */
         max-height: 80vh;
     }
 	:global(div.svelte-lightbox-body > *) {

@@ -19,6 +19,7 @@
     export let noScroll = true
     export let imagePreset: ImagePreset = ''
 	export let enableExpand = false
+	export let enableFallbackThumbnail = true
 	export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -67,9 +68,13 @@
     })
 </script>
 
-{#if $$slots.thumbnail}
+{#if $$slots.thumbnail || enableFallbackThumbnail}
 	<Thumbnail {...(customization?.thumbnailProps || {})} on:click={toggle}>
-		<slot name="thumbnail"/>
+		{#if $$slots.thumbnail}
+			<slot name="thumbnail"/>
+		{:else}
+			<slot/>
+		{/if}
 	</Thumbnail>
 {/if}
 
