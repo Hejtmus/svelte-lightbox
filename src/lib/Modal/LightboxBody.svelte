@@ -19,10 +19,13 @@
     }
 	:global(div.svelte-lightbox-body > *) {
 		max-width: 100%;
-		max-height: 100%;
+		max-height: inherit;
 		height: auto;
 		width: auto;
 		object-fit: contain;
+	}
+	:global(div.svelte-lightbox-body.scroll > *) {
+		max-height: 100%;
 	}
 	:global(div.svelte-lightbox-body.expand > *) {
 		flex-grow: 1;
@@ -36,7 +39,7 @@
         width: inherit;
 	    max-width: inherit;
         height: inherit;
-        max-height: inherit;
+		max-height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
