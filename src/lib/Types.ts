@@ -1,3 +1,6 @@
+type ImagePreset = '' | 'fullscreen' | 'scroll'
+type GalleryArrowCharacter = '' | 'hide' | 'loop'
+
 interface LightboxCustomization {
     closeButtonProps: HTMLButtonElement,
     lightboxFooterProps: HTMLDivElement,
@@ -15,13 +18,18 @@ interface GalleryState {
     activeImage: number
 }
 
-type ImagePreset = '' | 'fullscreen' | 'scroll'
-type GalleryArrowCharacter = '' | 'hide' | 'loop'
+interface GalleryArrowsConfig {
+    color: string,
+    character: GalleryArrowCharacter,
+    enableKeyboardControl: boolean
+}
+
 
 export type {
+    ImagePreset,
+    GalleryArrowCharacter,
     LightboxCustomization,
     GalleryImage,
     GalleryState,
-    ImagePreset,
-    GalleryArrowCharacter
+    GalleryArrowsConfig
 }

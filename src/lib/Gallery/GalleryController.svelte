@@ -2,17 +2,16 @@
     import PreviousImageButton from './PreviousImageButton.svelte'
     import NextImageButton from './NextImageButton.svelte'
     import type { Writable } from 'svelte/store'
+    import type { GalleryArrowsConfig } from '$lib/Types'
 
     export let imagePreset = ''
     export let imageCountStore: Writable<number>
     export let activeImageStore: Writable<number>
-    export let arrowsColorStore: Writable<string>
-    export let arrowsCharacterStore: Writable<string>
-    export let keyboardControlStore: Writable<boolean>
+    export let arrowsConfigStore: Writable<GalleryArrowsConfig>
 
     const previousImage = () => {
         if ($activeImageStore === 0) {
-            if ($arrowsCharacterStore === 'loop') {
+            if ($arrowsConfigStore.character === 'loop') {
                 activeImageStore.set($imageCountStore - 1)
             }
         } else {
@@ -21,7 +20,7 @@
     }
     const nextImage = () => {
         if ($activeImageStore === $imageCountStore - 1) {
-            if ($arrowsCharacterStore === 'loop') {
+            if ($arrowsConfigStore.character === 'loop') {
                 activeImageStore.set(0)
             }
         } else {
@@ -29,7 +28,7 @@
         }
     }
     const handleKey = (event) => {
-        if (!$keyboardControlStore) {
+        if ($arrowsConfigStore.enableKeyboardControl) {
             switch (event.key) {
                 case 'ArrowLeft': {
                     previousImage()
@@ -48,10 +47,10 @@
 
 <svelte:window on:keydown={ (event) => handleKey(event) }/>
 
-<PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsCharacterStore}
-                     --svelte-lightbox-arrows-color={$arrowsColorStore}/>
+<PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsConfigStore.character}
+                     --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>
 
 <slot/>
 
-<NextImageButton on:click={nextImage} activeImage={$activeImageStore} character={$arrowsCharacterStore} imageCount={$imageCountStore}
-                 --svelte-lightbox-arrows-color={$arrowsColorStore}/>
+<NextImageButton on:click={nextImage} activeImage={$activeImageStore} imageCount={$imageCountStore} character={$arrowsConfigStore.character}
+                 --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>

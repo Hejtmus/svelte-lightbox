@@ -4,12 +4,12 @@
     const dispatch = createEventDispatcher()
 
     export let closeButtonProps: HTMLButtonElement | {} = {}
-    export let closeButton: boolean
-    export let escapeToClose: boolean
+    export let showCloseButton: boolean
+    export let enableEscapeToClose: boolean
     export let imagePreset: ImagePreset
 
     const handleKey = (event) => {
-        if (escapeToClose && event.key === 'Escape') {
+        if (enableEscapeToClose && event.key === 'Escape') {
             dispatch('close')
         }
     }
@@ -18,7 +18,7 @@
 <svelte:window on:keydown={ (event) => handleKey(event) }/>
 
 <div class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
-    {#if closeButton}
+    {#if showCloseButton}
         <button class:fullscreen={imagePreset === 'fullscreen'} on:click={ () => dispatch('close')} {...closeButtonProps}>
             ×
         </button>

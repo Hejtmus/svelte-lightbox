@@ -9,35 +9,39 @@
     import ModalCover from '../Modal/ModalCover.svelte'
     import Modal from '../Modal/Modal.svelte'
     import type { Writable} from 'svelte/store'
-    import type { LightboxCustomization, GalleryImage, GalleryArrowCharacter, ImagePreset } from '$lib/Types'
+    import type {
+        ImagePreset,
+        LightboxCustomization,
+        GalleryImage,
+        GalleryArrowsConfig
+    } from '$lib/Types'
 
     // Lightbox props --------------------------------------------------------------------------------------------------
 
-    export let customization: LightboxCustomization | {} = {}
-    // getting universal title and descriptions
     export let title = ''
     export let description = ''
-    // exporting duration of fade transition
-    export let transitionDuration = 500
-    // disables scrolling <body>
-    export let noScroll = true
+
     export let imagePreset: ImagePreset = ''
-    export let enableExpand = false
-    export let escapeToClose = true
-    export let clickToClose = false
-    export let closeButton = true
+
+    export let customization: LightboxCustomization | {} = {}
+    export let transitionDuration = 300
+
+    export let keepBodyScroll = false
+    export let enableImageExpand = false
+    export let enableEscapeToClose = true
+    export let enableClickToClose = false
+    export let showCloseButton = true
 
     export let isVisible = false
 
     // Gallery props ---------------------------------------------------------------------------------------------------
 
     export let activeImage = 0
-    // Possible any CSS color
-    export let arrowsColor = 'black'
-    // Possible string with value: 'unset', 'loop', 'hide'
-    export let arrowsCharacter: GalleryArrowCharacter = ''
-    // Disables controlling gallery with keyboard
-    export let disableKeyboardArrowsControl = false
+    export let arrowsConfig: GalleryArrowsConfig = {
+        color: 'black',
+        character: '',
+        enableKeyboardControl: true
+    }
 
     let modalClicked = false
     let images: Array<GalleryImage> = []
@@ -45,9 +49,7 @@
 
     const imageCountStore: Writable<number> = writable(images.length)
     const activeImageStore: Writable<number> = writable(activeImage)
-    const arrowsColorStore: Writable<string> = writable(arrowsColor)
-    const arrowsCharacterStore: Writable<string> = writable(arrowsCharacter)
-    const keyboardControlStore: Writable<boolean> = writable(disableKeyboardArrowsControl)
+    const arrowsConfigStore: Writable<GalleryArrowsConfig> = writable(arrowsConfig)
 
     const toggle = () => {
         isVisible = !isVisible
@@ -69,15 +71,13 @@
     }
 
     const coverClick = () => {
-        // console.log('coverClick')
-        if (!modalClicked || clickToClose) {
+        if (!modalClicked || enableClickToClose) {
             close()
         }
         modalClicked = false
     }
 
     const modalClick = () => {
-        // console.log('modalClick')
         modalClicked = true
     }
 
@@ -110,9 +110,7 @@
     setContext('openImage', openImage)
 
     $: activeImageStore.set(activeImage)
-    $: arrowsColorStore.set(arrowsColor)
-    $: arrowsCharacterStore.set(arrowsCharacter)
-    $: keyboardControlStore.set(disableKeyboardArrowsControl)
+    $: arrowsConfigStore.set(arrowsConfig)
     $: keepOrEmptyImageList(isVisible)
     $: activeImageTitle = images[$activeImageStore]?.title || title || ''
     $: activeImageDescription = images[$activeImageStore]?.description || description || ''
@@ -121,7 +119,7 @@
     onMount(() => {
         const defaultOverflow = document.body.style.overflow
         toggleScroll = () => {
-            if (noScroll) {
+            if (!keepBodyScroll) {
                 if (isVisible) {
                     document.body.style.overflow = 'hidden'
                 } else {
@@ -139,13 +137,12 @@
 {#if isVisible}
     <BodyChild>
         <ModalCover {transitionDuration} on:click={coverClick}>
-            <Modal {transitionDuration} {imagePreset} on:click={modalClick} {...(customization.lightboxProps || {})}>
-                <Header {closeButton} {imagePreset} closeButtonProps={customization.closeButtonProps} {escapeToClose}
+            <Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
+                <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                         {...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
-                <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
-                                   {arrowsColorStore} {keyboardControlStore}>
-                    <Body {imagePreset} {enableExpand}>
+                <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
+                    <Body {imagePreset} {enableImageExpand}>
                     <slot/>
                     </Body>
                 </GalleryController>

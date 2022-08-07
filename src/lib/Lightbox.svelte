@@ -9,20 +9,20 @@
 	import { onMount } from 'svelte'
 	import type { LightboxCustomization, ImagePreset } from '$lib/Types'
 
-	export let customization: LightboxCustomization | {} = {}
-    // getting universal title and descriptions
     export let title = ''
     export let description = ''
-    // exporting duration of fade transition
-    export let transitionDuration = 500
-    // disables scrolling <body>
-    export let noScroll = true
+
     export let imagePreset: ImagePreset = ''
-	export let enableExpand = false
+
+	export let customization: LightboxCustomization | {} = {}
+	export let transitionDuration = 300
+
+	export let keepBodyScroll = false
+	export let enableImageExpand = false
 	export let enableFallbackThumbnail = true
-	export let escapeToClose = true
-    export let clickToClose = false
-    export let closeButton = true
+	export let enableEscapeToClose = true
+    export let enableClickToClose = false
+    export let showCloseButton = true
 
     export let isVisible = false
 
@@ -39,15 +39,13 @@
     }
 
     const coverClick = () => {
-        // console.log('coverClick')
-        if (!modalClicked || clickToClose) {
+        if (!modalClicked || enableClickToClose) {
             close()
         }
         modalClicked = false
     }
 
     const modalClick = () => {
-        // console.log('modalClick')
         modalClicked = true
     }
 
@@ -57,7 +55,7 @@
 	onMount(() => {
         const defaultOverflow = document.body.style.overflow
         toggleScroll = () => {
-            if (noScroll) {
+            if (!keepBodyScroll) {
                 if (isVisible) {
                     document.body.style.overflow = 'hidden'
                 } else {
@@ -81,11 +79,11 @@
 {#if isVisible}
 	<BodyChild>
 		<ModalCover {transitionDuration} on:click={coverClick}>
-			<Modal {transitionDuration} {imagePreset} on:click={modalClick} {...(customization.lightboxProps || {})}>
-				<Header {closeButton} {imagePreset} closeButtonProps={customization.closeButtonProps} {escapeToClose}
+			<Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
+				<Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
 						{...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
-				<Body {imagePreset} {enableExpand}>
+				<Body {imagePreset} {enableImageExpand}>
 				<slot/>
 				</Body>
 

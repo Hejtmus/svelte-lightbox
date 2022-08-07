@@ -2,11 +2,11 @@
     import type { ImagePreset } from '$lib/Types'
 
 	export let imagePreset: ImagePreset
-	export let enableExpand: boolean
+	export let enableImageExpand: boolean
 </script>
 
 <div class="svelte-lightbox-body" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
-	 class:expand={enableExpand}>
+	 class:expand={enableImageExpand}>
 	<slot/>
 </div>
 
