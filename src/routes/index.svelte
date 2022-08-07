@@ -1,6 +1,10 @@
 <script>
-    import { Lightbox, LightboxGallery, GalleryImage, GalleryThumbnail } from '$lib'
+    import { Lightbox, LightboxGallery, GalleryImage, GalleryThumbnail, i18n } from '$lib'
     import { base } from '$app/paths'
+
+    $i18n.generateLocalizedGalleryCounter = (activeImage, imageCount) => {
+            return `Obrázok ${activeImage + 1} z ${imageCount}`
+    }
 
     // let lightboxController
     let galleryController

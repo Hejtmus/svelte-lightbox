@@ -24,6 +24,10 @@ interface GalleryArrowsConfig {
     enableKeyboardControl: boolean
 }
 
+interface I18n {
+    generateLocalizedGalleryCounter: (activeImage: number, imageCount: number) => string
+}
+
 
 export type {
     ImagePreset,
@@ -31,5 +35,6 @@ export type {
     LightboxCustomization,
     GalleryImage,
     GalleryState,
-    GalleryArrowsConfig
+    GalleryArrowsConfig,
+    I18n
 }
