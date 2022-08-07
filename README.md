@@ -306,6 +306,10 @@ way, or replace some of them by your own tweaked variants. Basic building blocks
 
 ### Building blocks of lightbox modal
 
+#### `<LightboxThumbnail>`
+
+Name says it all.
+
 #### `<BodyChild>`
 
 Makes content of slot direct child of `<body>`, this can be especially useful when using CSS frameworks, which can break
