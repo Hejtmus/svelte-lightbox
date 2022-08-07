@@ -22,6 +22,7 @@
     // disables scrolling <body>
     export let noScroll = true
     export let imagePreset: ImagePreset = ''
+    export let enableExpand = false
     export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -144,7 +145,7 @@
 
                 <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsCharacterStore}
                                    {arrowsColorStore} {keyboardControlStore}>
-                    <Body {imagePreset}>
+                    <Body {imagePreset} {enableExpand}>
                     <slot/>
                     </Body>
                 </GalleryController>

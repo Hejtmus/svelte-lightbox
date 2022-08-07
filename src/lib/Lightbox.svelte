@@ -18,6 +18,7 @@
     // disables scrolling <body>
     export let noScroll = true
     export let imagePreset: ImagePreset = ''
+	export let enableExpand = false
 	export let escapeToClose = true
     export let clickToClose = false
     export let closeButton = true
@@ -79,7 +80,7 @@
 				<Header {closeButton} {imagePreset} closeButtonProps={customization.closeButtonProps} {escapeToClose}
 						{...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
-				<Body {imagePreset}>
+				<Body {imagePreset} {enableExpand}>
 				<slot/>
 				</Body>
 

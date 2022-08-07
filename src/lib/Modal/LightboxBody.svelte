@@ -2,10 +2,11 @@
     import type { ImagePreset } from '$lib/Types'
 
 	export let imagePreset: ImagePreset
+	export let enableExpand: boolean
 </script>
 
 <div class="svelte-lightbox-body" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
-	 class:fit={imagePreset === 'fit'}>
+	 class:expand={enableExpand}>
 	<slot/>
 </div>
 
@@ -20,6 +21,11 @@
 		max-width: 100%;
 		max-height: 100%;
 		height: auto;
+		width: auto;
+	}
+	:global(div.svelte-lightbox-body.expand > *) {
+		flex-grow: 1;
+		object-fit: contain;
 	}
     div.svelte-lightbox-body.fullscreen {
         background-size: contain;

@@ -16,8 +16,8 @@
     </div>
     <div class="row">
         <div class="col col-12">
-<!--            <img src="{base}/img/test1.png" alt="Simple lightbox" on:click>-->
-            <Lightbox description="Lightbox without customized thumbnail">
+            <Lightbox description="Lightbox without customized thumbnail" imagePreset="fullscreen" enableExpand>
+                <img slot="thumbnail" src="{base}/img/test1.png" alt="Simple lightbox" >
                 <img src="{base}/img/test1.png" alt="Simple lightbox">
             </Lightbox>
         </div>
@@ -26,7 +26,7 @@
         <div class="col col-12">
             <Lightbox description="Simple lightbox">
                 <img slot="thumbnail" src="{base}/img/test2.png" alt="Simple lightbox">
-                <img src="{base}/img/test2.png" alt="Simple lightbox" style="max-height: 85vh">
+                <img src="{base}/img/test2.png" alt="Simple lightbox">
             </Lightbox>
         </div>
     </div>
@@ -39,7 +39,7 @@
     </div>
     <div class="row">
         <div class="col col-12">
-            <LightboxGallery imagePreset="fullscreen">
+            <LightboxGallery>
 <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
                 <div slot="thumbnail">
                     <div class="row">
