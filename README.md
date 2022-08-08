@@ -3,7 +3,7 @@
 Lightweight Lightbox Svelte component
 
 Lightweight Lightbox, but very customizable Svelte component library. There is also support for
-mobile devices. Note that this first version of this library, if you notice some bogs, 
+mobile devices. Note that this first version of this library, if you notice any bugs, 
 please report them to this library's GitHub repository to the 'Issues' section.
 
 ## Instalation
