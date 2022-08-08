@@ -3,8 +3,8 @@
 Lightweight Lightbox Svelte component
 
 Lightweight Lightbox, but very customizable Svelte component library. There is also support for
-mobile devices. Note that this first version of this library, if you notice some bogs, 
-please report them to this library's GitHub repository to the 'Issues' section.
+mobile devices. Note that this first version of this library, if you notice any bug,
+please report it to this library's GitHub repository to the 'Issues' section.
 
 ## Instalation
 
@@ -306,6 +306,10 @@ way, or replace some of them by your own tweaked variants. Basic building blocks
 
 ### Building blocks of lightbox modal
 
+#### `<LightboxThumbnail>`
+
+Name says it all.
+
 #### `<BodyChild>`
 
 Makes content of slot direct child of `<body>`, this can be especially useful when using CSS frameworks, which can break
@@ -357,7 +361,7 @@ i18n from 'svelte-lightbox' and then setting `generateLocalizedGalleryCounter` t
 
 # Contribution
 
-Every issue or code contribution is welcome.
+Every issue or code contribution is welcome. If you want to ask something about this project feel free to DM me.
 
 # License
 
