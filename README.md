@@ -361,7 +361,7 @@ i18n from 'svelte-lightbox' and then setting `generateLocalizedGalleryCounter` t
 
 # Contribution
 
-Every issue or code contribution is welcome. If you want to ask something about this project feel free to DM me.
+Every issue or code contribution is welcome.
 
 # License
 
