@@ -1,4 +1,4 @@
-<div on:click {...$$restProps}>
+<div class:svelte-lightbox-thumbnail={true} on:click {...$$restProps}>
     <slot/>
 </div>
 
@@ -6,5 +6,9 @@
     div {
         position: static;
         cursor: zoom-in;
+    }
+    :global(.svelte-lightbox-thumbnail > *) {
+        max-width: 100%;
+        height: auto;
     }
 </style>
