@@ -1,6 +1,13 @@
-# Svelte-lightbox
+# svelte-lightbox
 
 Lightweight Lightbox Svelte component
+
+![workflow status](https://img.shields.io/github/workflow/status/Hejtmus/svelte-lightbox/Node.js%20CI)
+![version](https://img.shields.io/npm/v/svelte-lightbox)
+![bundle size](https://img.shields.io/bundlephobia/minzip/svelte-lightbox)
+![MIT](https://img.shields.io/github/license/Hejtmus/svelte-lightbox)
+![issues count](https://img.shields.io/github/issues/Hejtmus/svelte-lightbox)
+![downloads](https://img.shields.io/npm/dw/svelte-lightbox)
 
 Lightweight Lightbox, but very customizable Svelte component library. There is also support for
 mobile devices. Note that this first version of this library, if you notice any bug,
@@ -35,7 +42,7 @@ place your thumbnail layout, which is basically layout with images wrapped insid
 
 ### Common use cases
 
-```sveltehtml
+```html
 <script>
     import { 
         Lightbox,
@@ -361,7 +368,7 @@ i18n from 'svelte-lightbox' and then setting `generateLocalizedGalleryCounter` t
 
 # Contribution
 
-Every issue or code contribution is welcome. If you want to ask something about this project feel free to DM me.
+Every issue or code contribution is welcome.
 
 # License
 

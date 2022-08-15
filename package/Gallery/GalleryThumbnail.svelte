@@ -6,7 +6,7 @@ if (!id) {
 }
 </script>
 
-<div class="clickable" on:click={() => openImage(id)} {...$$restProps}>
+<div class:svelte-lightbox-thumbnail={true} on:click={() => openImage(id)} {...$$restProps}>
     <slot/>
 </div>
 
@@ -14,5 +14,9 @@ if (!id) {
     div {
         position: static;
         cursor: zoom-in;
+    }
+    :global(.svelte-lightbox-thumbnail > *) {
+        max-width: 100%;
+        height: auto;
     }
 </style>

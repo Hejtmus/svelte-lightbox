@@ -1,6 +1,6 @@
 {
   "name": "svelte-lightbox",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "author": {
     "name": "Filip Holčík",
@@ -37,6 +37,9 @@
     "svelte",
     "svelteKit",
     "lightbox",
+    "image",
+    "photo",
+    "video",
     "gallery",
     "ssr",
     "modal"
