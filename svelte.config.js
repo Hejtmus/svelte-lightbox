@@ -11,6 +11,9 @@ const config = {
         paths: {
             base: process.env.NODE_ENV === 'production' ? '/svelte-lightbox' : ''
         },
+        alias: {
+            $utils: '/src/utils'
+        },
         prerender: {
             default: true
         },

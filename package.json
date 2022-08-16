@@ -24,6 +24,9 @@
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.38",
 		"@sveltejs/kit": "1.0.0-next.403",
+		"@sveltejs/site-kit": "^2.1.0",
+		"@sveltejs/svelte-repl": "^0.4.1",
+		"@types/marked": "^4.0.3",
 		"@typescript-eslint/eslint-plugin": "^5.30.6",
 		"@typescript-eslint/parser": "^5.30.6",
 		"eslint": "^8.20.0",
@@ -32,6 +35,7 @@
 		"eslint-plugin-n": "^15.2.4",
 		"eslint-plugin-promise": "^6.0.0",
 		"eslint-plugin-svelte3": "^3.4.1",
+		"marked": "^4.0.18",
 		"svelte": "^3.49.0",
 		"svelte-check": "^2.2.6",
 		"svelte-preprocess": "^4.10.1",
