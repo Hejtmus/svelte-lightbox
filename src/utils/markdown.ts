@@ -6,6 +6,7 @@ interface SectionWithContent {
 }
 interface Section {
     title: string,
+    path: string,
     sections: Array<Section>
 }
 
@@ -31,6 +32,7 @@ const makeSectionTreeArray = (tokens: marked.TokensList, currentDepth: number) =
     for (const sectionWithContent of sectionsWithContent) {
         const section: Section = {
             title: sectionWithContent.title,
+            path: `#${sectionWithContent.title.toLowerCase().replaceAll(' ', '-')}`,
             sections: makeSectionTreeArray(<marked.TokensList>sectionWithContent.content, currentDepth + 1)
         }
         sections.push(section)
