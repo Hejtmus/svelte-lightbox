@@ -1,0 +1,1 @@
+import{S as s,i as o,s as e}from"../../chunks/index-38a9c2e8.js";function a(){return{status:308,redirect:"/docs/introduction"}}class u extends s{constructor(t){super(),o(this,t,null,null,e,{})}}export{u as default,a as load};
