@@ -1,6 +1,6 @@
 <script lang="ts">
     import '@sveltejs/site-kit/base.css'
-    import { Icon, Nav, NavItem, PreloadingIndicator } from '@sveltejs/site-kit'
+    import { Nav, NavItem, PreloadingIndicator } from '@sveltejs/site-kit'
     import { page, navigating } from '$app/stores'
 </script>
 
@@ -18,9 +18,11 @@
         </NavItem>
     </svelte:fragment>
     <svelte:fragment slot="nav-right">
+        <NavItem external="https://www.npmjs.com/package/svelte-lightbox" title="GitHub Repo">
+            <i class="bi bi-box-seam"></i>
+        </NavItem>
         <NavItem external="https://github.com/Hejtmus/svelte-lightbox" title="GitHub Repo">
-            <span class="small">GitHub</span>
-            <span class="large"><Icon name="github"/></span>
+            <i class="bi bi-github"></i>
         </NavItem>
     </svelte:fragment>
 </Nav>
@@ -29,7 +31,12 @@
     <slot/>
 </main>
 
-<style>
+<style global>
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css");
+    body {
+        overflow-x: hidden;
+    }
     main {
         padding-top: var(--nav-h);
     }
