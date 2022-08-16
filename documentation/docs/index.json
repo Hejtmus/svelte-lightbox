@@ -1,7 +1,6 @@
 {
 	"sections": [
 		{
-			"slug": "introduction",
 			"title": "Introduction",
 			"edit": "https://raw.githubusercontent.com/Hejtmus/svelte-lightbox/master/documentation/docs/00-introduction.md"
 		}

@@ -3,11 +3,11 @@
     import { markdownToSectionStructure } from '$utils/markdown'
 
     interface SectionLink {
-        slug: string,
         title: string,
         edit: string,
     }
     interface Section extends SectionLink {
+        slug: string,
         path: string,
         content: string,
         sections: Array<Section>
@@ -28,6 +28,7 @@
             const content = marked.parse(sectionFile)
             sections.push({
                 ...sectionLink,
+                slug: sectionLink.title.toLowerCase().replaceAll(' ', '-'),
                 content,
                 sections: subsections
             })
@@ -35,8 +36,8 @@
         return sections
     }
     export async function load ({ fetch }) {
-        const sectionLinks = await getSectionLinks({fetch})
-        const sections = await getFullSections({ fetch, sectionLinks })
+        const sectionLinks: Array<SectionLink> = await getSectionLinks({fetch})
+        const sections: Array<Section> = await getFullSections({ fetch, sectionLinks })
         return {
             stuff: {
                 sections
