@@ -8,9 +8,6 @@ const config = {
     preprocess: preprocess(),
 
     kit: {
-        paths: {
-            base: process.env.NODE_ENV === 'production' ? '/svelte-lightbox' : ''
-        },
         alias: {
             $utils: '/src/utils'
         },

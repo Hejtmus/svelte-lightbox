@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-default typo-default">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../bootstrap.min.css">
+		<link rel="icon" href="../favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="content-security-policy" content="">
+	<link rel="stylesheet" href="/_app/immutable/assets/__layout-640404ab.css">
+	<link rel="stylesheet" href="/_app/immutable/assets/Icon-24972d74.css">
+	<link rel="stylesheet" href="/_app/immutable/assets/Main-6b13477a.css">
+	<link rel="modulepreload" href="/_app/immutable/start-7045d0db.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/index-e4dd6255.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/paths-6bf67b90.js">
+	<link rel="modulepreload" href="/_app/immutable/pages/__layout.svelte-c04ff5c4.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/Icon-da2e05db.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/stores-ba2e8a33.js">
+	<link rel="modulepreload" href="/_app/immutable/pages/docs/__layout.svelte-b16d52b7.js">
+	<link rel="modulepreload" href="/_app/immutable/pages/docs/_section_.svelte-dbbf5ebf.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+
+
+
+
+<nav class="svelte-y6pzn4 visible"><a sveltekit:prefetch href="/" class="nav-spot home svelte-y6pzn4" title="Homepage" style="background-image: url(/img/logo.svg)">Home</a>
+
+	<button aria-label="Toggle menu" aria-expanded="false" class="menu-toggle svelte-y6pzn4">
+
+
+<svg class="icon svelte-5yec89" width="1em" height="1em"><use xlink:href="#menu"></use></svg></button>
+
+	<ul class="svelte-y6pzn4"><li><a aria-current="true" sveltekit:prefetch href="/docs" class="svelte-pg3cgb">Docs
+        </a></li>
+        <li><a sveltekit:prefetch href="/examples" class="svelte-pg3cgb">Examples
+        </a></li></ul>
+
+	<ul class="external svelte-y6pzn4"><li><a href="https://github.com/Hejtmus/svelte-lightbox" title="GitHub Repo" rel="external" class="svelte-pg3cgb"><span class="small">GitHub</span>
+            <span class="large">
+
+
+<svg class="icon svelte-5yec89" width="20" height="20"><use xlink:href="#github"></use></svg></span></a></li>
+    </ul>
+</nav>
+
+<main class="svelte-17ykimk"><div class="content listify svelte-t51vyw"><section data-id="introduction"><h2 id="introduction"><!-- HTML_TAG_START -->Introduction<!-- HTML_TAG_END -->
+
+		<small><a href="https://raw.githubusercontent.com/Hejtmus/svelte-lightbox/master/documentation/docs/00-introduction.md" title="edit this section">
+
+
+<svg class="icon svelte-5yec89" width="20" height="20"><use xlink:href="#edit"></use></svg></a></small></h2>
+
+	<!-- HTML_TAG_START --><h2 id="instalation">Instalation</h2>
+<blockquote>
+<pre><code class="language-bash">npm i svelte-lightbox -D
+</code></pre>
+</blockquote>
+<h2 id="how-to-use">How to use</h2>
+<ol>
+<li>Make Svelte page</li>
+</ol>
+<h3 id="standard-lightbox">Standard lightbox</h3>
+<ol start="2">
+<li><p>Include <code>import { Lightbox } from &#39;svelte-lightbox&#39;;</code> into that file.</p>
+</li>
+<li><p>Make <code>&lt;Lightbox&gt;</code> component and image you need to display put inside slot (as its child).</p>
+</li>
+</ol>
+<h3 id="lightbox-with-gallery">Lightbox with gallery</h3>
+<ol start="2">
+<li><p>Include <code>import { LightboxGallery, GalleryImage, GalleryThumbnail } from &#39;svelte-lightbox&#39;;</code> into that file.</p>
+</li>
+<li><p>Make <code>&lt;LightboxGallery&gt;</code> component and append to it list of <code>&lt;GalleryImage&gt;</code>, which each <code>&lt;GalleryImage&gt;</code> contains
+desired image (or it could be video).</p>
+</li>
+<li><p>Prepend <code>&lt;LightboxGallery&gt;</code> with element or svelte:fragment with prop slot equal to <code>&quot;thumbnail&quot;</code>, under this element
+place your thumbnail layout, which is basically layout with images wrapped inside <code>&lt;GalleryThumbnail&gt;</code>.</p>
+</li>
+</ol>
+<!-- HTML_TAG_END --></section>
+</div>
+<aside class="sidebar-container svelte-1jnw08q"><div class="sidebar svelte-1jnw08q">
+		<ul class="reference-toc svelte-1jnw08q"><li class="svelte-1jnw08q"><a class="section svelte-1jnw08q">Introduction</a>
+
+					<ul class="svelte-1jnw08q"><li class="svelte-1jnw08q"><a class="subsection svelte-1jnw08q">Instalation</a>
+
+								<ul class="svelte-1jnw08q"></ul>
+							</li><li class="svelte-1jnw08q"><a class="subsection svelte-1jnw08q">How to use</a>
+
+								<ul class="svelte-1jnw08q"><li class="svelte-1jnw08q"><a class="nested subsection svelte-1jnw08q">Standard lightbox</a>
+										</li><li class="svelte-1jnw08q"><a class="nested subsection svelte-1jnw08q">Lightbox with gallery</a>
+										</li></ul>
+							</li></ul>
+				</li></ul></div>
+
+	<button class="svelte-1jnw08q">
+
+
+<svg class="icon svelte-5yec89" width="20" height="20"><use xlink:href="#menu"></use></svg></button>
+</aside>
+</main>
+
+
+		<script type="module" data-sveltekit-hydrate="162kt56">
+		import { set_public_env, start } from "/_app/immutable/start-7045d0db.js";
+
+		set_public_env({});
+
+		start({
+			target: document.querySelector('[data-sveltekit-hydrate="162kt56"]').parentNode,
+			paths: {"base":"","assets":""},
+			session: {},
+			route: true,
+			spa: false,
+			trailing_slash: "never",
+			hydrate: {
+				status: 200,
+				error: null,
+				nodes: [0, 2, 3],
+				params: {section:"introduction"},
+				routeId: "docs/[section]"
+			}
+		});
+	</script><script type="application/json" sveltekit:data-type="data" sveltekit:data-url="https://raw.githubusercontent.com/Hejtmus/svelte-lightbox/master/documentation/docs/index.json">{"status":200,"statusText":"OK","headers":{"accept-ranges":"bytes","access-control-allow-origin":"*","cache-control":"max-age=300","connection":"keep-alive","content-encoding":"gzip","content-length":"161","content-security-policy":"default-src 'none'; style-src 'unsafe-inline'; sandbox","content-type":"text/plain; charset=utf-8","date":"Tue, 16 Aug 2022 17:03:50 GMT","expires":"Tue, 16 Aug 2022 17:08:50 GMT","source-age":"45","strict-transport-security":"max-age=31536000","vary":"Authorization,Accept-Encoding,Origin","via":"1.1 varnish","x-cache":"HIT","x-cache-hits":"2","x-content-type-options":"nosniff","x-fastly-request-id":"e8c2b1e45a07f7e5e7d0789a20a89d816961845c","x-frame-options":"deny","x-github-request-id":"7EDA:F863:8A71EF:9384AB:62FBC27A","x-served-by":"cache-vie6345-VIE","x-timer":"S1660669431.994013,VS0,VE0","x-xss-protection":"1; mode=block"},"body":"{\n\t\"sections\": [\n\t\t{\n\t\t\t\"slug\": \"introduction\",\n\t\t\t\"title\": \"Introduction\",\n\t\t\t\"edit\": \"https://raw.githubusercontent.com/Hejtmus/svelte-lightbox/master/documentation/docs/00-introduction.md\"\n\t\t}\n\t]\n}"}</script>
+	<script type="application/json" sveltekit:data-type="data" sveltekit:data-url="https://raw.githubusercontent.com/Hejtmus/svelte-lightbox/master/documentation/docs/00-introduction.md">{"status":200,"statusText":"OK","headers":{"accept-ranges":"bytes","access-control-allow-origin":"*","cache-control":"max-age=300","connection":"keep-alive","content-encoding":"gzip","content-length":"415","content-security-policy":"default-src 'none'; style-src 'unsafe-inline'; sandbox","content-type":"text/plain; charset=utf-8","date":"Tue, 16 Aug 2022 17:03:51 GMT","expires":"Tue, 16 Aug 2022 17:08:51 GMT","source-age":"45","strict-transport-security":"max-age=31536000","vary":"Authorization,Accept-Encoding,Origin","via":"1.1 varnish","x-cache":"HIT","x-cache-hits":"2","x-content-type-options":"nosniff","x-fastly-request-id":"2075f1d5a8689ef0a9d9383a001afd3f089b1d7a","x-frame-options":"deny","x-github-request-id":"520A:1195D:838BF5:8C8810:62FBBE58","x-served-by":"cache-vie6345-VIE","x-timer":"S1660669431.005599,VS0,VE0","x-xss-protection":"1; mode=block"},"body":"## Instalation\n\n> ```bash\n> npm i svelte-lightbox -D\n> ```\n\n## How to use\n\n1. Make Svelte page\n\n### Standard lightbox\n\n2. Include `import { Lightbox } from 'svelte-lightbox';` into that file.\n\n3. Make `\u003CLightbox>` component and image you need to display put inside slot (as its child).\n\n### Lightbox with gallery\n\n2. Include `import { LightboxGallery, GalleryImage, GalleryThumbnail } from 'svelte-lightbox';` into that file.\n\n3. Make `\u003CLightboxGallery>` component and append to it list of `\u003CGalleryImage>`, which each `\u003CGalleryImage>` contains\n   desired image (or it could be video).\n\n4. Prepend `\u003CLightboxGallery>` with element or svelte:fragment with prop slot equal to `\"thumbnail\"`, under this element\n   place your thumbnail layout, which is basically layout with images wrapped inside `\u003CGalleryThumbnail>`.\n"}</script></div>
+	</body>
+</html>
