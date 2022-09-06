@@ -23,12 +23,14 @@
     const getFullSections = async ({ fetch, sectionLinks }): Promise<Array<Section>> => {
         const sections = []
         for (const sectionLink of sectionLinks) {
+            const slug = sectionLink.title.toLowerCase().replaceAll(' ', '-')
             const sectionFile = await getSectionFile({ fetch, url: sectionLink.edit })
-            const subsections = markdownToSectionStructure(sectionFile)
+            const subsections = markdownToSectionStructure(sectionFile, slug)
             const content = marked.parse(sectionFile)
             sections.push({
                 ...sectionLink,
-                slug: sectionLink.title.toLowerCase().replaceAll(' ', '-'),
+                slug,
+                path: slug,
                 content,
                 sections: subsections
             })

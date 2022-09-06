@@ -26,21 +26,21 @@ const getSectionsAndTheirContent = (tokens: marked.TokensList, currentDepth: num
     }
     return sections
 }
-const makeSectionTreeArray = (tokens: marked.TokensList, currentDepth: number) => {
+const makeSectionTreeArray = (tokens: marked.TokensList, currentDepth: number, slug: string) => {
     const sectionsWithContent = getSectionsAndTheirContent(tokens, currentDepth)
     const sections: Array<Section> = []
     for (const sectionWithContent of sectionsWithContent) {
         const section: Section = {
             title: sectionWithContent.title,
-            path: `#${sectionWithContent.title.toLowerCase().replaceAll(' ', '-')}`,
-            sections: makeSectionTreeArray(<marked.TokensList>sectionWithContent.content, currentDepth + 1)
+            path: `${slug}#${sectionWithContent.title.toLowerCase().replaceAll(' ', '-')}`,
+            sections: makeSectionTreeArray(<marked.TokensList>sectionWithContent.content, currentDepth + 1, slug)
         }
         sections.push(section)
     }
     return sections
 }
 
-export const markdownToSectionStructure = (markdown: string) => {
+export const markdownToSectionStructure = (markdown: string, slug: string) => {
     const tokens = marked.lexer(markdown)
-    return makeSectionTreeArray(tokens, 2)
+    return makeSectionTreeArray(tokens, 2, slug)
 }
