@@ -1,3 +1,7 @@
+svelte-lightbox is svelte library providing lightbox component(s) and its building parts to allow more customization. 
+Architecture of this library makes it fit for wide array of use cases. This library tries to be as minimal as possible,
+that's why its size is so low. To reduce bundle size of projects using svelte-lightbox, this library supports tree-shaking.
+
 ## Instalation
 
 > ```bash
