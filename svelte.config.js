@@ -11,9 +11,6 @@ const config = {
         alias: {
             $utils: '/src/utils'
         },
-        prerender: {
-            default: true
-        },
         adapter: adapter()
     }
 }

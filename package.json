@@ -22,9 +22,9 @@
 		"lint": "eslint --ignore-path .gitignore ./src"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-vercel": "^1.0.0-next.66",
-		"@sveltejs/kit": "1.0.0-next.403",
-		"@sveltejs/site-kit": "^2.1.0",
+		"@sveltejs/adapter-vercel": "^1.0.0-next.72",
+		"@sveltejs/kit": "1.0.0-next.475",
+		"@sveltejs/site-kit": "^2.1.2",
 		"@sveltejs/svelte-repl": "^0.4.1",
 		"@types/marked": "^4.0.3",
 		"@typescript-eslint/eslint-plugin": "^5.30.6",
