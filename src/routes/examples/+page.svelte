@@ -9,6 +9,14 @@
     // let lightboxController
     let galleryController
 </script>
+
+<svelte:head>
+    <title>
+        svelte-lightbox | Examples
+    </title>
+    <meta name="description" content="Example uses of svelte-lightbox">
+</svelte:head>
+
 <div class="row py-3">
     <div class="col col-12">
         <h2>

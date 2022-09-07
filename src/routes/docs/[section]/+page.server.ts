@@ -10,7 +10,8 @@ export async function load ({ parent, params }) {
     }
     if (section) {
         return {
-            section
+            section,
+            title: params.section
         }
     } else {
         throw error(404, 'Non-existing document')

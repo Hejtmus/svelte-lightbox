@@ -2,6 +2,13 @@
     import { Blurb } from '@sveltejs/site-kit'
 </script>
 
+<svelte:head>
+    <title>
+        svelte-lightbox
+    </title>
+    <meta name="description" content="Lightweight lightbox library for Svelte">
+</svelte:head>
+
 <div class="row py-4 bg-light text-center">
     <div class="col">
         <h1>
