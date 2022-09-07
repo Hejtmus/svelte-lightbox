@@ -1,6 +1,6 @@
 # svelte-lightbox
 
-Lightweight Lightbox Svelte component
+Lightweight lightbox library for Svelte
 
 ![workflow status](https://img.shields.io/github/workflow/status/Hejtmus/svelte-lightbox/Node.js%20CI)
 ![version](https://img.shields.io/npm/v/svelte-lightbox)

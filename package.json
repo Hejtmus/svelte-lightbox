@@ -8,6 +8,7 @@
 	},
 	"repository": "https://github.com/Hejtmus/svelte-lightbox.git",
 	"homepage": "https://svelte-lightbox.js.org",
+	"description": "Lightweight lightbox library for Svelte",
 	"svelte": "index.js",
 	"main": "index.js",
 	"types": "index.d.ts",
