@@ -7,6 +7,10 @@
 		{
 			"title": "Lightbox",
 			"edit": "https://raw.githubusercontent.com/Hejtmus/svelte-lightbox/master/documentation/docs/01-lightbox.md"
+		},
+		{
+			"title": "LightboxGallery",
+			"edit": "https://raw.githubusercontent.com/Hejtmus/svelte-lightbox/master/documentation/docs/02-lightbox-gallery.md"
 		}
 	]
 }
