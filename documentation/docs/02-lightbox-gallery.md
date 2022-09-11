@@ -128,7 +128,9 @@ Object with these basic control functions:
 In order to use `<LightboxGallery>` is needed to define layout of gallery thumbnail/s. Thumbnail takes element in slot
 and displays it to user, whenever user clicks on it, it opens gallery at image associated with this thumbnail.
 
-#### id `number`
+#### id
+
+Type: `number`
 
 Link to gallery image, it can be set to any number within gallery images, starting with 0. Default is order of
 `<GalleryThumbnail>`, so let's say you have 3 thumbnails under `<LightboxGallery>`, the first thumbnails has id 0, next one
@@ -139,10 +141,14 @@ Link to gallery image, it can be set to any number within gallery images, starti
 Except thumbnails, `LightboxGallery` requires images which will be displayed when gallery is opened. Desired image has to
 be `<GalleryImage>` child (in its slot).
 
-### title `string/HTML`
+### title
+
+Type: `string/HTML`
 
 Same as `<Lightbox>` title, but this is image specific, that means, it will be only shown for particular image.
 
-### description `string/HTML`
+### description
+
+Type: `string/HTML`
 
 Same as `<Lightbox>` description, but this is image specific, that means, it will be only shown for particular image.
