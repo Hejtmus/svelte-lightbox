@@ -10,7 +10,7 @@ interface Section {
     sections: Array<Section>
 }
 
-const getSectionsAndTheirContent = (tokens: marked.TokensList, currentDepth: number) => {
+const getSectionsAndTheirContent = (tokens: marked.TokensList, currentDepth: number): Array<SectionWithContent> => {
     const sections: Array<SectionWithContent> = []
     for (const token of tokens) {
         if (token.type === 'heading') {
@@ -31,8 +31,8 @@ const makeSectionTreeArray = (tokens: marked.TokensList, currentDepth: number, s
     const sections: Array<Section> = []
     for (const sectionWithContent of sectionsWithContent) {
         const section: Section = {
-            title: sectionWithContent.title,
-            path: `${slug}#${sectionWithContent.title.toLowerCase().replaceAll(' ', '-')}`,
+            title: sectionWithContent.title.replaceAll(/["'`]/g, ''),
+            path: `${slug}#${sectionWithContent.title.toLowerCase().replaceAll(' ', '-').replaceAll(/\W|_/g, '')}`,
             sections: makeSectionTreeArray(<marked.TokensList>sectionWithContent.content, currentDepth + 1, slug)
         }
         sections.push(section)
