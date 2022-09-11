@@ -128,7 +128,7 @@ Object with these basic control functions:
 In order to use `<LightboxGallery>` is needed to define layout of gallery thumbnail/s. Thumbnail takes element in slot
 and displays it to user, whenever user clicks on it, it opens gallery at image associated with this thumbnail.
 
-#### id
+### id
 
 Type: `number`
 
