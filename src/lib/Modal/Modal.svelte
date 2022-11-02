@@ -6,13 +6,13 @@
     export let imagePreset: ImagePreset
 </script>
 
-<div class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
+<div class="svelte-lightbox" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
      transition:fade={{ duration: transitionDuration }} on:click {...$$restProps}>
     <slot/>
 </div>
 
 <style>
-     div {
+     div.svelte-lightbox {
          position: relative;
          max-width: 100%;
          max-height: 100%;
@@ -20,7 +20,7 @@
          width: auto;
          background-color: transparent;
     }
-     .fullscreen {
+     div.svelte-lightbox.fullscreen {
 	     height: inherit;
 	     width: inherit;
          max-height: inherit;

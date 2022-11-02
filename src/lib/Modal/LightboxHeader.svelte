@@ -17,7 +17,7 @@
 
 <svelte:window on:keydown={ (event) => handleKey(event) }/>
 
-<div class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
+<div class="svelte-lightbox-header" class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
     {#if showCloseButton}
         <button class:fullscreen={imagePreset === 'fullscreen'} on:click={ () => dispatch('close')} {...closeButtonProps}>
             ×
@@ -26,14 +26,14 @@
 </div>
 
 <style>
-    div {
+    div.svelte-lightbox-header {
         width: auto;
         height: 3rem;
         display: flex;
         justify-content: flex-end;
         align-items: center;
     }
-    div.fullscreen {
+    div.svelte-lightbox-header.fullscreen {
 	    position: fixed;
 	    z-index: 5;
 	    top: 0;

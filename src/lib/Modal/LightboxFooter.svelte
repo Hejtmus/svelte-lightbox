@@ -17,7 +17,7 @@
     $: localizedGalleryCounter = generateLocalizedGalleryCounter($i18n, gallery)
 </script>
 
-<div class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
+<div class="svelte-lightbox-footer" class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
     <h2>
         {@html title}
     </h2>
@@ -32,14 +32,14 @@
 </div>
 
 <style>
-    div {
+    div.svelte-lightbox-footer {
         width: 100%;
         height: auto;
         color: white;
         text-align: left;
         position: absolute;
     }
-    div.fullscreen {
+    div.svelte-lightbox-footer.fullscreen {
         position: fixed;
         z-index: 5;
         bottom: 0;
