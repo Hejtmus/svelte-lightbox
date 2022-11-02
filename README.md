@@ -144,6 +144,7 @@ close button of).
 - closeButtonProps: `HTMLButtonElement`
 - lightboxFooterProps: `HTMLDivElement`
 - lightboxHeaderProps: `HTMLDivElement`
+- coverProps: `HTMLDivElement`
 - lightboxProps: `HTMLDivElement`
 - thumbnailProps: `HTMLDivElement`
 

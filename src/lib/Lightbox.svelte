@@ -88,7 +88,7 @@
 
 {#if isVisible}
 	<BodyChild>
-		<ModalCover {transitionDuration} on:click={coverClick}>
+		<ModalCover {transitionDuration} {...(customization.coverProps || {})} on:click={coverClick}>
 			<Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
 				<Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
 						{...(customization.lightboxHeaderProps || {})} on:close={close}/>

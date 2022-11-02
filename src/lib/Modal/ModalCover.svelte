@@ -4,7 +4,7 @@
     export let transitionDuration: number
 </script>
 
-<div on:click in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }}>
+<div on:click in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }} {...$$restProps}>
     <slot>
     </slot>
 </div>

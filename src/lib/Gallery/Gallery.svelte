@@ -8,7 +8,7 @@
     import Footer from '../Modal/LightboxFooter.svelte'
     import ModalCover from '../Modal/ModalCover.svelte'
     import Modal from '../Modal/Modal.svelte'
-    import type { Writable} from 'svelte/store'
+    import type { Writable } from 'svelte/store'
     import type {
         ImagePreset,
         LightboxCustomization,
@@ -136,8 +136,8 @@
 
 {#if isVisible}
     <BodyChild>
-        <ModalCover {transitionDuration} on:click={coverClick}>
-            <Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
+        <ModalCover {transitionDuration} {...(customization.coverProps || {})} on:click={coverClick}>
+            <Modal {imagePreset} {transitionDuration} {...(customization.lightboxProps || {})} on:click={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                         {...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
