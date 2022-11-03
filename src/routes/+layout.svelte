@@ -40,4 +40,8 @@
     main {
         padding-top: var(--nav-h);
     }
+
+    .svelte-lightbox-header {
+        height: 10rem;
+    }
 </style>
