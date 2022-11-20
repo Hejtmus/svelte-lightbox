@@ -152,3 +152,8 @@ Same as `<Lightbox>` title, but this is image specific, that means, it will be o
 Type: `string/HTML`
 
 Same as `<Lightbox>` description, but this is image specific, that means, it will be only shown for particular image.
+
+## CSS
+
+`<LightboxGallery>` uses same CSS classes as `<Lightbox>`, overriding [those classes](https://svelte-lightbox.js.org/docs/lightbox#css)
+will affect gallery style.

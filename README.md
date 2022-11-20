@@ -136,7 +136,9 @@ Select between these 3 presets:
 - `'scroll'` - Enables scrolling big image instead of making it smaller to fit into the screen.
 
 
-### customization `LightboxCustomization (object)`
+### customization `LightboxCustomization (object)/CSS`
+
+#### Using `LightboxCustomization` object
 
 Customization object contains these props, which represent html props of their key (e.g. closeButtonProps = html props of
 close button of).
@@ -148,7 +150,10 @@ close button of).
 - lightboxProps: `HTMLDivElement`
 - thumbnailProps: `HTMLDivElement`
 
-If you'd like to change global styles, feel free to override these global CSS classes instead: `.svelte-lightbox-main`, `.svelte-lightbox-body`, `.svelte-lightbox-overlay`, `.svelte-lightbox-header`, `.svelte-lightbox-footer` and `.svelte-lightbox-thumbnail`.
+#### Using CSS
+
+If you'd like to change global styles, feel free to override these global CSS classes instead: `.svelte-lightbox-main`, 
+`.svelte-lightbox-body`, `.svelte-lightbox-overlay`, `.svelte-lightbox-header`, `.svelte-lightbox-footer` and `.svelte-lightbox-thumbnail`.
 
 ### transitionDuration `number`
 

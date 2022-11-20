@@ -103,3 +103,8 @@ Object with these basic control functions:
 - toggle `() => void` - toggles lightbox (opened -> closed, vice versa)
 - open `() => void` - opens lightbox
 - close `() => void` - closes lightbox
+
+## CSS
+
+If you'd like to change global styles, feel free to override these global CSS classes: `.svelte-lightbox-main`,
+`.svelte-lightbox-body`, `.svelte-lightbox-overlay`, `.svelte-lightbox-header`, `.svelte-lightbox-footer` and `.svelte-lightbox-thumbnail`.
