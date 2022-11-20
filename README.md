@@ -148,6 +148,8 @@ close button of).
 - lightboxProps: `HTMLDivElement`
 - thumbnailProps: `HTMLDivElement`
 
+If you'd like to change global styles, feel free to override these global CSS classes instead: `.svelte-lightbox-main`, `.svelte-lightbox-body`, `.svelte-lightbox-overlay`, `.svelte-lightbox-header`, `.svelte-lightbox-footer` and `.svelte-lightbox-thumbnail`.
+
 ### transitionDuration `number`
 
 Duration of lightbox toggle, in milliseconds. Based on this number are calculated transitions for lightbox cover. Default
