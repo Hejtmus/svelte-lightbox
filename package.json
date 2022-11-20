@@ -15,7 +15,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"package": "svelte-kit package",
+		"package": "svelte-package",
 		"preview": "vite preview",
 		"release": "npm run package && cd ./package && npm publish",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -23,8 +23,9 @@
 		"lint": "eslint --ignore-path .gitignore ./src"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-vercel": "^1.0.0-next.73",
-		"@sveltejs/kit": "1.0.0-next.480",
+		"@sveltejs/adapter-vercel": "^1.0.0-next.81",
+		"@sveltejs/kit": "1.0.0-next.553",
+		"@sveltejs/package": "^1.0.0-next.6",
 		"@sveltejs/site-kit": "^2.1.2",
 		"@sveltejs/svelte-repl": "^0.4.1",
 		"@types/marked": "^4.0.3",
