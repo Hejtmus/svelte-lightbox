@@ -2,7 +2,7 @@
     import { Section } from '@sveltejs/site-kit/docs'
 
     export let data
-    const section = data.section
+    $: section = data.section
 </script>
 
 <svelte:head>

@@ -6,6 +6,7 @@ export async function load ({ parent, params }) {
     for (const stuffSection of sections) {
         if (stuffSection.slug === params.section) {
             section = stuffSection
+            break
         }
     }
     if (section) {
