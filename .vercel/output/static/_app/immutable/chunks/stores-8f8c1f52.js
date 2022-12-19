@@ -1,1 +1,0 @@
-import"./index-facb44eb.js";import{s as r}from"./singletons-0fe6000c.js";const e=()=>{const s=r;return{page:{subscribe:s.page.subscribe},navigating:{subscribe:s.navigating.subscribe},updated:s.updated}},n={subscribe(s){return e().page.subscribe(s)}},o={subscribe(s){return e().navigating.subscribe(s)}};export{e as g,o as n,n as p};
