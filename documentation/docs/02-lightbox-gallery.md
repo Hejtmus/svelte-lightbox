@@ -93,7 +93,7 @@ Type: `string`
 
 Sets arrow color, valid value is any valid css color.
 
-#### galleryArrowsCharacter
+#### character
 
 Type: `GalleryArrowCharacter (string)`
 
