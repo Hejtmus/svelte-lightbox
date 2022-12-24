@@ -263,7 +263,7 @@ Allows customizing gallery arrows.
 
 Sets arrow color, valid value is any valid css color.
 
-#### galleryArrowsCharacter `GalleryArrowCharacter (string)`
+#### character `GalleryArrowCharacter (string)`
 
 Sets arrow charter in edge cases (0th and last item of gallery). Valid values:
 
