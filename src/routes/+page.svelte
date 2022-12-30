@@ -17,7 +17,7 @@
                 </span>
         </h1>
         <p>
-            <img src="https://img.shields.io/github/workflow/status/Hejtmus/svelte-lightbox/Node.js%20CI"
+            <img src="https://img.shields.io/github/actions/workflow/status/Hejtmus/svelte-lightbox/nodejs.yml"
                  alt="workflow status">
             <img src="https://img.shields.io/npm/v/svelte-lightbox" alt="version">
             <img src="https://img.shields.io/bundlephobia/minzip/svelte-lightbox" alt="bundle size">

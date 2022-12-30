@@ -2,7 +2,7 @@
 
 Lightweight lightbox library for Svelte
 
-![workflow status](https://img.shields.io/github/workflow/status/Hejtmus/svelte-lightbox/Node.js%20CI)
+![workflow status](https://img.shields.io/github/actions/workflow/status/Hejtmus/svelte-lightbox/nodejs.yml)
 ![version](https://img.shields.io/npm/v/svelte-lightbox)
 ![bundle size](https://img.shields.io/bundlephobia/minzip/svelte-lightbox)
 ![MIT](https://img.shields.io/github/license/Hejtmus/svelte-lightbox)
