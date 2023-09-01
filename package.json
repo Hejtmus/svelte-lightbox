@@ -32,7 +32,7 @@
 		"release:patch": "npm version patch && npm run release",
 		"release:minor": "npm version minor && npm run release",
 		"release:major": "npm version major && npm run release",
-		"release:prerelease": "npm version prerelease --preid=alpha && npm run package && cd ./package && npm publish --tag next",
+		"release:prerelease": "npm version prerelease --preid=alpha && npm run package && cd ./package && npm publish --tag next"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^3.0.3",
