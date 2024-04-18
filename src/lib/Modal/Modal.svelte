@@ -7,7 +7,7 @@
 </script>
 
 <div class="svelte-lightbox-main" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
-     transition:fade={{ duration: transitionDuration }} on:click {...$$restProps}>
+     transition:fade={{ duration: transitionDuration }} aria-label="Modal" on:click {...$$restProps}>
     <slot/>
 </div>
 
