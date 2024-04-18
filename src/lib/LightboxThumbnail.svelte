@@ -1,4 +1,4 @@
-<div class:svelte-lightbox-thumbnail={true} on:click {...$$restProps}>
+<div class:svelte-lightbox-thumbnail={true} aria-label="thumbnail" on:click {...$$restProps}>
     <slot/>
 </div>
 
