@@ -9,7 +9,7 @@
     }
 </script>
 
-<div class:svelte-lightbox-thumbnail={true} on:click={() => openImage(id)} {...$$restProps}>
+<div class:svelte-lightbox-thumbnail={true} aria-label="thumbnail" on:click={() => openImage(id)} {...$$restProps}>
     <slot/>
 </div>
 

@@ -4,7 +4,7 @@
     export let transitionDuration: number
 </script>
 
-<div class="svelte-lightbox-overlay" on:click in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }} {...$$restProps}>
+<div class="svelte-lightbox-overlay" aria-label="overlay" on:click in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }} {...$$restProps}>
     <slot />
 </div>
 
