@@ -35,6 +35,7 @@
         visibility: hidden;
     }
     svg {
+        display: inline-block;
         height: 5rem;
     }
     .previous-button {

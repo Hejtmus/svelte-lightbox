@@ -36,6 +36,7 @@
         visibility: hidden;
     }
     svg {
+        display: inline-block;
         height: 5rem;
     }
     .next-button {
@@ -55,3 +56,4 @@
         margin: 10px;
     }
 </style>
+
