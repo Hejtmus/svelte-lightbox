@@ -29,4 +29,5 @@ jobs:
       - name: Publish signed package
         run: npm publish --access public --provenance
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
