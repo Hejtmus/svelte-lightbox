@@ -1,14 +1,13 @@
 <script lang="ts">
     import i18n from '$lib/i18n'
-    import type { GalleryState, ImagePreset } from '$lib/Types'
-    import type { I18n } from '$lib/Types'
+    import type { GalleryState, ImagePreset, I18n } from '$lib/Types'
 
     export let imagePreset: ImagePreset
     export let title = ''
     export let description = ''
-    export let gallery: GalleryState = null
+    export let gallery: GalleryState | null = null
 
-    const generateLocalizedGalleryCounter = (i18n: I18n, gallery: GalleryState) => {
+    const generateLocalizedGalleryCounter = (i18n: I18n, gallery: GalleryState | null) => {
         if (gallery !== null) {
             return i18n.generateLocalizedGalleryCounter(gallery.activeImage, gallery.imageCount)
         }
@@ -19,10 +18,10 @@
 
 <div class="svelte-lightbox-footer" class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
     <h2>
-        {@html title}
+        {title}
     </h2>
     <h5>
-        {@html description}
+        {description}
     </h5>
     {#if gallery !== null}
         <p>

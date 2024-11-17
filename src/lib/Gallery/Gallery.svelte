@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { onMount, setContext} from 'svelte'
-    import { writable} from 'svelte/store'
+    import { onMount, setContext } from 'svelte'
+    import { writable } from 'svelte/store'
     import GalleryController from './GalleryController.svelte'
     import BodyChild from '../Modal/BodyChild.svelte'
     import Header from '../Modal/LightboxHeader.svelte'
@@ -60,7 +60,7 @@
         isVisible = true
         toggleScroll()
     }
-    const openImage = (imageId) => {
+    const openImage = (imageId: number) => {
         open()
         activeImage = imageId
     }
@@ -81,7 +81,7 @@
         modalClicked = true
     }
 
-    const keepOrEmptyImageList = (isVisible) => {
+    const keepOrEmptyImageList = (isVisible: boolean) => {
         if (!isVisible) images = []
     }
 
@@ -147,7 +147,7 @@
                         </GalleryController>
                     </Body>
 
-                <Footer {imagePreset} {title} {description} {gallery} {...(customization.lightboxFooterProps || {})}/>
+                <Footer {imagePreset} title={activeImageTitle} description={activeImageDescription} {gallery} {...(customization.lightboxFooterProps || {})}/>
             </Modal>
         </ModalCover>
     </BodyChild>
