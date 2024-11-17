@@ -5,11 +5,12 @@
 
     const openImage: (id: number) => void = getContext('openImage')
     if (!id) {
-        id = (getContext('thumbnailCounter'))()
+        const thumbnailCounterFunction: () => number = getContext('thumbnailCounter')
+        id = thumbnailCounterFunction()
     }
 </script>
 
-<div class:svelte-lightbox-thumbnail={true} aria-label="thumbnail" on:click={() => openImage(id)} {...$$restProps}>
+<div class:svelte-lightbox-thumbnail={true} aria-label="thumbnail" on:click={() => openImage(id)} {...$$restProps} role="button" tabindex="0">
     <slot/>
 </div>
 
