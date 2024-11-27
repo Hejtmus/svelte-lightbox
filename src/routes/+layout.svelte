@@ -2,6 +2,9 @@
     import '@sveltejs/site-kit/base.css'
     import { Nav, NavItem, PreloadingIndicator } from '@sveltejs/site-kit'
     import { page, navigating } from '$app/stores'
+    import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit'
+
+    injectSpeedInsights()
 </script>
 
 {#if $navigating}
