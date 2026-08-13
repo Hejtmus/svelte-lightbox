@@ -58,8 +58,5 @@ export default defineConfig({
                 }
             })
         })
-    ],
-    optimizeDeps: {
-        exclude: ['codemirror']
-    }
+    ]
 })
