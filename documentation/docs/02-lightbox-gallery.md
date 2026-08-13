@@ -112,6 +112,41 @@ Type: `boolean`
 
 Enables navigation in gallery using keyboard arrows. Default `true`.
 
+### swipeConfig
+
+Type: `GallerySwipeConfig (object)`
+
+Allows customizing swipe navigation. Swiping lets user drag the displayed image sideways to move through the gallery. The
+image follows the pointer during the drag and the neighbouring image is revealed behind the edge it is dragged away from.
+Releasing the drag either completes the move to the neighbouring image, or returns the current one back to its place when
+the drag was too short.
+
+Because the neighbouring image has to be visible during the drag, images next to the displayed one are rendered as well
+whenever swiping is enabled. Browser may therefore start downloading them sooner than it would otherwise.
+
+Edge cases (0th and last image of gallery) follow [`arrowsConfig.character`](#character), so swiping wraps around only when
+arrows do.
+
+#### enabled
+
+Type: `boolean`
+
+Enables swipe navigation. Default `false`, so galleries keep behaving exactly as before until swiping is opted into.
+
+#### threshold
+
+Type: `number`
+
+Distance in pixels the image has to be dragged for the move to complete on release. Shorter drags return the image back to
+its place. Default `50`.
+
+#### enableMouseDrag
+
+Type: `boolean`
+
+Enables swiping with a mouse by dragging the image, in addition to touch. Turn this off when dragging conflicts with
+selecting or dragging images on desktop. Default `true`.
+
 ### programmaticController
 
 Type: `object`
