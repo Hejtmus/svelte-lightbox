@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"prepare": "svelte-kit sync || echo ''",
-		"dev": "vite dev",
+		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "eslint ./src",
