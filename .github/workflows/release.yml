@@ -22,7 +22,7 @@ jobs:
       unreleased: ${{ steps.tag.outputs.unreleased }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -51,13 +51,13 @@ jobs:
       VERSION: ${{ needs.check-version.outputs.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # registry-url is deliberately omitted: it makes setup-node write an
       # _authToken line into .npmrc, which npm reads as "auth is configured"
       # and then never starts the OIDC exchange.
       - name: Install node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
