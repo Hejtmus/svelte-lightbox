@@ -52,6 +52,7 @@
     export let swipeConfig: Partial<GallerySwipeConfig> = {}
 
     let modalClicked = false
+    let bodyElement: HTMLDivElement | null = null
     let images: Array<GalleryImage> = []
     let thumbnailCount = 0
 
@@ -153,8 +154,9 @@
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                     {...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
-                <Body {imagePreset} {enableImageExpand}>
-                    <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
+                <Body {imagePreset} {enableImageExpand} bind:element={bodyElement}>
+                    <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}
+                        {swipeConfigStore} {bodyElement}>
                         <slot/>
                     </GalleryController>
                 </Body>

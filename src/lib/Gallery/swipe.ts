@@ -35,7 +35,11 @@ const swipe = (node: HTMLElement, config: GallerySwipeConfig): SwipeGesture => {
             return
         }
         origin = event.clientX
-        node.setPointerCapture(event.pointerId)
+        // Capture keeps the drag alive past the node's edges, but it is not worth
+        // losing the gesture over when the browser refuses the pointer
+        try {
+            node.setPointerCapture(event.pointerId)
+        } catch {}
         emit('swipestart', 0)
     }
 

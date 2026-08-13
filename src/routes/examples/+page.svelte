@@ -53,7 +53,7 @@
         <h2 class="text-center py-4 display-5">
             Gallery with thumbnail layout
         </h2>
-        <LightboxGallery imagePreset="fullscreen">
+        <LightboxGallery imagePreset="fullscreen" swipeConfig={{ enabled: true }}>
             <!--                <img slot="thumbnail" src="{base}/img/gallery/1.jpg" alt="Simple lightbox" class="img-fluid">-->
             <svelte:fragment slot="thumbnail">
                 <div class="row">

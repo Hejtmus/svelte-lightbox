@@ -3,9 +3,11 @@
 
     export let imagePreset: ImagePreset
     export let enableImageExpand: boolean
+    // Exposed so a gallery can attach gestures to the area holding the images
+    export let element: HTMLDivElement | null = null
 </script>
 
-<div class="svelte-lightbox-body" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
+<div bind:this={element} class="svelte-lightbox-body" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
     class:expand={enableImageExpand}>
     <slot/>
 </div>
