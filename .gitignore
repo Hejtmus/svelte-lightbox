@@ -4,3 +4,7 @@ node_modules
 package
 dist
 .vercel
+
+# testing
+test-results
+playwright-report
