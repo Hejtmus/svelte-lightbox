@@ -6,40 +6,43 @@
     import Footer from './Modal/LightboxFooter.svelte'
     import ModalCover from './Modal/ModalCover.svelte'
     import Modal from './Modal/Modal.svelte'
-    import { onMount } from 'svelte'
-    import type { LightboxCustomization, ImagePreset } from '$lib/Types'
+    import { lockBodyScroll } from './bodyScroll.svelte'
+    import type { Snippet } from 'svelte'
+    import type { LightboxOptions } from '$lib/Types'
 
-    export let title = ''
-    export let description = ''
+    interface Props extends LightboxOptions {
+        enableFallbackThumbnail?: boolean,
+        thumbnail?: Snippet
+    }
 
-    export let imagePreset: ImagePreset = ''
+    let {
+        title = '',
+        description = '',
+        imagePreset = '',
+        customization = {},
+        transitionDuration = 300,
+        keepBodyScroll = false,
+        enableImageExpand = false,
+        enableFallbackThumbnail = true,
+        enableEscapeToClose = true,
+        enableClickToClose = false,
+        showCloseButton = true,
+        isVisible = $bindable(false),
+        thumbnail,
+        children
+    }: Props = $props()
 
-    export let customization: LightboxCustomization | {} = {}
-    export let transitionDuration = 300
-
-    export let keepBodyScroll = false
-    export let enableImageExpand = false
-    export let enableFallbackThumbnail = true
-    export let enableEscapeToClose = true
-    export let enableClickToClose = false
-    export let showCloseButton = true
-
-    export let isVisible = false
-
+    // A click on the modal reaches the cover underneath it as well, and only the cover can tell them apart
     let modalClicked = false
 
-    const toggle = () => {
+    export const toggle = () => {
         isVisible = !isVisible
-        toggleScroll()
     }
-
-    const open = () => {
+    export const open = () => {
         isVisible = true
-        toggleScroll()
     }
-    const close = () => {
+    export const close = () => {
         isVisible = false
-        toggleScroll()
     }
 
     const coverClick = () => {
@@ -53,51 +56,27 @@
         modalClicked = true
     }
 
-    let toggleScroll = () => {
-    }
-
-    export const programmaticController = {
-        toggle,
-        open,
-        close
-    }
-
-    onMount(() => {
-        const defaultOverflow = document.body.style.overflow
-        toggleScroll = () => {
-            if (!keepBodyScroll) {
-                if (isVisible) {
-                    document.body.style.overflow = 'hidden'
-                } else {
-                    document.body.style.overflow = defaultOverflow
-                }
-            }
-        }
-    })
+    lockBodyScroll(() => isVisible && !keepBodyScroll)
 </script>
 
-{#if $$slots.thumbnail || enableFallbackThumbnail}
-    <Thumbnail {...(customization?.thumbnailProps || {})} on:click={toggle}>
-        {#if $$slots.thumbnail}
-            <slot name="thumbnail"/>
-        {:else}
-            <slot/>
-        {/if}
+{#if thumbnail || enableFallbackThumbnail}
+    <Thumbnail {...customization.thumbnailProps ?? {}} onclick={toggle}>
+        {@render (thumbnail ?? children)?.()}
     </Thumbnail>
 {/if}
 
 {#if isVisible}
     <BodyChild>
-        <ModalCover {transitionDuration} {...(customization.coverProps || {})} on:click={coverClick}>
-            <Modal {imagePreset} {transitionDuration} on:click={modalClick} {...(customization.lightboxProps || {})}>
+        <ModalCover {transitionDuration} {...customization.coverProps ?? {}} onclick={coverClick}>
+            <Modal {imagePreset} {transitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
-                    {...(customization.lightboxHeaderProps || {})} on:close={close}/>
+                    {...customization.lightboxHeaderProps ?? {}} onclose={close}/>
 
                 <Body {imagePreset} {enableImageExpand}>
-                    <slot/>
+                    {@render children?.()}
                 </Body>
 
-                <Footer {imagePreset} {title} {description} {...(customization.lightboxFooterProps || {})}/>
+                <Footer {imagePreset} {title} {description} {...customization.lightboxFooterProps ?? {}}/>
             </Modal>
         </ModalCover>
     </BodyChild>

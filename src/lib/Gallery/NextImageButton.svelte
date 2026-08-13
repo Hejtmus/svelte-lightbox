@@ -1,12 +1,17 @@
 <script lang="ts">
     import type { GalleryArrowCharacter } from '$lib/Types'
 
-    export let imageCount: number
-    export let activeImage: number
-    export let character: GalleryArrowCharacter
+    interface Props {
+        imageCount: number,
+        activeImage: number,
+        character: GalleryArrowCharacter,
+        onclick?: () => void
+    }
+
+    let { imageCount, activeImage, character, onclick }: Props = $props()
 </script>
 
-<button on:click disabled={character !== 'loop' && activeImage === imageCount - 1}
+<button {onclick} disabled={character !== 'loop' && activeImage === imageCount - 1}
     class="next-button" class:hideDisabled={character === 'hide'}>
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <g>

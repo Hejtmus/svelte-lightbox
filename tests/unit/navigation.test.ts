@@ -1,11 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { get, writable } from 'svelte/store'
 import { toNextImage, toPreviousImage, toSwipedImage } from '../../src/lib/Gallery/navigation'
 import type { GalleryArrowCharacter } from '../../src/lib/Types'
 
 const gallery = (activeImage: number, imageCount = 3, character: GalleryArrowCharacter = '') => ({
-    activeImageStore: writable(activeImage),
-    imageCountStore: writable(imageCount),
+    activeImage,
+    imageCount,
     character
 })
 
@@ -15,7 +14,7 @@ describe('gallery navigation', () => {
 
         toNextImage(navigation)
 
-        expect(get(navigation.activeImageStore)).toBe(1)
+        expect(navigation.activeImage).toBe(1)
     })
 
     it('moves to the previous image', () => {
@@ -23,7 +22,7 @@ describe('gallery navigation', () => {
 
         toPreviousImage(navigation)
 
-        expect(get(navigation.activeImageStore)).toBe(1)
+        expect(navigation.activeImage).toBe(1)
     })
 
     // Documented as: '' leaves the arrow inactive in edge cases
@@ -36,7 +35,7 @@ describe('gallery navigation', () => {
 
             toNextImage(navigation)
 
-            expect(get(navigation.activeImageStore)).toBe(2)
+            expect(navigation.activeImage).toBe(2)
         })
 
         it('stays on the first image', () => {
@@ -44,7 +43,7 @@ describe('gallery navigation', () => {
 
             toPreviousImage(navigation)
 
-            expect(get(navigation.activeImageStore)).toBe(0)
+            expect(navigation.activeImage).toBe(0)
         })
     })
 
@@ -55,7 +54,7 @@ describe('gallery navigation', () => {
 
             toNextImage(navigation)
 
-            expect(get(navigation.activeImageStore)).toBe(0)
+            expect(navigation.activeImage).toBe(0)
         })
 
         it('wraps from the first image to the last', () => {
@@ -63,17 +62,17 @@ describe('gallery navigation', () => {
 
             toPreviousImage(navigation)
 
-            expect(get(navigation.activeImageStore)).toBe(2)
+            expect(navigation.activeImage).toBe(2)
         })
     })
 
     it('reads the image count at the time of the move', () => {
         const navigation = gallery(0, 1, 'loop')
-        navigation.imageCountStore.set(4)
+        navigation.imageCount = 4
 
         toPreviousImage(navigation)
 
-        expect(get(navigation.activeImageStore)).toBe(3)
+        expect(navigation.activeImage).toBe(3)
     })
 })
 
@@ -83,7 +82,7 @@ describe('swiped navigation', () => {
 
         toSwipedImage(navigation, -60, 50)
 
-        expect(get(navigation.activeImageStore)).toBe(1)
+        expect(navigation.activeImage).toBe(1)
     })
 
     it('moves to the previous image when dragged right past the threshold', () => {
@@ -91,7 +90,7 @@ describe('swiped navigation', () => {
 
         toSwipedImage(navigation, 60, 50)
 
-        expect(get(navigation.activeImageStore)).toBe(0)
+        expect(navigation.activeImage).toBe(0)
     })
 
     // Documented as: shorter drags return the image back to its place
@@ -100,7 +99,7 @@ describe('swiped navigation', () => {
 
         toSwipedImage(navigation, offset, 50)
 
-        expect(get(navigation.activeImageStore)).toBe(1)
+        expect(navigation.activeImage).toBe(1)
     })
 
     it('moves on a drag of exactly the threshold', () => {
@@ -108,7 +107,7 @@ describe('swiped navigation', () => {
 
         toSwipedImage(navigation, -50, 50)
 
-        expect(get(navigation.activeImageStore)).toBe(2)
+        expect(navigation.activeImage).toBe(2)
     })
 
     it('respects the edge rules of the arrows', () => {
@@ -116,6 +115,6 @@ describe('swiped navigation', () => {
 
         toSwipedImage(navigation, -200, 50)
 
-        expect(get(navigation.activeImageStore)).toBe(2)
+        expect(navigation.activeImage).toBe(2)
     })
 })

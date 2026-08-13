@@ -1,14 +1,21 @@
 <script lang="ts">
     import { fade } from 'svelte/transition'
+    import type { Snippet } from 'svelte'
+    import type { HTMLAttributes } from 'svelte/elements'
     import type { ImagePreset } from '$lib/Types'
 
-    export let transitionDuration: number
-    export let imagePreset: ImagePreset
+    interface Props extends HTMLAttributes<HTMLDivElement> {
+        transitionDuration: number,
+        imagePreset: ImagePreset,
+        children?: Snippet
+    }
+
+    let { transitionDuration, imagePreset, children, ...rest }: Props = $props()
 </script>
 
 <div class="svelte-lightbox-main" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
-    transition:fade={{ duration: transitionDuration }} aria-label="Modal" on:click {...$$restProps}>
-    <slot/>
+    transition:fade={{ duration: transitionDuration }} aria-label="Modal" role="presentation" {...rest}>
+    {@render children?.()}
 </div>
 
 <style>

@@ -31,22 +31,22 @@ A lightbox is a cover holding a modal, which holds a header, a body and a footer
         LightboxThumbnail
     } from 'svelte-lightbox'
 
-    let isVisible = false
+    let isVisible = $state(false)
 </script>
 
-<LightboxThumbnail on:click={() => { isVisible = true }}>
+<LightboxThumbnail onclick={() => { isVisible = true }}>
     <img src="/img/cat.jpg" alt="A cat">
 </LightboxThumbnail>
 
 {#if isVisible}
     <BodyChild>
-        <ModalCover transitionDuration={300} on:click={() => { isVisible = false }}>
+        <ModalCover transitionDuration={300} onclick={() => { isVisible = false }}>
             <Modal transitionDuration={300} imagePreset="">
                 <LightboxHeader
                     imagePreset=""
                     showCloseButton={true}
                     enableEscapeToClose={true}
-                    on:close={() => { isVisible = false }}
+                    onclose={() => { isVisible = false }}
                 />
                 <LightboxBody imagePreset="" enableImageExpand={false}>
                     <img src="/img/cat.jpg" alt="A cat">
@@ -58,17 +58,21 @@ A lightbox is a cover holding a modal, which holds a header, a body and a footer
 {/if}
 ```
 
+Every part spreads the props it does not use itself onto the element behind it, so anything an html element accepts, a
+part accepts too. That is what carries `onclick` to `<ModalCover>` and `<Modal>`, and it is the same mechanism
+[customization](/guide/lightbox/#customization) uses.
+
 ## The parts
 
 ### `<BodyChild>`
 
-Moves its slot to the end of `<body>` on mount and takes it away again on destroy. Nothing else. This is what keeps a
-lightbox out of the layout it was written in.
+Moves its children to the end of `<body>` on mount and takes them away again on destroy. Nothing else. This is what keeps
+a lightbox out of the layout it was written in.
 
 ### `<ModalCover>`
 
 The full screen backdrop, carrying the `.svelte-lightbox-overlay` class. Fades in over `transitionDuration * 2`
-milliseconds and out over half of it, and forwards `on:click`.
+milliseconds and out over half of it.
 
 | prop | type | |
 | --- | --- | --- |
@@ -76,8 +80,8 @@ milliseconds and out over half of it, and forwards `on:click`.
 
 ### `<Modal>`
 
-The box the image sits in, carrying `.svelte-lightbox-main`. Forwards `on:click`, which is what a lightbox listens to in
-order to tell a click on the image apart from a click on the backdrop.
+The box the image sits in, carrying `.svelte-lightbox-main`. A lightbox listens to its `onclick` in order to tell a
+click on the image apart from a click on the backdrop.
 
 | prop | type | |
 | --- | --- | --- |
@@ -86,19 +90,20 @@ order to tell a click on the image apart from a click on the backdrop.
 
 ### `<LightboxHeader>`
 
-The bar above the image, carrying `.svelte-lightbox-header`. Holds the close button and dispatches `close` both when
-that button is pressed and, while `enableEscapeToClose` is on, when escape is pressed.
+The bar above the image, carrying `.svelte-lightbox-header`. Holds the close button and calls `onclose` both when that
+button is pressed and, while `enableEscapeToClose` is on, when escape is pressed.
 
 | prop | type | |
 | --- | --- | --- |
 | `imagePreset` | `ImagePreset` | Preset the header should follow |
 | `showCloseButton` | `boolean` | Renders the close button |
-| `enableEscapeToClose` | `boolean` | Dispatches `close` on the escape key |
-| `closeButtonProps` | `HTMLButtonElement` | Html props for the close button |
+| `enableEscapeToClose` | `boolean` | Calls `onclose` on the escape key |
+| `closeButtonProps` | `HTMLButtonAttributes` | Html props for the close button |
+| `onclose` | `() => void` | Called when the lightbox should close |
 
 ### `<LightboxBody>`
 
-The area holding the image, carrying `.svelte-lightbox-body`. It sizes whatever is placed in its slot, which is why the
+The area holding the image, carrying `.svelte-lightbox-body`. It sizes whatever is placed inside it, which is why the
 image itself needs no styling of its own.
 
 | prop | type | |
@@ -121,35 +126,114 @@ The strip under the image, carrying `.svelte-lightbox-footer`. Renders the title
 
 ### `<LightboxThumbnail>`
 
-A clickable wrapper carrying `.svelte-lightbox-thumbnail`, forwarding `on:click`. This is what `<Lightbox>` puts around
-the thumbnail slot.
-
-## Gallery parts
-
-A gallery adds navigation on top of the same stack. `<GalleryController>` holds the arrows, the keyboard handling and
-the swipe gesture, and expects the stores a gallery keeps its state in.
+A clickable wrapper carrying `.svelte-lightbox-thumbnail`, calling `onclick` on a click as well as on enter and space.
+This is what `<Lightbox>` puts around the thumbnail.
 
 | prop | type | |
 | --- | --- | --- |
-| `imageCountStore` | `Writable<number>` | How many images the gallery holds |
-| `activeImageStore` | `Writable<number>` | Index of the displayed image |
-| `arrowsConfigStore` | `Writable<GalleryArrowsConfig>` | Arrow colour, edge behaviour, keyboard |
-| `swipeConfigStore` | `Writable<GallerySwipeConfig>` | Swipe settings |
-| `bodyElement` | `HTMLDivElement` | The element drags are read from |
+| `onclick` | `() => void` | Called when the reader activates the thumbnail |
 
-`<PreviousImageButton>` and `<NextImageButton>` are the arrows themselves. Both forward `on:click` and disable
-themselves at the edges of the gallery unless `character` is `'loop'`.
+## Gallery parts
+
+A gallery adds navigation on top of the same stack. All of it reads from one piece of state, created with
+`createGallery`, which also puts it within reach of every `<GalleryThumbnail>` and `<GalleryImage>` below it.
+
+```svelte title="A hand composed gallery"
+<script>
+    import { createAttachmentKey } from 'svelte/attachments'
+    import {
+        createGallery,
+        swipeNavigation,
+        GalleryController,
+        GalleryImage,
+        GalleryThumbnail,
+        LightboxBody
+    } from 'svelte-lightbox'
+
+    const images = [1, 2, 3]
+
+    let isVisible = $state(false)
+    let activeImage = $state(0)
+
+    const gallery = createGallery({
+        get activeImage () {
+            return activeImage
+        },
+        set activeImage (imageId) {
+            activeImage = imageId
+        },
+        arrowsConfig: { color: 'white', character: 'loop', enableKeyboardControl: true },
+        swipeConfig: { enabled: true, threshold: 50, enableMouseDrag: true },
+        openImage: (imageId) => {
+            activeImage = imageId
+            isVisible = true
+        }
+    })
+
+    // Drags are read from the element the images sit in
+    const swipeSurface = { [createAttachmentKey()]: swipeNavigation(gallery) }
+</script>
+
+{#each images as image (image)}
+    <GalleryThumbnail>
+        <img src="/img/{image}.jpg" alt="Image {image}">
+    </GalleryThumbnail>
+{/each}
+
+{#if isVisible}
+    <LightboxBody imagePreset="" enableImageExpand={false} {...swipeSurface}>
+        <GalleryController {gallery}>
+            {#each images as image (image)}
+                <GalleryImage title="Image {image}">
+                    <img src="/img/{image}.jpg" alt="Image {image}">
+                </GalleryImage>
+            {/each}
+        </GalleryController>
+    </LightboxBody>
+{/if}
+```
+
+### `createGallery`
+
+Creates the gallery state and shares it downwards. It is given the parts a gallery cannot decide on its own, so the
+state stays the caller's rather than the library's.
+
+| setting | type | |
+| --- | --- | --- |
+| `activeImage` | `number` | Index of the displayed image, read and written |
+| `arrowsConfig` | `GalleryArrowsConfig` | Arrow colour, edge behaviour, keyboard |
+| `swipeConfig` | `GallerySwipeConfig` | Swipe settings |
+| `openImage` | `(imageId: number) => void` | Called by a thumbnail that was clicked |
+
+Written as getters, as in the example above, the settings stay live: whatever the surrounding component keeps them in
+remains the single source of truth. The returned `Gallery` also counts the images, which is what pairs a thumbnail with
+the image of the same order.
+
+### `<GalleryController>`
+
+Holds the arrows and the keyboard handling, and displays whatever is placed inside it between them.
+
+| prop | type | |
+| --- | --- | --- |
+| `gallery` | `Gallery` | The state returned by `createGallery` |
+
+### `swipeNavigation`
+
+An attachment turning drags on the element it is put on into moves through the gallery. Place it on the element holding
+the images, since that is the surface the reader drags. It follows
+[`arrowsConfig.character`](/guide/lightbox-gallery/#character) at the edges of the gallery, exactly like the arrows do.
+
+### `<PreviousImageButton>` and `<NextImageButton>`
+
+The arrows themselves. Both call `onclick` and disable themselves at the edges of the gallery unless `character` is
+`'loop'`.
 
 | prop | type | |
 | --- | --- | --- |
 | `activeImage` | `number` | Index of the displayed image |
 | `imageCount` | `number` | How many images there are, next arrow only |
 | `character` | `GalleryArrowCharacter` | `''`, `'hide'` or `'loop'` |
-
-:::note[Stores, not values]
-The gallery parts take stores rather than plain values because the same state is read by several components at once. A
-hand composed gallery has to create those stores and keep them updated itself.
-:::
+| `onclick` | `() => void` | Called when the arrow is pressed |
 
 ## Changing the counter wording
 

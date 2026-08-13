@@ -4,7 +4,7 @@
 
     const gallery = [1, 2, 3, 4]
 
-    let galleryController
+    let openableGallery: ReturnType<typeof LightboxGallery>
 
     // Shows that the gallery counter wording is replaceable
     $i18n.generateLocalizedGalleryCounter = (activeImage, imageCount) => {
@@ -42,7 +42,9 @@
             <p>A different image stands in for the one that opens.</p>
             <div class="stage">
                 <Lightbox description="Lightbox with a customized thumbnail">
-                    <img slot="thumbnail" src="{base}/img/cat.jpg" alt="A cat">
+                    {#snippet thumbnail()}
+                        <img src="{base}/img/cat.jpg" alt="A cat">
+                    {/snippet}
                     <img src="{base}/img/dog.jpg" alt="A dog">
                 </Lightbox>
             </div>
@@ -53,7 +55,7 @@
         <h2>Gallery with a thumbnail layout</h2>
         <p>Fullscreen preset, with swiping enabled. Drag an image sideways, or use the arrows and arrow keys.</p>
         <LightboxGallery imagePreset="fullscreen" swipeConfig={{ enabled: true }}>
-            <svelte:fragment slot="thumbnail">
+            {#snippet thumbnail()}
                 <div class="thumbnails">
                     {#each gallery as image (image)}
                         <GalleryThumbnail>
@@ -61,7 +63,7 @@
                         </GalleryThumbnail>
                     {/each}
                 </div>
-            </svelte:fragment>
+            {/snippet}
 
             {#each gallery as image (image)}
                 <GalleryImage
@@ -76,26 +78,28 @@
 
     <section class="card">
         <h2>Gallery opened from anywhere</h2>
-        <p>A single thumbnail beside a button that opens a specific image through the programmatic controller.</p>
+        <p>A single thumbnail beside a button that opens a specific image through the component instance.</p>
         <LightboxGallery
             title="Gallery with unified title"
             swipeConfig={{ enabled: true }}
-            bind:programmaticController={galleryController}
+            bind:this={openableGallery}
         >
-            <div class="split" slot="thumbnail">
-                <GalleryThumbnail>
-                    <img src="{base}/img/test1.png" alt="First image">
-                </GalleryThumbnail>
-                <div>
-                    <p>
-                        The thumbnail on the left opens the gallery at its own image. The button opens the gallery at
-                        the second image instead, without the reader having to touch a thumbnail at all.
-                    </p>
-                    <button on:click={() => galleryController.openImage(1)}>
-                        Open the second image
-                    </button>
+            {#snippet thumbnail()}
+                <div class="split">
+                    <GalleryThumbnail>
+                        <img src="{base}/img/test1.png" alt="First image">
+                    </GalleryThumbnail>
+                    <div>
+                        <p>
+                            The thumbnail on the left opens the gallery at its own image. The button opens the gallery
+                            at the second image instead, without the reader having to touch a thumbnail at all.
+                        </p>
+                        <button onclick={() => openableGallery.openImage(1)}>
+                            Open the second image
+                        </button>
+                    </div>
                 </div>
-            </div>
+            {/snippet}
 
             <GalleryImage>
                 <img src="{base}/img/test1.png" alt="First image">

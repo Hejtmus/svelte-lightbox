@@ -1,26 +1,21 @@
 <script lang="ts">
-    import { getContext } from 'svelte'
+    import LightboxThumbnail from '../LightboxThumbnail.svelte'
+    import { getGallery } from './gallery.svelte'
+    import type { Snippet } from 'svelte'
+    import type { HTMLAttributes } from 'svelte/elements'
 
-    export let id: number
-
-    const openImage: (id: number) => void = getContext('openImage')
-    if (!id) {
-        const thumbnailCounterFunction: () => number = getContext('thumbnailCounter')
-        id = thumbnailCounterFunction()
+    interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onclick'> {
+        id?: number,
+        children?: Snippet
     }
+
+    let { id, children, ...rest }: Props = $props()
+
+    const gallery = getGallery()
+    // Thumbnails stand for the images in the order they are written, unless they say otherwise
+    const imageId = id ?? gallery.nextThumbnailId()
 </script>
 
-<div class:svelte-lightbox-thumbnail={true} aria-label="thumbnail" on:click={() => openImage(id)} {...$$restProps} role="button" tabindex="0">
-    <slot/>
-</div>
-
-<style>
-    div {
-        position: static;
-        cursor: zoom-in;
-    }
-    :global(.svelte-lightbox-thumbnail > *) {
-        max-width: 100%;
-        height: auto;
-    }
-</style>
+<LightboxThumbnail onclick={() => gallery.openImage(imageId)} {...rest}>
+    {@render children?.()}
+</LightboxThumbnail>

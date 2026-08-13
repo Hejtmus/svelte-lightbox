@@ -1,11 +1,19 @@
 <script lang="ts">
     import { fade } from 'svelte/transition'
+    import type { Snippet } from 'svelte'
+    import type { HTMLAttributes } from 'svelte/elements'
 
-    export let transitionDuration: number
+    interface Props extends HTMLAttributes<HTMLDivElement> {
+        transitionDuration: number,
+        children?: Snippet
+    }
+
+    let { transitionDuration, children, ...rest }: Props = $props()
 </script>
 
-<div class="svelte-lightbox-overlay" aria-label="overlay" on:click in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }} {...$$restProps}>
-    <slot />
+<div class="svelte-lightbox-overlay" aria-label="overlay" role="presentation"
+    in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }} {...rest}>
+    {@render children?.()}
 </div>
 
 <style>

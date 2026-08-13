@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { onMount, setContext } from 'svelte'
-    import { writable } from 'svelte/store'
+    import { createAttachmentKey } from 'svelte/attachments'
     import GalleryController from './GalleryController.svelte'
     import BodyChild from '../Modal/BodyChild.svelte'
     import Header from '../Modal/LightboxHeader.svelte'
@@ -8,77 +7,74 @@
     import Footer from '../Modal/LightboxFooter.svelte'
     import ModalCover from '../Modal/ModalCover.svelte'
     import Modal from '../Modal/Modal.svelte'
-    import type { Writable } from 'svelte/store'
-    import type {
-        ImagePreset,
-        LightboxCustomization,
-        GalleryImage,
-        GalleryArrowsConfig,
-        GallerySwipeConfig
-    } from '$lib/Types'
+    import { createGallery, DEFAULT_ARROWS_CONFIG, DEFAULT_SWIPE_CONFIG } from './gallery.svelte'
+    import { swipeNavigation } from './swipeNavigation.svelte'
+    import { lockBodyScroll } from '$lib/bodyScroll.svelte'
+    import type { Snippet } from 'svelte'
+    import type { GalleryArrowsConfig, GallerySwipeConfig, LightboxOptions } from '$lib/Types'
 
-    const defaultSwipeConfig: GallerySwipeConfig = {
-        enabled: false,
-        threshold: 50,
-        enableMouseDrag: true
+    interface Props extends LightboxOptions {
+        activeImage?: number,
+        arrowsConfig?: Partial<GalleryArrowsConfig>,
+        swipeConfig?: Partial<GallerySwipeConfig>,
+        thumbnail?: Snippet
     }
 
-    // Lightbox props --------------------------------------------------------------------------------------------------
+    let {
+        title = '',
+        description = '',
+        imagePreset = '',
+        customization = {},
+        transitionDuration = 300,
+        keepBodyScroll = false,
+        enableImageExpand = false,
+        enableEscapeToClose = true,
+        enableClickToClose = false,
+        showCloseButton = true,
+        isVisible = $bindable(false),
+        activeImage = $bindable(0),
+        arrowsConfig = {},
+        swipeConfig = {},
+        thumbnail,
+        children
+    }: Props = $props()
 
-    export let title = ''
-    export let description = ''
-
-    export let imagePreset: ImagePreset = ''
-
-    export let customization: LightboxCustomization | {} = {}
-    export let transitionDuration = 300
-
-    export let keepBodyScroll = false
-    export let enableImageExpand = false
-    export let enableEscapeToClose = true
-    export let enableClickToClose = false
-    export let showCloseButton = true
-
-    export let isVisible = false
-
-    // Gallery props ---------------------------------------------------------------------------------------------------
-
-    export let activeImage = 0
-    export let arrowsConfig: GalleryArrowsConfig = {
-        color: 'black',
-        character: '',
-        enableKeyboardControl: true
-    }
-    export let swipeConfig: Partial<GallerySwipeConfig> = {}
-
+    // A click on the modal reaches the cover underneath it as well, and only the cover can tell them apart
     let modalClicked = false
-    let bodyElement: HTMLDivElement | null = null
-    let images: Array<GalleryImage> = []
-    let thumbnailCount = 0
 
-    const imageCountStore: Writable<number> = writable(images.length)
-    const activeImageStore: Writable<number> = writable(activeImage)
-    const arrowsConfigStore: Writable<GalleryArrowsConfig> = writable(arrowsConfig)
-    const swipeConfigStore: Writable<GallerySwipeConfig> = writable(defaultSwipeConfig)
-
-    const toggle = () => {
+    export const toggle = () => {
         isVisible = !isVisible
-        toggleScroll()
     }
-
-    const open = () => {
+    export const open = () => {
         isVisible = true
-        toggleScroll()
     }
-    const openImage = (imageId: number) => {
-        open()
+    export const close = () => {
+        isVisible = false
+    }
+    export const openImage = (imageId: number) => {
         activeImage = imageId
+        isVisible = true
     }
 
-    const close = () => {
-        isVisible = false
-        toggleScroll()
-    }
+    const gallery = createGallery({
+        get activeImage () {
+            return activeImage
+        },
+        set activeImage (imageId: number) {
+            activeImage = imageId
+        },
+        // Merged so callers can override single fields, as the documented defaults promise
+        get arrowsConfig () {
+            return { ...DEFAULT_ARROWS_CONFIG, ...arrowsConfig }
+        },
+        get swipeConfig () {
+            return { ...DEFAULT_SWIPE_CONFIG, ...swipeConfig }
+        },
+        openImage
+    })
+
+    // The images are direct children of the body, so the body is the surface drags are read from
+    const swipeSurface = { [createAttachmentKey()]: swipeNavigation(gallery) }
 
     const coverClick = () => {
         if (!modalClicked || enableClickToClose) {
@@ -91,77 +87,37 @@
         modalClicked = true
     }
 
-    const keepOrEmptyImageList = (isVisible: boolean) => {
-        if (!isVisible) images = []
-    }
+    const activeImageTitle = $derived(gallery.images[activeImage]?.title || title)
+    const activeImageDescription = $derived(gallery.images[activeImage]?.description || description)
+    const galleryState = $derived({ imageCount: gallery.imageCount, activeImage })
 
-    let toggleScroll = () => {}
-
-    export const programmaticController = {
-        toggle,
-        open,
-        close,
-        openImage
-    }
-
-    setContext('activeImage', activeImageStore)
-    setContext('imageCounter', (image: GalleryImage) => {
-        image.id = images.length
-        images = [
-            ...images,
-            image
-        ]
-        $imageCountStore = images.length
-        return $imageCountStore - 1
-    })
-    setContext('thumbnailCounter', () => {
-        return thumbnailCount++
-    })
-    setContext('openImage', openImage)
-    setContext('swipeConfig', swipeConfigStore)
-
-    $: activeImageStore.set(activeImage)
-    $: arrowsConfigStore.set(arrowsConfig)
-    // Merged so callers can override single fields, as the documented defaults promise
-    $: swipeConfigStore.set({ ...defaultSwipeConfig, ...swipeConfig })
-    $: keepOrEmptyImageList(isVisible)
-    $: activeImageTitle = images[$activeImageStore]?.title || title || ''
-    $: activeImageDescription = images[$activeImageStore]?.description || description || ''
-    $: gallery = { imageCount: $imageCountStore, activeImage: $activeImageStore }
-
-    onMount(() => {
-        const defaultOverflow = document.body.style.overflow
-        toggleScroll = () => {
-            if (!keepBodyScroll) {
-                if (isVisible) {
-                    document.body.style.overflow = 'hidden'
-                } else {
-                    document.body.style.overflow = defaultOverflow
-                }
-            }
+    // A closed gallery unmounts its images, which register themselves again on the next opening
+    $effect(() => {
+        if (!isVisible) {
+            gallery.forgetImages()
         }
     })
+
+    lockBodyScroll(() => isVisible && !keepBodyScroll)
 </script>
 
-{#if $$slots.thumbnail}
-    <slot name="thumbnail"/>
-{/if}
+{@render thumbnail?.()}
 
 {#if isVisible}
     <BodyChild>
-        <ModalCover {transitionDuration} {...(customization.coverProps || {})} on:click={coverClick}>
-            <Modal {imagePreset} {transitionDuration} {...(customization.lightboxProps || {})} on:click={modalClick}>
+        <ModalCover {transitionDuration} {...customization.coverProps ?? {}} onclick={coverClick}>
+            <Modal {imagePreset} {transitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
-                    {...(customization.lightboxHeaderProps || {})} on:close={close}/>
+                    {...customization.lightboxHeaderProps ?? {}} onclose={close}/>
 
-                <Body {imagePreset} {enableImageExpand} bind:element={bodyElement}>
-                    <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}
-                        {swipeConfigStore} {bodyElement}>
-                        <slot/>
+                <Body {imagePreset} {enableImageExpand} {...swipeSurface}>
+                    <GalleryController {gallery}>
+                        {@render children?.()}
                     </GalleryController>
                 </Body>
 
-                <Footer {imagePreset} title={activeImageTitle} description={activeImageDescription} {gallery} {...(customization.lightboxFooterProps || {})}/>
+                <Footer {imagePreset} title={activeImageTitle} description={activeImageDescription} gallery={galleryState}
+                    {...customization.lightboxFooterProps ?? {}}/>
             </Modal>
         </ModalCover>
     </BodyChild>

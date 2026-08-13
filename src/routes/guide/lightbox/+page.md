@@ -56,11 +56,12 @@ Type: `LightboxCustomization (object)`
 Customization object contains these props, which represent html props of their key (e.g. closeButtonProps = html props of
 close button of).
 
-- closeButtonProps: `HTMLButtonElement`
-- lightboxFooterProps: `HTMLDivElement`
-- lightboxHeaderProps: `HTMLDivElement`
-- lightboxProps: `HTMLDivElement`
-- thumbnailProps: `HTMLDivElement`
+- closeButtonProps: `HTMLButtonAttributes`
+- lightboxFooterProps: `HTMLAttributes<HTMLDivElement>`
+- lightboxHeaderProps: `HTMLAttributes<HTMLDivElement>`
+- coverProps: `HTMLAttributes<HTMLDivElement>`
+- lightboxProps: `HTMLAttributes<HTMLDivElement>`
+- thumbnailProps: `HTMLAttributes<HTMLDivElement>`
 
 ### transitionDuration
 
@@ -85,7 +86,7 @@ Enables image inside lightbox to resize above its resolution. Default `false`.
 
 Type: `boolean`
 
-Enables inferring thumbnail from lightbox content, if thumbnail isn't specified. Default `true`.
+Enables inferring thumbnail from lightbox content, if the `thumbnail` snippet isn't specified. Default `true`.
 
 ### enableEscapeToClose
 
@@ -109,17 +110,52 @@ Shows close button. Default `true`.
 
 Type: `boolean`
 
-Allows you to programmatically control lightbox visibility without programmaticController. Default varies on user activity.
+Bindable. Allows you to control lightbox visibility as a piece of your own state, rather than through the component
+instance. Default varies on user activity.
 
-### programmaticController
+## Snippets
 
-Type: `object`
+### thumbnail
 
-Object with these basic control functions:
+The element the reader clicks to open the lightbox. Leave it out and the lightbox content stands in for it, unless
+[`enableFallbackThumbnail`](#enablefallbackthumbnail) says otherwise.
+
+### children
+
+The content the lightbox displays, written as the component's children.
+
+```svelte
+<Lightbox>
+    {#snippet thumbnail()}
+        <img src="/img/cat-small.jpg" alt="A cat">
+    {/snippet}
+
+    <img src="/img/cat.jpg" alt="A cat">
+</Lightbox>
+```
+
+## Controlling it from code
+
+The component exposes its controls as instance methods, so a `bind:this` reference is everything needed to open or close
+a lightbox from elsewhere on the page.
 
 - toggle `() => void` - toggles lightbox (opened -> closed, vice versa)
 - open `() => void` - opens lightbox
 - close `() => void` - closes lightbox
+
+```svelte
+<script>
+    import { Lightbox } from 'svelte-lightbox'
+
+    let lightbox
+</script>
+
+<button onclick={() => lightbox.open()}>Open the cat</button>
+
+<Lightbox bind:this={lightbox} enableFallbackThumbnail={false}>
+    <img src="/img/cat.jpg" alt="A cat">
+</Lightbox>
+```
 
 ## CSS
 

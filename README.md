@@ -10,14 +10,24 @@ Lightweight lightbox library for Svelte
 ![downloads](https://img.shields.io/npm/dw/svelte-lightbox)
 
 Lightweight Lightbox, but very customizable Svelte component library. There is also support for
-mobile devices. Note that this first version of this library, if you notice any bug,
-please report it to this library's GitHub repository to the 'Issues' section.
+mobile devices. If you notice any bug, please report it to this library's GitHub repository to the 'Issues' section.
+
+The full documentation lives at [svelte-lightbox.js.org](https://svelte-lightbox.js.org).
 
 ## Instalation
 
 > ```bash
 > npm i svelte-lightbox -D
 > ```
+
+The components are written in runes mode and need **Svelte 5**. Stay on svelte-lightbox 1.x for Svelte 3 and 4.
+
+### Coming from version 1
+
+- The `thumbnail` slot became a `thumbnail` snippet, and slot content became children.
+- `programmaticController` is gone. The same functions are instance methods, reached with `bind:this`.
+- Forwarded events became callback props: `on:click` is now `onclick`, and `<LightboxHeader>` calls `onclose`.
+- A hand composed gallery holds its state in `createGallery` rather than in four stores of its own.
 
 ## How to use
 
@@ -27,7 +37,7 @@ please report it to this library's GitHub repository to the 'Issues' section.
 
 2. Include `import { Lightbox } from 'svelte-lightbox';` into that file.
 
-3. Make `<Lightbox>` component and image you need to display put inside slot (as its child).
+3. Make `<Lightbox>` component and image you need to display put inside it (as its child).
 
 ### Lightbox with gallery
 
@@ -36,13 +46,13 @@ please report it to this library's GitHub repository to the 'Issues' section.
 3. Make `<LightboxGallery>` component and append to it list of `<GalleryImage>`, which each `<GalleryImage>` contains 
 desired image (or it could be video).
 
-4. Prepend `<LightboxGallery>` with element or svelte:fragment with prop slot equal to `"thumbnail"`, under this element
-place your thumbnail layout, which is basically layout with images wrapped inside `<GalleryThumbnail>`.
+4. Give `<LightboxGallery>` a `thumbnail` snippet holding your thumbnail layout, which is basically layout with images
+wrapped inside `<GalleryThumbnail>`.
 
 
 ### Common use cases
 
-```html
+```svelte
 <script>
     import { 
         Lightbox,
@@ -51,7 +61,7 @@ place your thumbnail layout, which is basically layout with images wrapped insid
         GalleryImage
     } from 'svelte-lightbox'
     
-    let lightboxProgrammaticController
+    let programmaticLightbox
 </script>
 
     <!-- Lightbox with image same as thumbnail -->
@@ -61,19 +71,22 @@ place your thumbnail layout, which is basically layout with images wrapped insid
 
     <!-- Lightbox with different image from thumbnail -->
     <Lightbox description="Lightbox with thumbnail and image">
-        <img slot="thumbnail" src="path/thumbnail.png" alt="Thumbnail">
+        {#snippet thumbnail()}
+            <img src="path/thumbnail.png" alt="Thumbnail">
+        {/snippet}
+
         <img src="path/image.png" alt="Lightbox image">
     </Lightbox>
 
     <!-- Programmatically controlled lightbox without thumbnail -->
-    <Lightbox enableFallbackThumbnail={false} bind:programmaticController={lightboxProgrammaticController} 
+    <Lightbox enableFallbackThumbnail={false} bind:this={programmaticLightbox}
               description="Simple lightbox">
         <img src="path" alt="Simple lightbox">
     </Lightbox>
 
     <LightboxGallery>
         <!-- Layout-->
-        <svelte:fragment slot="thumbnail">
+        {#snippet thumbnail()}
             <div class="sample-class-1">
                 <GalleryThumbnail>
                     <img src="./thumbnail-0.jpg" alt="Simple lightbox">
@@ -87,7 +100,7 @@ place your thumbnail layout, which is basically layout with images wrapped insid
                     </div>
                 </div>
             </div>
-        </svelte:fragment>
+        {/snippet}
         
         <GalleryImage>
             <img src="./image-0.jpg" alt="Simple lightbox">
@@ -143,12 +156,12 @@ Select between these 3 presets:
 Customization object contains these props, which represent html props of their key (e.g. closeButtonProps = html props of
 close button of).
 
-- closeButtonProps: `HTMLButtonElement`
-- lightboxFooterProps: `HTMLDivElement`
-- lightboxHeaderProps: `HTMLDivElement`
-- coverProps: `HTMLDivElement`
-- lightboxProps: `HTMLDivElement`
-- thumbnailProps: `HTMLDivElement`
+- closeButtonProps: `HTMLButtonAttributes`
+- lightboxFooterProps: `HTMLAttributes<HTMLDivElement>`
+- lightboxHeaderProps: `HTMLAttributes<HTMLDivElement>`
+- coverProps: `HTMLAttributes<HTMLDivElement>`
+- lightboxProps: `HTMLAttributes<HTMLDivElement>`
+- thumbnailProps: `HTMLAttributes<HTMLDivElement>`
 
 #### Using CSS
 
@@ -186,11 +199,11 @@ Shows close button. Default `true`.
 
 ### isVisible `boolean`
 
-Allows you to programmatically control lightbox visibility without programmaticController. Default varies on user activity.
+Bindable. Allows you to control lightbox visibility as a piece of your own state. Default varies on user activity.
 
-### programmaticController
+### Instance methods
 
-Object with these basic control functions:
+Reached through `bind:this`:
 
 - toggle `() => void` - toggles lightbox (opened -> closed, vice versa)
 - open `() => void` - opens lightbox
@@ -252,12 +265,12 @@ Same as in `<Lightbox>`.
 
 ### activeImage `number`
 
-Number which sets visibility of image with id equal to it. Also optional, this is used for programmatic selecting of 
+Bindable. Number which sets visibility of image with id equal to it. Also optional, this is used for programmatic selecting of 
 visible image when Lightbox is opened.
 
-### arrowsConfig `GalleryArrowsConfig (object)`
+### arrowsConfig `Partial<GalleryArrowsConfig> (object)`
 
-Allows customizing gallery arrows.
+Allows customizing gallery arrows. Fields left out keep their default.
 
 #### color `string`
 
@@ -278,9 +291,26 @@ will be displayed.
 
 Enables navigation in gallery using keyboard arrows. Default `true`.
 
-### programmaticController
+### swipeConfig `Partial<GallerySwipeConfig> (object)`
 
-Object with these basic control functions:
+Allows customizing swipe navigation, which lets the user drag the displayed image sideways to move through the gallery.
+Fields left out keep their default.
+
+#### enabled `boolean`
+
+Enables swipe navigation. Default `false`.
+
+#### threshold `number`
+
+Distance in pixels the image has to be dragged for the move to complete on release. Default `50`.
+
+#### enableMouseDrag `boolean`
+
+Enables swiping with a mouse, in addition to touch. Default `true`.
+
+### Instance methods
+
+Reached through `bind:this`:
 
 - toggle `() => void` - toggles lightbox (opened -> closed, vice versa)
 - open `() => void` - opens lightbox
@@ -327,7 +357,7 @@ Name says it all.
 
 #### `<BodyChild>`
 
-Makes content of slot direct child of `<body>`, this can be especially useful when using CSS frameworks, which can break
+Makes its children a direct child of `<body>`, this can be especially useful when using CSS frameworks, which can break
 `z-index` effect in some cases (element with higher index is lower than element with lower index).
 
 #### `<ModalCover>`
@@ -352,7 +382,13 @@ Footer of lightbox modal, contains title, description of image and gallery count
 
 #### `<GalleryController>`
 
-Layout with image space, left and right arrow, internal logic of gallery.
+Layout with image space, left and right arrow, keyboard handling of gallery. It reads the gallery state created by
+`createGallery`.
+
+#### `createGallery` and `swipeNavigation`
+
+`createGallery` holds the state a gallery shares with its thumbnails and images, and shares it downwards.
+`swipeNavigation` is the attachment turning drags on the element holding the images into moves through the gallery.
 
 #### `<PreviousImageButton>` and `<NextImageButton>`
 

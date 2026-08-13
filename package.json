@@ -1,6 +1,6 @@
 {
 	"name": "svelte-lightbox",
-	"version": "1.1.8",
+	"version": "2.0.0",
 	"license": "MIT",
 	"author": {
 		"name": "Filip Holčík",
@@ -61,7 +61,7 @@
 		"vitest": "^4.1.10"
 	},
 	"peerDependencies": {
-		"svelte": "^3.25.0 || ^4.0.0 || ^5.0.0"
+		"svelte": "^5.0.0"
 	},
 	"overrides": {
 		"cookie": "^0.7.2",

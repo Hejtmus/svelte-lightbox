@@ -1,30 +1,30 @@
 <script lang="ts">
-    import { page } from '$app/stores'
+    import { page } from '$app/state'
     import { Lightbox } from '$lib'
     import { flag, number, text } from '../params'
     import type { ImagePreset } from '$lib/Types'
 
-    let controller
-    let isVisible = false
+    let lightbox: ReturnType<typeof Lightbox>
+    let isVisible = $state(false)
 
-    $: params = $page.url.searchParams
-    $: imagePreset = text(params, 'imagePreset') as ImagePreset
+    const params = $derived(page.url.searchParams)
+    const imagePreset = $derived(text(params, 'imagePreset') as ImagePreset)
 </script>
 
 <h1>Lightbox fixture</h1>
 
 <!-- The overlay covers the viewport, so the controls have to sit above it to stay clickable -->
 <div class="controls">
-    <button data-testid="open" on:click={() => controller.open()}>open</button>
-    <button data-testid="close" on:click={() => controller.close()}>close</button>
-    <button data-testid="toggle" on:click={() => controller.toggle()}>toggle</button>
-    <button data-testid="bind-open" on:click={() => { isVisible = true }}>open by binding</button>
+    <button data-testid="open" onclick={() => lightbox.open()}>open</button>
+    <button data-testid="close" onclick={() => lightbox.close()}>close</button>
+    <button data-testid="toggle" onclick={() => lightbox.toggle()}>toggle</button>
+    <button data-testid="bind-open" onclick={() => { isVisible = true }}>open by binding</button>
     <span data-testid="visible">{isVisible}</span>
 </div>
 
 <div style="height: 200vh">
     <Lightbox
-        bind:programmaticController={controller}
+        bind:this={lightbox}
         bind:isVisible
         title={text(params, 'title')}
         description={text(params, 'description')}

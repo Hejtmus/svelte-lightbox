@@ -1,25 +1,36 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte'
+    import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements'
     import type { ImagePreset } from '$lib/Types'
-    const dispatch = createEventDispatcher()
 
-    export let closeButtonProps: HTMLButtonElement | {} = {}
-    export let showCloseButton: boolean
-    export let enableEscapeToClose: boolean
-    export let imagePreset: ImagePreset
+    interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onclose'> {
+        imagePreset: ImagePreset,
+        showCloseButton: boolean,
+        enableEscapeToClose: boolean,
+        closeButtonProps?: HTMLButtonAttributes,
+        onclose?: () => void
+    }
 
-    const handleKey = (event) => {
+    let {
+        imagePreset,
+        showCloseButton,
+        enableEscapeToClose,
+        closeButtonProps = {},
+        onclose,
+        ...rest
+    }: Props = $props()
+
+    const handleKey = (event: KeyboardEvent) => {
         if (enableEscapeToClose && event.key === 'Escape') {
-            dispatch('close')
+            onclose?.()
         }
     }
 </script>
 
-<svelte:window on:keydown={ (event) => handleKey(event) }/>
+<svelte:window onkeydown={handleKey}/>
 
-<div class="svelte-lightbox-header" class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
+<div class="svelte-lightbox-header" class:fullscreen={imagePreset === 'fullscreen'} {...rest}>
     {#if showCloseButton}
-        <button class:fullscreen={imagePreset === 'fullscreen'} on:click={ () => dispatch('close')} {...closeButtonProps}>
+        <button class:fullscreen={imagePreset === 'fullscreen'} onclick={() => onclose?.()} {...closeButtonProps}>
             ×
         </button>
     {/if}

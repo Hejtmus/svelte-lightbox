@@ -1,24 +1,24 @@
 <script lang="ts">
-    import { onMount, onDestroy } from 'svelte'
+    import type { Snippet } from 'svelte'
+    import type { HTMLAttributes } from 'svelte/elements'
 
-    let targetElement: HTMLDivElement
-    let child: HTMLDivElement
-
-    const stackTarget = () => {
-        child = document.createElement('div')
-        document.body.appendChild(child)
-        child.appendChild(targetElement)
-    }
-    const removeTarget = () => {
-        if (typeof document !== 'undefined') {
-            document.body.removeChild(child)
-        }
+    interface Props extends HTMLAttributes<HTMLDivElement> {
+        children?: Snippet
     }
 
-    onMount(stackTarget)
-    onDestroy(removeTarget)
+    let { children, ...rest }: Props = $props()
+
+    // Kept at the end of the body, where no parent's overflow or stacking context can clip it
+    const stackOnBody = (element: HTMLDivElement) => {
+        const host = document.createElement('div')
+
+        document.body.appendChild(host)
+        host.appendChild(element)
+
+        return () => host.remove()
+    }
 </script>
 
-<div bind:this={targetElement} {...$$restProps}>
-    <slot />
+<div {@attach stackOnBody} {...rest}>
+    {@render children?.()}
 </div>

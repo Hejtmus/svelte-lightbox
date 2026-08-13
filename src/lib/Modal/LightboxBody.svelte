@@ -1,15 +1,22 @@
 <script lang="ts">
+    import type { Snippet } from 'svelte'
+    import type { HTMLAttributes } from 'svelte/elements'
     import type { ImagePreset } from '$lib/Types'
 
-    export let imagePreset: ImagePreset
-    export let enableImageExpand: boolean
-    // Exposed so a gallery can attach gestures to the area holding the images
-    export let element: HTMLDivElement | null = null
+    interface Props extends HTMLAttributes<HTMLDivElement> {
+        imagePreset: ImagePreset,
+        enableImageExpand: boolean,
+        // Exposed so the area holding the images can be reached from outside
+        element?: HTMLDivElement | null,
+        children?: Snippet
+    }
+
+    let { imagePreset, enableImageExpand, element = $bindable(null), children, ...rest }: Props = $props()
 </script>
 
-<div bind:this={element} class="svelte-lightbox-body" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
-    class:expand={enableImageExpand}>
-    <slot/>
+<div bind:this={element} class="svelte-lightbox-body" class:fullscreen={imagePreset === 'fullscreen'}
+    class:scroll={imagePreset === 'scroll'} class:expand={enableImageExpand} {...rest}>
+    {@render children?.()}
 </div>
 
 <style>

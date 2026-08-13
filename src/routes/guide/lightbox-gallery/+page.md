@@ -17,15 +17,15 @@ thumbnail layout doesn't give any sense in most of the cases, so I decided to em
 </script>
 
 <LightboxGallery arrowsConfig={{ character: 'loop' }} swipeConfig={{ enabled: true }}>
-    <svelte:fragment slot="thumbnail">
-        {#each images as image}
+    {#snippet thumbnail()}
+        {#each images as image (image)}
             <GalleryThumbnail>
                 <img src="/img/{image}.jpg" alt="Image {image}">
             </GalleryThumbnail>
         {/each}
-    </svelte:fragment>
+    {/snippet}
 
-    {#each images as image}
+    {#each images as image (image)}
         <GalleryImage title="Image {image}">
             <img src="/img/{image}.jpg" alt="Image {image}">
         </GalleryImage>
@@ -109,14 +109,14 @@ Same as [`<Lightbox>` isVisible](/guide/lightbox/#isvisible).
 
 Type: `number`
 
-Number which sets visibility of image with id equal to it. Also optional, this is used for programmatic selecting of
-visible image when Lightbox is opened.
+Bindable. Number which sets visibility of image with id equal to it. Also optional, this is used for programmatic
+selecting of visible image when Lightbox is opened.
 
 ### arrowsConfig
 
-Type: `GalleryArrowsConfig (object)`
+Type: `Partial<GalleryArrowsConfig> (object)`
 
-Allows customizing gallery arrows.
+Allows customizing gallery arrows. Fields left out keep their default, so a single one can be overridden on its own.
 
 #### color
 
@@ -145,7 +145,7 @@ Enables navigation in gallery using keyboard arrows. Default `true`.
 
 ### swipeConfig
 
-Type: `GallerySwipeConfig (object)`
+Type: `Partial<GallerySwipeConfig> (object)`
 
 Allows customizing swipe navigation. Swiping lets user drag the displayed image sideways to move through the gallery. The
 image follows the pointer during the drag and the neighbouring image is revealed behind the edge it is dragged away from.
@@ -178,21 +178,44 @@ Type: `boolean`
 Enables swiping with a mouse by dragging the image, in addition to touch. Turn this off when dragging conflicts with
 selecting or dragging images on desktop. Default `true`.
 
-### programmaticController
+## Snippets
 
-Type: `object`
+### thumbnail
 
-Object with these basic control functions:
+The layout the reader clicks, holding the `<GalleryThumbnail>` elements. A gallery without one does not make sense in
+most cases, which is why it is part of the component's design rather than something to add later.
+
+### children
+
+The `<GalleryImage>` elements the gallery displays, written as the component's children.
+
+## Controlling it from code
+
+The component exposes its controls as instance methods, reached through a `bind:this` reference.
 
 - toggle `() => void` - toggles lightbox (opened -> closed, vice versa)
 - open `() => void` - opens lightbox
 - openImage `(imageId: number) => void` - opens lightbox at specific image
 - close `() => void` - closes lightbox
 
+```svelte
+<script>
+    import { LightboxGallery, GalleryImage } from 'svelte-lightbox'
+
+    let gallery
+</script>
+
+<button onclick={() => gallery.openImage(1)}>Open the second image</button>
+
+<LightboxGallery bind:this={gallery}>
+    ...
+</LightboxGallery>
+```
+
 ## `<GalleryThumbnail>`
 
-In order to use `<LightboxGallery>` is needed to define layout of gallery thumbnail/s. Thumbnail takes element in slot
-and displays it to user, whenever user clicks on it, it opens gallery at image associated with this thumbnail.
+In order to use `<LightboxGallery>` is needed to define layout of gallery thumbnail/s. Thumbnail takes an element as its
+children and displays it to user, whenever user clicks on it, it opens gallery at image associated with this thumbnail.
 
 ### id
 
@@ -205,7 +228,7 @@ Link to gallery image, it can be set to any number within gallery images, starti
 ## `<GalleryImage>`
 
 Except thumbnails, `LightboxGallery` requires images which will be displayed when gallery is opened. Desired image has to
-be `<GalleryImage>` child (in its slot).
+be written as `<GalleryImage>` children.
 
 ### title
 

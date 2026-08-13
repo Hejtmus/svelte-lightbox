@@ -1,46 +1,41 @@
-import { get } from 'svelte/store'
-import type { Writable } from 'svelte/store'
 import type { GalleryArrowCharacter } from '$lib/Types'
 
+// The part of a gallery moving through it needs, so the moves stay testable on their own
 interface GalleryNavigation {
-    activeImageStore: Writable<number>,
-    imageCountStore: Writable<number>,
-    character: GalleryArrowCharacter
+    activeImage: number,
+    readonly imageCount: number,
+    readonly character: GalleryArrowCharacter
 }
 
 // Moving past either end of the gallery wraps around only when arrows loop
 const wrapsAround = (character: GalleryArrowCharacter) => character === 'loop'
 
-const toPreviousImage = ({ activeImageStore, imageCountStore, character }: GalleryNavigation) => {
-    const activeImage = get(activeImageStore)
-
-    if (activeImage > 0) {
-        activeImageStore.set(activeImage - 1)
-    } else if (wrapsAround(character)) {
-        activeImageStore.set(get(imageCountStore) - 1)
+const toPreviousImage = (gallery: GalleryNavigation) => {
+    if (gallery.activeImage > 0) {
+        gallery.activeImage -= 1
+    } else if (wrapsAround(gallery.character)) {
+        gallery.activeImage = gallery.imageCount - 1
     }
 }
 
-const toNextImage = ({ activeImageStore, imageCountStore, character }: GalleryNavigation) => {
-    const activeImage = get(activeImageStore)
-
-    if (activeImage < get(imageCountStore) - 1) {
-        activeImageStore.set(activeImage + 1)
-    } else if (wrapsAround(character)) {
-        activeImageStore.set(0)
+const toNextImage = (gallery: GalleryNavigation) => {
+    if (gallery.activeImage < gallery.imageCount - 1) {
+        gallery.activeImage += 1
+    } else if (wrapsAround(gallery.character)) {
+        gallery.activeImage = 0
     }
 }
 
 // Dragging leftwards pulls the next image in, dragging rightwards the previous one
-const toSwipedImage = (navigation: GalleryNavigation, offset: number, threshold: number) => {
+const toSwipedImage = (gallery: GalleryNavigation, offset: number, threshold: number) => {
     if (Math.abs(offset) < threshold) {
         return
     }
 
     if (offset < 0) {
-        toNextImage(navigation)
+        toNextImage(gallery)
     } else {
-        toPreviousImage(navigation)
+        toPreviousImage(gallery)
     }
 }
 

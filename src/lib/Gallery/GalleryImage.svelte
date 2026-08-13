@@ -1,29 +1,28 @@
 <script lang="ts">
-    import { getContext } from 'svelte'
-    import type { Writable } from 'svelte/store'
-    import type { GalleryImage, GallerySwipeConfig } from '$lib/Types'
+    import { getGallery } from './gallery.svelte'
+    import type { Snippet } from 'svelte'
 
-    export let title: string = ''
-    export let description: string = ''
+    interface Props {
+        title?: string,
+        description?: string,
+        children?: Snippet
+    }
 
-    const activeImageStore: Writable<number> = getContext('activeImage')
-    const swipeConfigStore: Writable<GallerySwipeConfig> = getContext('swipeConfig')
-    const imageCounterFunction: (imgage: Omit<GalleryImage, 'id'>) => number = getContext('imageCounter')
-    const imageId = imageCounterFunction({
-        title,
-        description
-    })
+    let { title = '', description = '', children }: Props = $props()
 
-    $: distance = imageId - $activeImageStore
+    const gallery = getGallery()
+    const imageId = gallery.registerImage({ title, description })
+
+    const distance = $derived(imageId - gallery.activeImage)
     // Neighbours only exist to be dragged into view, so they cost nothing until then
-    $: isNeighbour = $swipeConfigStore.enabled && Math.abs(distance) === 1
+    const isNeighbour = $derived(gallery.swipeConfig.enabled && Math.abs(distance) === 1)
 </script>
 
 {#if distance === 0}
-    <slot {...$$restProps}/>
+    {@render children?.()}
 {:else if isNeighbour}
     <div class="svelte-lightbox-gallery-neighbour" style="--svelte-lightbox-neighbour-distance: {distance}">
-        <slot {...$$restProps}/>
+        {@render children?.()}
     </div>
 {/if}
 

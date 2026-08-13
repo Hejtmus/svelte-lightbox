@@ -14,3 +14,18 @@ export { default as LightboxFooter } from './Modal/LightboxFooter.svelte'
 export { default as GalleryController } from './Gallery/GalleryController.svelte'
 export { default as PreviousImageButton } from './Gallery/PreviousImageButton.svelte'
 export { default as NextImageButton } from './Gallery/NextImageButton.svelte'
+// The state a hand composed gallery has to hold for its parts
+export { Gallery, createGallery, getGallery, DEFAULT_ARROWS_CONFIG, DEFAULT_SWIPE_CONFIG } from './Gallery/gallery.svelte'
+export { swipeNavigation } from './Gallery/swipeNavigation.svelte'
+export type { GallerySettings } from './Gallery/gallery.svelte'
+export type {
+    ImagePreset,
+    GalleryArrowCharacter,
+    LightboxCustomization,
+    LightboxOptions,
+    GalleryImage,
+    GalleryState,
+    GalleryArrowsConfig,
+    GallerySwipeConfig,
+    I18n
+} from './Types'

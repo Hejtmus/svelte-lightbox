@@ -19,7 +19,8 @@ export default [
 
     ...svelte.configs['flat/recommended'],
     {
-        files: ['**/*.svelte'],
+        // .svelte.ts modules hold runes as well, so the svelte parser reads them too
+        files: ['**/*.svelte', '**/*.svelte.ts'],
         languageOptions: {
             parserOptions: {
                 // Components are written in TypeScript, so the script blocks
@@ -29,6 +30,15 @@ export default [
                 svelteConfig
             }
         },
+        rules: {
+            // Props and deriveds are declared with let even though nothing reassigns them,
+            // which only svelte's own version of the rule knows about
+            'prefer-const': 'off',
+            'svelte/prefer-const': 'error'
+        }
+    },
+    {
+        files: ['**/*.svelte'],
         rules: {
             // svelte/indent understands markup, @stylistic/indent only sees script blocks
             '@stylistic/indent': 'off',

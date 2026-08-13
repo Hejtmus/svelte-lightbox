@@ -1,22 +1,23 @@
 <script lang="ts">
     import i18n from '$lib/i18n'
-    import type { GalleryState, ImagePreset, I18n } from '$lib/Types'
+    import type { HTMLAttributes } from 'svelte/elements'
+    import type { GalleryState, ImagePreset } from '$lib/Types'
 
-    export let imagePreset: ImagePreset
-    export let title = ''
-    export let description = ''
-    export let gallery: GalleryState | null = null
-
-    const generateLocalizedGalleryCounter = (i18n: I18n, gallery: GalleryState | null) => {
-        if (gallery !== null) {
-            return i18n.generateLocalizedGalleryCounter(gallery.activeImage, gallery.imageCount)
-        }
+    interface Props extends HTMLAttributes<HTMLDivElement> {
+        imagePreset: ImagePreset,
+        title?: string,
+        description?: string,
+        gallery?: GalleryState | null
     }
 
-    $: localizedGalleryCounter = generateLocalizedGalleryCounter($i18n, gallery)
+    let { imagePreset, title = '', description = '', gallery = null, ...rest }: Props = $props()
+
+    const localizedGalleryCounter = $derived(gallery === null
+        ? ''
+        : $i18n.generateLocalizedGalleryCounter(gallery.activeImage, gallery.imageCount))
 </script>
 
-<div class="svelte-lightbox-footer" class:fullscreen={imagePreset === 'fullscreen'} {...$$restProps}>
+<div class="svelte-lightbox-footer" class:fullscreen={imagePreset === 'fullscreen'} {...rest}>
     <h2>
         {title}
     </h2>
