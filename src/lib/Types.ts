@@ -25,6 +25,12 @@ interface GalleryArrowsConfig {
     enableKeyboardControl: boolean
 }
 
+interface GallerySwipeConfig {
+    enabled: boolean,
+    threshold: number,
+    enableMouseDrag: boolean
+}
+
 interface I18n {
     generateLocalizedGalleryCounter: (activeImage: number, imageCount: number) => string
 }
@@ -36,5 +42,6 @@ export type {
     GalleryImage,
     GalleryState,
     GalleryArrowsConfig,
+    GallerySwipeConfig,
     I18n
 }

@@ -13,8 +13,15 @@
         ImagePreset,
         LightboxCustomization,
         GalleryImage,
-        GalleryArrowsConfig
+        GalleryArrowsConfig,
+        GallerySwipeConfig
     } from '$lib/Types'
+
+    const defaultSwipeConfig: GallerySwipeConfig = {
+        enabled: false,
+        threshold: 50,
+        enableMouseDrag: true
+    }
 
     // Lightbox props --------------------------------------------------------------------------------------------------
 
@@ -42,6 +49,7 @@
         character: '',
         enableKeyboardControl: true
     }
+    export let swipeConfig: Partial<GallerySwipeConfig> = {}
 
     let modalClicked = false
     let images: Array<GalleryImage> = []
@@ -50,6 +58,7 @@
     const imageCountStore: Writable<number> = writable(images.length)
     const activeImageStore: Writable<number> = writable(activeImage)
     const arrowsConfigStore: Writable<GalleryArrowsConfig> = writable(arrowsConfig)
+    const swipeConfigStore: Writable<GallerySwipeConfig> = writable(defaultSwipeConfig)
 
     const toggle = () => {
         isVisible = !isVisible
@@ -108,9 +117,12 @@
         return thumbnailCount++
     })
     setContext('openImage', openImage)
+    setContext('swipeConfig', swipeConfigStore)
 
     $: activeImageStore.set(activeImage)
     $: arrowsConfigStore.set(arrowsConfig)
+    // Merged so callers can override single fields, as the documented defaults promise
+    $: swipeConfigStore.set({ ...defaultSwipeConfig, ...swipeConfig })
     $: keepOrEmptyImageList(isVisible)
     $: activeImageTitle = images[$activeImageStore]?.title || title || ''
     $: activeImageDescription = images[$activeImageStore]?.description || description || ''

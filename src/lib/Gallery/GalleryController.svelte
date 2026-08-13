@@ -1,6 +1,7 @@
 <script lang="ts">
     import PreviousImageButton from './PreviousImageButton.svelte'
     import NextImageButton from './NextImageButton.svelte'
+    import { toNextImage, toPreviousImage } from './navigation'
     import type { Writable } from 'svelte/store'
     import type { GalleryArrowsConfig } from '$lib/Types'
 
@@ -9,24 +10,15 @@
     export let activeImageStore: Writable<number>
     export let arrowsConfigStore: Writable<GalleryArrowsConfig>
 
-    const previousImage = () => {
-        if ($activeImageStore === 0) {
-            if ($arrowsConfigStore.character === 'loop') {
-                activeImageStore.set($imageCountStore - 1)
-            }
-        } else {
-            activeImageStore.set($activeImageStore - 1)
-        }
+    $: navigation = {
+        activeImageStore,
+        imageCountStore,
+        character: $arrowsConfigStore.character
     }
-    const nextImage = () => {
-        if ($activeImageStore === $imageCountStore - 1) {
-            if ($arrowsConfigStore.character === 'loop') {
-                activeImageStore.set(0)
-            }
-        } else {
-            activeImageStore.set($activeImageStore + 1)
-        }
-    }
+
+    const previousImage = () => toPreviousImage(navigation)
+    const nextImage = () => toNextImage(navigation)
+
     const handleKey = (event) => {
         if ($arrowsConfigStore.enableKeyboardControl) {
             switch (event.key) {
