@@ -104,7 +104,7 @@
         </div>
         <div class="row">
         </div>
-        <LightboxGallery title="Gallery with unified title" bind:programmaticController={galleryController}>
+        <LightboxGallery title="Gallery with unified title" swipeConfig={{ enabled: true }} bind:programmaticController={galleryController}>
             <div slot="thumbnail">
                 <div class="row">
                     <GalleryThumbnail class="col col-md-3">
