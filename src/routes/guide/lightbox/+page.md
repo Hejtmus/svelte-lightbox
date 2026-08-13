@@ -7,6 +7,16 @@ description: The basic lightbox component and all of its props
 
 The most basic for of lightbox, displays user clickable image, which on click expands.
 
+```svelte
+<script>
+    import { Lightbox } from 'svelte-lightbox'
+</script>
+
+<Lightbox title="A cat" description="Photographed last summer">
+    <img src="/img/cat.jpg" alt="A cat">
+</Lightbox>
+```
+
 ## Props
 
 Basic customization is done by setting prop(s) to desired value.

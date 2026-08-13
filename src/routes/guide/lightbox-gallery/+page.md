@@ -9,6 +9,30 @@ Lightbox component with explicitly defined thumbnail layout and multiple images,
 gallery. According to almost 2 years experience of using this component (in early versions), I found out, that gallery without
 thumbnail layout doesn't give any sense in most of the cases, so I decided to embed this feature in design of this component.
 
+```svelte
+<script>
+    import { LightboxGallery, GalleryImage, GalleryThumbnail } from 'svelte-lightbox'
+
+    const images = [1, 2, 3]
+</script>
+
+<LightboxGallery arrowsConfig={{ character: 'loop' }} swipeConfig={{ enabled: true }}>
+    <svelte:fragment slot="thumbnail">
+        {#each images as image}
+            <GalleryThumbnail>
+                <img src="/img/{image}.jpg" alt="Image {image}">
+            </GalleryThumbnail>
+        {/each}
+    </svelte:fragment>
+
+    {#each images as image}
+        <GalleryImage title="Image {image}">
+            <img src="/img/{image}.jpg" alt="Image {image}">
+        </GalleryImage>
+    {/each}
+</LightboxGallery>
+```
+
 ## Props
 
 Same as `<Lightbox>`, `<LightboxGallery>` can be customized as well.

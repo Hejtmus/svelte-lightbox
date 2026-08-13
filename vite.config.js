@@ -39,6 +39,10 @@ export default defineConfig({
                         {
                             title: 'LightboxGallery',
                             to: '/guide/lightbox-gallery/'
+                        },
+                        {
+                            title: 'Building blocks',
+                            to: '/guide/building-blocks/'
                         }
                     ]
                 },
