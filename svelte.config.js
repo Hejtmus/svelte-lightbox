@@ -7,10 +7,10 @@ const config = {
     // for more information about preprocessors
     preprocess: preprocess(),
 
+    // Markdown pages are routes, sveltepress turns them into components
+    extensions: ['.svelte', '.md'],
+
     kit: {
-        alias: {
-            $utils: '/src/utils'
-        },
         adapter: adapter()
     }
 }

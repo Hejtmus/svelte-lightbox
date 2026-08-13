@@ -1,3 +1,10 @@
+---
+title: Lightbox
+description: The basic lightbox component and all of its props
+---
+
+# Lightbox
+
 The most basic for of lightbox, displays user clickable image, which on click expands.
 
 ## Props

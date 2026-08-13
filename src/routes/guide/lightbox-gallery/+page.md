@@ -1,3 +1,10 @@
+---
+title: LightboxGallery
+description: The gallery component, its thumbnails, images and navigation
+---
+
+# LightboxGallery
+
 Lightbox component with explicitly defined thumbnail layout and multiple images, allows listing thorough all images within
 gallery. According to almost 2 years experience of using this component (in early versions), I found out, that gallery without
 thumbnail layout doesn't give any sense in most of the cases, so I decided to embed this feature in design of this component.
@@ -10,69 +17,69 @@ Same as `<Lightbox>`, `<LightboxGallery>` can be customized as well.
 
 Type: `string/HTML`
 
-Same as [`<Lightbox>` title](https://svelte-lightbox.js.org/docs/lightbox#title), but this applies to whole gallery. 
+Same as [`<Lightbox>` title](/guide/lightbox/#title), but this applies to whole gallery. 
 `<GalleryImage>` can override this title for specific image.
 
 ### description
 
 Type: `string/HTML`
 
-Same as [`<Lightbox>` description](https://svelte-lightbox.js.org/docs/lightbox#description), but this applies to whole 
+Same as [`<Lightbox>` description](/guide/lightbox/#description), but this applies to whole 
 gallery.`<GalleryImage>` can override this description for specific image.
 
 ### imagePreset
 
 Type: `ImagePrest (string)`
 
-Same as [`<Lightbox>` imagePreset](https://svelte-lightbox.js.org/docs/lightbox#imagepreset).
+Same as [`<Lightbox>` imagePreset](/guide/lightbox/#imagepreset).
 
 ### customization
 
 Type: `LightboxCustomization (object)`
 
-Same as [`<Lightbox>` customization](https://svelte-lightbox.js.org/docs/lightbox#customization).
+Same as [`<Lightbox>` customization](/guide/lightbox/#customization).
 
 ### transitionDuration
 
 Type: `number`
 
-Same as [`<Lightbox>` transitionDuration](https://svelte-lightbox.js.org/docs/lightbox#transitionduration).
+Same as [`<Lightbox>` transitionDuration](/guide/lightbox/#transitionduration).
 
 ### keepBodyScroll
 
 Type: `boolean`
 
-Same as [`<Lightbox>` keepBodyScroll](https://svelte-lightbox.js.org/docs/lightbox#keepbodyscroll).
+Same as [`<Lightbox>` keepBodyScroll](/guide/lightbox/#keepbodyscroll).
 
 ### enableImageExpand
 
 Type: `boolean`
 
-Same as [`<Lightbox>` enableImageExpand](https://svelte-lightbox.js.org/docs/lightbox#enableimageexpand).
+Same as [`<Lightbox>` enableImageExpand](/guide/lightbox/#enableimageexpand).
 
 ### enableEscapeToClose
 
 Type: `boolean`
 
-Same as [`<Lightbox>` enableEscapeToClose](https://svelte-lightbox.js.org/docs/lightbox#enableescapetoclose).
+Same as [`<Lightbox>` enableEscapeToClose](/guide/lightbox/#enableescapetoclose).
 
 ### enableClickToClose
 
 Type: `boolean`
 
-Same as [`<Lightbox>` enableClickToClose](https://svelte-lightbox.js.org/docs/lightbox#enableclicktoclose).
+Same as [`<Lightbox>` enableClickToClose](/guide/lightbox/#enableclicktoclose).
 
 ### showCloseButton
 
 Type: `boolean`
 
-Same as [`<Lightbox>` showCloseButton](https://svelte-lightbox.js.org/docs/lightbox#showclosebutton).
+Same as [`<Lightbox>` showCloseButton](/guide/lightbox/#showclosebutton).
 
 ### isVisible
 
 Type: `boolean`
 
-Same as [`<Lightbox>` isVisible](https://svelte-lightbox.js.org/docs/lightbox#isvisible).
+Same as [`<Lightbox>` isVisible](/guide/lightbox/#isvisible).
 
 ### activeImage
 
@@ -190,5 +197,5 @@ Same as `<Lightbox>` description, but this is image specific, that means, it wil
 
 ## CSS
 
-`<LightboxGallery>` uses same CSS classes as `<Lightbox>`, overriding [those classes](https://svelte-lightbox.js.org/docs/lightbox#css)
+`<LightboxGallery>` uses same CSS classes as `<Lightbox>`, overriding [those classes](/guide/lightbox/#css)
 will affect gallery style.

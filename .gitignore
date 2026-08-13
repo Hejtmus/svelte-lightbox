@@ -8,3 +8,6 @@ dist
 # testing
 test-results
 playwright-report
+
+# sveltepress generated
+.sveltepress
