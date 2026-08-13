@@ -41,16 +41,14 @@
             }
         }
     }
-
-    $: fullscreen = imagePreset === 'fullscreen'
 </script>
 
 <svelte:window on:keydown={ (event) => handleKey(event) }/>
 
 <PreviousImageButton on:click={previousImage} activeImage={$activeImageStore} character={$arrowsConfigStore.character}
-                     --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>
+    --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>
 
 <slot/>
 
 <NextImageButton on:click={nextImage} activeImage={$activeImageStore} imageCount={$imageCountStore} character={$arrowsConfigStore.character}
-                 --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>
+    --svelte-lightbox-arrows-color={$arrowsConfigStore.color}/>

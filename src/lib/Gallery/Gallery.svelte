@@ -139,13 +139,13 @@
         <ModalCover {transitionDuration} {...(customization.coverProps || {})} on:click={coverClick}>
             <Modal {imagePreset} {transitionDuration} {...(customization.lightboxProps || {})} on:click={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
-                        {...(customization.lightboxHeaderProps || {})} on:close={close}/>
+                    {...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
-                    <Body {imagePreset} {enableImageExpand}>
-                        <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
-                            <slot/>
-                        </GalleryController>
-                    </Body>
+                <Body {imagePreset} {enableImageExpand}>
+                    <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
+                        <slot/>
+                    </GalleryController>
+                </Body>
 
                 <Footer {imagePreset} title={activeImageTitle} description={activeImageDescription} {gallery} {...(customization.lightboxFooterProps || {})}/>
             </Modal>

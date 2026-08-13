@@ -14,4 +14,3 @@ export { default as LightboxFooter } from './Modal/LightboxFooter.svelte'
 export { default as GalleryController } from './Gallery/GalleryController.svelte'
 export { default as PreviousImageButton } from './Gallery/PreviousImageButton.svelte'
 export { default as NextImageButton } from './Gallery/NextImageButton.svelte'
-

@@ -7,7 +7,7 @@
 </script>
 
 <button on:click disabled={character !== 'loop' && activeImage === imageCount - 1}
-        class="next-button" class:hideDisabled={character === 'hide'}>
+    class="next-button" class:hideDisabled={character === 'hide'}>
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <g>
             <path d="M15.3,16.78l4.11-4.11a1,1,0,0,0,0-1.41l-4-4" class="arrow"/>
@@ -56,4 +56,3 @@
         margin: 10px;
     }
 </style>
-

@@ -2,6 +2,7 @@
     import '@sveltejs/site-kit/base.css'
     import { Nav, NavItem, PreloadingIndicator } from '@sveltejs/site-kit'
     import { page, navigating } from '$app/stores'
+    import { resolve } from '$app/paths'
     import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit'
 
     injectSpeedInsights()
@@ -13,10 +14,10 @@
 
 <Nav {page} logo="/img/logo.svg">
     <svelte:fragment slot="nav-center">
-        <NavItem href="/docs">
+        <NavItem href={resolve('/docs')}>
             Docs
         </NavItem>
-        <NavItem href="/examples">
+        <NavItem href={resolve('/examples')}>
             Examples
         </NavItem>
     </svelte:fragment>

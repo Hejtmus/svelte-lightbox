@@ -20,5 +20,5 @@
 </script>
 
 <div bind:this={targetElement} {...$$restProps}>
-	<slot />
+    <slot />
 </div>

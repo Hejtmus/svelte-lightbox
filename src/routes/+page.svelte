@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Blurb } from '@sveltejs/site-kit'
+    import { resolve } from '$app/paths'
 </script>
 
 <svelte:head>
@@ -12,13 +13,13 @@
 <div class="row py-4 bg-light text-center">
     <div class="col">
         <h1>
-                <span class="w-auto bg-black text-white title">
-                    svelte-lightbox
-                </span>
+            <span class="w-auto bg-black text-white title">
+                svelte-lightbox
+            </span>
         </h1>
         <p>
             <img src="https://img.shields.io/github/actions/workflow/status/Hejtmus/svelte-lightbox/nodejs.yml"
-                 alt="workflow status">
+                alt="workflow status">
             <img src="https://img.shields.io/npm/v/svelte-lightbox" alt="version">
             <img src="https://img.shields.io/bundlephobia/minzip/svelte-lightbox" alt="bundle size">
             <img src="https://img.shields.io/github/license/Hejtmus/svelte-lightbox" alt="MIT">
@@ -51,7 +52,7 @@
             Allows you to customize single elements of lightbox and provides set of building blocks for composing custom
             lightboxes
         </p>
-        <a href="/docs" class="cta">
+        <a href={resolve('/docs')} class="cta">
             see documentation
         </a>
     </svelte:fragment>
@@ -62,7 +63,7 @@
         <p>
             Highly expressive usage and minimal boilerplate
         </p>
-        <a href="/examples" class="cta">
+        <a href={resolve('/examples')} class="cta">
             try out examples
         </a>
     </svelte:fragment>

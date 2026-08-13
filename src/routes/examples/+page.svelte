@@ -112,15 +112,15 @@
                     </GalleryThumbnail>
                     <div class="col">
                         <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, culpa dicta eligendi fuga
-                        incidunt labore laudantium maiores, minus numquam soluta ullam voluptate, voluptates! Accusamus
-                        dolor, doloremque excepturi explicabo fugit tenetur.
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, culpa dicta eligendi fuga
-                        incidunt labore laudantium maiores, minus numquam soluta ullam voluptate, voluptates! Accusamus
-                        dolor, doloremque excepturi explicabo fugit tenetur.
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, culpa dicta eligendi fuga
+                            incidunt labore laudantium maiores, minus numquam soluta ullam voluptate, voluptates! Accusamus
+                            dolor, doloremque excepturi explicabo fugit tenetur.
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, culpa dicta eligendi fuga
+                            incidunt labore laudantium maiores, minus numquam soluta ullam voluptate, voluptates! Accusamus
+                            dolor, doloremque excepturi explicabo fugit tenetur.
                         </p>
                         <button on:click={() => galleryController.openImage(1)} class="btn btn-dark m-2">
-                          Open image 2 from gallery 2
+                            Open image 2 from gallery 2
                         </button>
                     </div>
                 </div>

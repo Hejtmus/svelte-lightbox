@@ -29,7 +29,6 @@ interface I18n {
     generateLocalizedGalleryCounter: (activeImage: number, imageCount: number) => string
 }
 
-
 export type {
     ImagePreset,
     GalleryArrowCharacter,

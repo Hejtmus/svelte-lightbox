@@ -6,7 +6,7 @@
 </script>
 
 <button on:click disabled={character !== 'loop' && activeImage === 0} class="previous-button"
-        class:hideDisabled={character === 'hide'}>
+    class:hideDisabled={character === 'hide'}>
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <g>
             <path class="arrow" d="M8.7,7.22,4.59,11.33a1,1,0,0,0,0,1.41l4,4"/>
