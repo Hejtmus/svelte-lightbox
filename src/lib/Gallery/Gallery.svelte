@@ -154,7 +154,7 @@
                     {...(customization.lightboxHeaderProps || {})} on:close={close}/>
 
                 <Body {imagePreset} {enableImageExpand}>
-                    <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore}>
+                    <GalleryController {imagePreset} {imageCountStore} {activeImageStore} {arrowsConfigStore} {swipeConfigStore}>
                         <slot/>
                     </GalleryController>
                 </Body>
