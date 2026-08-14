@@ -1,4 +1,5 @@
 <script lang="ts">
+    import i18n from '$lib/i18n'
     import type { GalleryArrowCharacter } from '$lib/Types'
 
     interface Props {
@@ -12,8 +13,8 @@
 </script>
 
 <button {onclick} disabled={character !== 'loop' && activeImage === imageCount - 1}
-    class="next-button" class:hideDisabled={character === 'hide'}>
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    class="next-button" class:hideDisabled={character === 'hide'} aria-label={$i18n.nextImageLabel}>
+    <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <g>
             <path d="M15.3,16.78l4.11-4.11a1,1,0,0,0,0-1.41l-4-4" class="arrow"/>
         </g>

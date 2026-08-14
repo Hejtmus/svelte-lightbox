@@ -41,6 +41,9 @@
         children
     }: Props = $props()
 
+    // Points the dialog's aria-labelledby at the title the footer renders
+    const titleId = $props.id()
+
     // A click on the modal reaches the cover underneath it as well, and only the cover can tell them apart
     let modalClicked = false
 
@@ -116,7 +119,7 @@
 {#if isVisible}
     <BodyChild>
         <ModalCover {transitionDuration} timing={coverTiming} {...customization.coverProps ?? {}} onclick={coverClick}>
-            <Modal {imagePreset} transitionDuration={modalTransitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
+            <Modal {imagePreset} transitionDuration={modalTransitionDuration} {titleId} {...customization.lightboxProps ?? {}} onclick={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                     {...customization.lightboxHeaderProps ?? {}} onclose={close}/>
 
@@ -127,7 +130,7 @@
                 </Body>
 
                 <Footer {imagePreset} title={activeImageTitle} description={activeImageDescription} gallery={galleryState}
-                    {...customization.lightboxFooterProps ?? {}}/>
+                    {titleId} {...customization.lightboxFooterProps ?? {}}/>
             </Modal>
         </ModalCover>
     </BodyChild>

@@ -10,6 +10,23 @@
 
     let host: HTMLDivElement | null = $state(null)
 
+    // Keeps the rest of the page out of reach of pointer, keyboard and screen readers while the lightbox is open
+    const inertSiblingsOf = (stack: Element) => {
+        const siblings = Array.from(document.body.children)
+            .filter((sibling) => sibling !== stack)
+            .map((sibling) => ({ sibling, wasInert: sibling.hasAttribute('inert') }))
+
+        siblings.forEach(({ sibling }) => sibling.setAttribute('inert', ''))
+
+        return () => {
+            siblings.forEach(({ sibling, wasInert }) => {
+                if (!wasInert) {
+                    sibling.removeAttribute('inert')
+                }
+            })
+        }
+    }
+
     // Kept at the end of the body, where no parent's overflow or stacking context can clip it
     const stackOnBody = (element: HTMLDivElement) => {
         const stack = document.createElement('div')
@@ -18,7 +35,12 @@
         stack.appendChild(element)
         host = stack
 
-        return () => stack.remove()
+        const restoreInert = inertSiblingsOf(stack)
+
+        return () => {
+            restoreInert()
+            stack.remove()
+        }
     }
 </script>
 

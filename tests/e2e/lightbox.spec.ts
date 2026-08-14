@@ -104,13 +104,16 @@ test.describe('programmatic control', () => {
         await page.getByTestId('open').click()
         await expect(overlay(page)).toBeVisible()
 
-        await page.getByTestId('close').click()
+        // The rest of the page is inert while the lightbox is open, so a real pointer click
+        // can no longer reach these controls. dispatchEvent fires the handler directly, the
+        // same way a host application's own code would call close()/toggle() from elsewhere.
+        await page.getByTestId('close').dispatchEvent('click')
         await expect(overlay(page)).toBeHidden()
 
         await page.getByTestId('toggle').click()
         await expect(overlay(page)).toBeVisible()
 
-        await page.getByTestId('toggle').click()
+        await page.getByTestId('toggle').dispatchEvent('click')
         await expect(overlay(page)).toBeHidden()
     })
 
@@ -275,6 +278,72 @@ test.describe('crossfade preset', () => {
         await page.keyboard.press('Escape')
 
         await expect(overlay(page)).toBeHidden()
+    })
+})
+
+test.describe('accessibility', () => {
+    // Documented as: aria-label on role=presentation used to be discarded outright
+    test('is exposed as a labelled dialog', async ({ page }) => {
+        await page.goto(fixture({ title: 'A cat' }))
+        await openByThumbnail(page)
+
+        await expect(modal(page)).toHaveAttribute('role', 'dialog')
+        await expect(modal(page)).toHaveAttribute('aria-modal', 'true')
+        await expect(page.getByRole('dialog', { name: 'A cat' })).toBeVisible()
+    })
+
+    test('gives the close button an accessible name', async ({ page }) => {
+        await page.goto(fixture())
+        await openByThumbnail(page)
+
+        await expect(page.getByTestId('close-button')).toHaveAccessibleName('Close')
+    })
+
+    test('moves focus into the dialog on open', async ({ page }) => {
+        await page.goto(fixture())
+        await openByThumbnail(page)
+
+        await expect(modal(page)).toBeFocused()
+    })
+
+    test('keeps tab from reaching the page behind it', async ({ page }) => {
+        await page.goto(fixture())
+        await openByThumbnail(page)
+
+        await page.keyboard.press('Tab')
+        await page.keyboard.press('Tab')
+        await page.keyboard.press('Tab')
+
+        await expect(page.getByTestId('close-button')).toBeFocused()
+    })
+
+    test('returns focus to the thumbnail on close', async ({ page }) => {
+        await page.goto(fixture())
+        await openByThumbnail(page)
+
+        await page.keyboard.press('Escape')
+
+        await expect(page.locator('.svelte-lightbox-thumbnail')).toBeFocused()
+    })
+
+    test('marks the rest of the page inert while open', async ({ page }) => {
+        await page.goto(fixture())
+        await openByThumbnail(page)
+
+        const isInert = await page.getByTestId('open').evaluate((element) => element.closest('[inert]') !== null)
+
+        expect(isInert).toBe(true)
+    })
+
+    test('lifts inert again once closed', async ({ page }) => {
+        await page.goto(fixture())
+        await openByThumbnail(page)
+        await page.keyboard.press('Escape')
+        await expect(overlay(page)).toBeHidden()
+
+        const isInert = await page.getByTestId('open').evaluate((element) => element.closest('[inert]') !== null)
+
+        expect(isInert).toBe(false)
     })
 })
 

@@ -7,10 +7,12 @@
         imagePreset: ImagePreset,
         title?: string,
         description?: string,
+        // Id the dialog around it points at through aria-labelledby, see <Modal>
+        titleId: string,
         gallery?: GalleryState | null
     }
 
-    let { imagePreset, title = '', description = '', gallery = null, ...rest }: Props = $props()
+    let { imagePreset, title = '', description = '', titleId, gallery = null, ...rest }: Props = $props()
 
     const localizedGalleryCounter = $derived(gallery === null
         ? ''
@@ -18,14 +20,14 @@
 </script>
 
 <div class="svelte-lightbox-footer" class:fullscreen={imagePreset === 'fullscreen'} {...rest}>
-    <h2>
+    <h2 id={titleId}>
         {title}
     </h2>
     <h5>
         {description}
     </h5>
     {#if gallery !== null}
-        <p>
+        <p aria-live="polite" aria-atomic="true">
             {localizedGalleryCounter}
         </p>
     {/if}

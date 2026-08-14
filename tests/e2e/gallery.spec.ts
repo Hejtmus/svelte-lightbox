@@ -226,6 +226,24 @@ test.describe('crossfade preset', () => {
     })
 })
 
+test.describe('accessibility', () => {
+    test('gives the arrows accessible names', async ({ page }) => {
+        await page.goto(fixture())
+        await openAt(page, 2)
+
+        await expect(previousArrow(page)).toHaveAccessibleName('Previous image')
+        await expect(nextArrow(page)).toHaveAccessibleName('Next image')
+    })
+
+    // Documented as: the gallery counter, wording comes from the i18n store
+    test('announces the counter through a live region', async ({ page }) => {
+        await page.goto(fixture())
+        await openAt(page, 2)
+
+        await expect(footer(page).locator('p')).toHaveAttribute('aria-live', 'polite')
+    })
+})
+
 test.describe('swipe navigation', () => {
     // Documented as: enabled defaults to false, galleries keep behaving as before
     test('is off unless opted into', async ({ page }) => {

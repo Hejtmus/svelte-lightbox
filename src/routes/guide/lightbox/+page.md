@@ -94,7 +94,7 @@ close button of).
 - lightboxHeaderProps: `HTMLAttributes<HTMLDivElement>`
 - coverProps: `HTMLAttributes<HTMLDivElement>`
 - lightboxProps: `HTMLAttributes<HTMLDivElement>`
-- thumbnailProps: `HTMLAttributes<HTMLDivElement>`
+- thumbnailProps: `HTMLButtonAttributes`
 
 ### transitionDuration
 

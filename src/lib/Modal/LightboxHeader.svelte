@@ -1,4 +1,5 @@
 <script lang="ts">
+    import i18n from '$lib/i18n'
     import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements'
     import type { ImagePreset } from '$lib/Types'
 
@@ -30,8 +31,9 @@
 
 <div class="svelte-lightbox-header" class:fullscreen={imagePreset === 'fullscreen'} {...rest}>
     {#if showCloseButton}
-        <button class:fullscreen={imagePreset === 'fullscreen'} onclick={() => onclose?.()} {...closeButtonProps}>
-            ×
+        <button type="button" class:fullscreen={imagePreset === 'fullscreen'} onclick={() => onclose?.()}
+            aria-label={$i18n.closeLabel} {...closeButtonProps}>
+            <span aria-hidden="true">×</span>
         </button>
     {/if}
 </div>

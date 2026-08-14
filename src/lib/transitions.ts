@@ -13,6 +13,15 @@ interface ExpandParams {
 
 const NO_FLIGHT: TransitionConfig = { duration: 0 }
 
+// Collapses a duration to nothing when the reader's OS asks for reduced motion, regardless of what was asked for
+const reducedMotionDuration = (duration: number): number => {
+    const prefersReducedMotion = typeof window !== 'undefined' &&
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    return prefersReducedMotion ? 0 : duration
+}
+
 // How long a part of a lightbox takes in each direction
 interface TransitionTiming {
     enter: number,
@@ -60,7 +69,7 @@ const expand = (node: Element, { from, duration }: ExpandParams): TransitionConf
     const transform = getComputedStyle(node).transform.replace('none', '')
 
     return {
-        duration,
+        duration: reducedMotionDuration(duration),
         easing: cubicOut,
         css: (t, u) => `
             transform-origin: top left;
@@ -82,19 +91,20 @@ const RGB_COLOUR = /^rgba?\(([^)]+)\)$/
  */
 const dim = (node: Element, { duration }: { duration: number }): TransitionConfig => {
     const colour = RGB_COLOUR.exec(getComputedStyle(node).backgroundColor)
+    const effectiveDuration = reducedMotionDuration(duration)
 
     if (colour === null) {
-        return fade(node, { duration })
+        return fade(node, { duration: effectiveDuration })
     }
 
     const [red, green, blue, alpha = '1'] = colour[1].split(/[\s,/]+/)
 
     return {
-        duration,
+        duration: effectiveDuration,
         easing: cubicOut,
         css: (t) => `background-color: rgba(${red}, ${green}, ${blue}, ${Number(alpha) * t})`
     }
 }
 
-export { expand, dim, fadeTiming, flightTiming }
+export { expand, dim, fadeTiming, flightTiming, reducedMotionDuration }
 export type { ExpandOrigin, ExpandParams, TransitionTiming }

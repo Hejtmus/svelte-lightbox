@@ -34,6 +34,9 @@
         children
     }: Props = $props()
 
+    // Points the dialog's aria-labelledby at the title the footer renders
+    const titleId = $props.id()
+
     // A click on the modal reaches the cover underneath it as well, and only the cover can tell them apart
     let modalClicked = false
 
@@ -59,7 +62,7 @@
     }
 
     // The thumbnail stays where it is, since the image lands on top of it rather than replacing it
-    let thumbnailElement: HTMLDivElement | null = $state(null)
+    let thumbnailElement: HTMLButtonElement | null = $state(null)
 
     const hasThumbnail = $derived(thumbnail !== undefined || enableFallbackThumbnail)
     const isGrowingOutOfThumbnail = $derived(transitionPreset === 'crossfade' && thumbnailElement !== null)
@@ -81,7 +84,7 @@
 {#if isVisible}
     <BodyChild>
         <ModalCover {transitionDuration} timing={coverTiming} {...customization.coverProps ?? {}} onclick={coverClick}>
-            <Modal {imagePreset} transitionDuration={modalTransitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
+            <Modal {imagePreset} transitionDuration={modalTransitionDuration} {titleId} {...customization.lightboxProps ?? {}} onclick={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                     {...customization.lightboxHeaderProps ?? {}} onclose={close}/>
 
@@ -89,7 +92,7 @@
                     {@render children?.()}
                 </Body>
 
-                <Footer {imagePreset} {title} {description} {...customization.lightboxFooterProps ?? {}}/>
+                <Footer {imagePreset} {title} {description} {titleId} {...customization.lightboxFooterProps ?? {}}/>
             </Modal>
         </ModalCover>
     </BodyChild>

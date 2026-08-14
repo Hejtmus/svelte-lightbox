@@ -12,7 +12,7 @@ interface LightboxCustomization {
     lightboxHeaderProps: HTMLAttributes<HTMLDivElement>,
     coverProps: HTMLAttributes<HTMLDivElement>,
     lightboxProps: HTMLAttributes<HTMLDivElement>,
-    thumbnailProps: HTMLAttributes<HTMLDivElement>
+    thumbnailProps: HTMLButtonAttributes
 }
 interface GalleryImage {
     id: number,
@@ -37,7 +37,10 @@ interface GallerySwipeConfig {
 }
 
 interface I18n {
-    generateLocalizedGalleryCounter: (activeImage: number, imageCount: number) => string
+    generateLocalizedGalleryCounter: (activeImage: number, imageCount: number) => string,
+    closeLabel: string,
+    previousImageLabel: string,
+    nextImageLabel: string
 }
 
 // Everything <Lightbox> and <LightboxGallery> have in common

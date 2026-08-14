@@ -2,9 +2,9 @@
     import LightboxThumbnail from '../LightboxThumbnail.svelte'
     import { getGallery } from './gallery.svelte'
     import type { Snippet } from 'svelte'
-    import type { HTMLAttributes } from 'svelte/elements'
+    import type { HTMLButtonAttributes } from 'svelte/elements'
 
-    interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onclick'> {
+    interface Props extends Omit<HTMLButtonAttributes, 'onclick'> {
         id?: number,
         children?: Snippet
     }
@@ -15,7 +15,7 @@
     // Thumbnails stand for the images in the order they are written, unless they say otherwise
     const imageId = id ?? gallery.nextThumbnailId()
 
-    let element: HTMLDivElement | null = $state(null)
+    let element: HTMLButtonElement | null = $state(null)
 
     // Told where it sits, so the gallery can grow that image out of here and put it back
     $effect(() => {

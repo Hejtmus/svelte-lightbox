@@ -15,6 +15,7 @@ describe('i18n', () => {
     // Documented as: a store, so the counter wording can be replaced
     it('takes a replacement counter', () => {
         i18n.set({
+            ...original,
             generateLocalizedGalleryCounter: (activeImage, imageCount) => `Obrázok ${activeImage + 1} z ${imageCount}`
         })
 

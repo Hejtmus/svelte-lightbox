@@ -32,6 +32,8 @@ A lightbox is a cover holding a modal, which holds a header, a body and a footer
     } from 'svelte-lightbox'
 
     let isVisible = $state(false)
+    // Points the dialog's aria-labelledby at the title <LightboxFooter> renders
+    const titleId = $props.id()
 </script>
 
 <LightboxThumbnail onclick={() => { isVisible = true }}>
@@ -41,7 +43,7 @@ A lightbox is a cover holding a modal, which holds a header, a body and a footer
 {#if isVisible}
     <BodyChild>
         <ModalCover transitionDuration={300} onclick={() => { isVisible = false }}>
-            <Modal transitionDuration={300} imagePreset="">
+            <Modal transitionDuration={300} imagePreset="" {titleId}>
                 <LightboxHeader
                     imagePreset=""
                     showCloseButton={true}
@@ -51,7 +53,7 @@ A lightbox is a cover holding a modal, which holds a header, a body and a footer
                 <LightboxBody imagePreset="" enableImageExpand={false}>
                     <img src="/img/cat.jpg" alt="A cat">
                 </LightboxBody>
-                <LightboxFooter imagePreset="" title="A cat" description="Photographed last summer"/>
+                <LightboxFooter imagePreset="" title="A cat" description="Photographed last summer" {titleId}/>
             </Modal>
         </ModalCover>
     </BodyChild>
@@ -87,13 +89,16 @@ the element, so whatever stands on it keeps its own opacity, and overriding the 
 
 ### `<Modal>`
 
-The box the image sits in, carrying `.svelte-lightbox-main`. A lightbox listens to its `onclick` in order to tell a
-click on the image apart from a click on the backdrop.
+The box the image sits in, carrying `.svelte-lightbox-main`. Renders as `role="dialog"` with `aria-modal="true"`,
+moves focus into itself as it mounts, traps `Tab` inside its own controls, and hands focus back to whatever held it
+once it is torn down. A lightbox listens to its `onclick` in order to tell a click on the image apart from a click
+on the backdrop.
 
 | prop | type | |
 | --- | --- | --- |
 | `transitionDuration` | `number` | Duration of the fade |
 | `imagePreset` | `ImagePreset` | `''`, `'fullscreen'` or `'scroll'` |
+| `titleId` | `string` | Id of the element that names the dialog, see `<LightboxFooter>` |
 
 ### `<LightboxHeader>`
 
@@ -124,24 +129,27 @@ image itself needs no styling of its own.
 ### `<LightboxFooter>`
 
 The strip under the image, carrying `.svelte-lightbox-footer`. Renders the title in an `<h2>` and the description in an
-`<h5>`. Passing `gallery` adds the counter underneath them.
+`<h5>`. The `<h2>` carries `titleId`, which is what `<Modal>` points its `aria-labelledby` at. Passing `gallery` adds
+the counter underneath them, announced through an `aria-live="polite"` region so walking through a gallery is heard as
+well as seen.
 
 | prop | type | |
 | --- | --- | --- |
 | `imagePreset` | `ImagePreset` | Preset the footer should follow |
 | `title` | `string` | Shown in an `<h2>` |
 | `description` | `string` | Shown in an `<h5>` |
+| `titleId` | `string` | Id put on the `<h2>`, shared with `<Modal>` |
 | `gallery` | `GalleryState` | `{ imageCount, activeImage }`, adds the counter |
 
 ### `<LightboxThumbnail>`
 
-A clickable wrapper carrying `.svelte-lightbox-thumbnail`, calling `onclick` on a click as well as on enter and space.
-This is what `<Lightbox>` puts around the thumbnail.
+A real `<button>` carrying `.svelte-lightbox-thumbnail`, calling `onclick` on a click as well as, for free, on enter
+and space. This is what `<Lightbox>` puts around the thumbnail.
 
 | prop | type | |
 | --- | --- | --- |
 | `onclick` | `() => void` | Called when the reader activates the thumbnail |
-| `element` | `HTMLDivElement` | Bindable reference to the thumbnail element |
+| `element` | `HTMLButtonElement` | Bindable reference to the thumbnail element |
 
 ## Gallery parts
 
@@ -300,9 +308,10 @@ before it arrives. Sharing one `transitionDuration` is what keeps them together.
 way. `<Lightbox>` uses that on purpose whenever there is no thumbnail to grow out of.
 :::
 
-## Changing the counter wording
+## Changing the counter wording and accessible labels
 
-The gallery counter comes from a store, so replacing the function replaces the wording everywhere.
+The gallery counter, the close button's accessible name and both arrows' accessible names all come from the same
+store, so replacing a field replaces it everywhere a lightbox is used.
 
 ```svelte title="src/routes/+layout.svelte"
 <script>
@@ -311,7 +320,12 @@ The gallery counter comes from a store, so replacing the function replaces the w
     $i18n.generateLocalizedGalleryCounter = (activeImage, imageCount) => {
         return `Obrázok ${activeImage + 1} z ${imageCount}`
     }
+    $i18n.closeLabel = 'Zavrieť'
+    $i18n.previousImageLabel = 'Predchádzajúci obrázok'
+    $i18n.nextImageLabel = 'Nasledujúci obrázok'
 </script>
 ```
 
-The function receives a zero based index, which is why the examples add one before showing it.
+The counter function receives a zero based index, which is why the examples add one before showing it. Putting an
+`aria-label` in [`closeButtonProps`](/guide/lightbox/#customization) still wins over the store, for a close button
+labelled differently from every other lightbox on the page. The arrows take their label from the store only.

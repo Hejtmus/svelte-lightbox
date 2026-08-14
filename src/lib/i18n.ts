@@ -5,7 +5,10 @@ import type { I18n } from '$lib/Types'
 const i18n: Writable<I18n> = writable({
     generateLocalizedGalleryCounter: (activeImage: number, imageCount: number): string => {
         return `Image ${activeImage + 1} of ${imageCount}`
-    }
+    },
+    closeLabel: 'Close',
+    previousImageLabel: 'Previous image',
+    nextImageLabel: 'Next image'
 })
 
 export default i18n
