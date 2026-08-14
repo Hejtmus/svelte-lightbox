@@ -49,6 +49,39 @@ Select between these 3 presets:
 - `'scroll'` - Enables scrolling big image instead of making it smaller to fit into the screen.
 
 
+### transitionPreset
+
+Type: `TransitionPreset (string)`
+
+Selects how the lightbox arrives and leaves:
+
+- `''` - Default preset, the lightbox fades in over the page.
+
+- `'crossfade'` - The thumbnail expands into the opened image, and the image shrinks back into the thumbnail on
+closing.
+
+The image itself travels, at full opacity, rather than one image fading out while another fades in. It is measured
+against wherever the thumbnail sits at the moment the flight begins, so scrolling the page behind an open lightbox
+still sends the image home to the right place.
+
+The flight takes [`transitionDuration`](#transitionduration) in each direction, opening and closing alike, since it
+covers the same ground either way. A lightbox without the preset keeps its gentler arrival and brisker dismissal.
+
+```svelte
+<Lightbox transitionPreset="crossfade" transitionDuration={450}>
+    {#snippet thumbnail()}
+        <img src="/img/cat-small.jpg" alt="A cat">
+    {/snippet}
+
+    <img src="/img/cat.jpg" alt="A cat">
+</Lightbox>
+```
+
+:::tip[Give it a small thumbnail]
+The effect is the distance travelled. A thumbnail that already fills half the screen has nowhere to grow from, so
+crossfading is worth the most where the thumbnail is small next to the image it opens.
+:::
+
 ### customization
 
 Type: `LightboxCustomization (object)`
@@ -67,8 +100,8 @@ close button of).
 
 Type: `number`
 
-Duration of lightbox toggle, in milliseconds. Based on this number are calculated transitions for lightbox cover. Default
-`300`.
+Duration of lightbox toggle, in milliseconds. Based on this number are calculated transitions for lightbox cover, and
+for the flight of the image under the [crossfade preset](#transitionpreset). Default `300`.
 
 ### keepBodyScroll
 

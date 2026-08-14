@@ -1,18 +1,23 @@
 <script lang="ts">
-    import { fade } from 'svelte/transition'
+    import { dim, fadeTiming } from '$lib/transitions'
     import type { Snippet } from 'svelte'
     import type { HTMLAttributes } from 'svelte/elements'
+    import type { TransitionTiming } from '$lib/transitions'
 
     interface Props extends HTMLAttributes<HTMLDivElement> {
         transitionDuration: number,
+        // Said out loud when something standing on the cover has to move in step with it
+        timing?: TransitionTiming | null,
         children?: Snippet
     }
 
-    let { transitionDuration, children, ...rest }: Props = $props()
+    let { transitionDuration, timing = null, children, ...rest }: Props = $props()
+
+    const beat = $derived(timing ?? fadeTiming(transitionDuration))
 </script>
 
 <div class="svelte-lightbox-overlay" aria-label="overlay" role="presentation"
-    in:fade={{ duration: transitionDuration * 2 }} out:fade={{ duration: transitionDuration / 2 }} {...rest}>
+    in:dim|global={{ duration: beat.enter }} out:dim|global={{ duration: beat.leave }} {...rest}>
     {@render children?.()}
 </div>
 

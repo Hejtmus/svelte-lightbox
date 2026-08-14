@@ -2,7 +2,7 @@
     import { page } from '$app/state'
     import { LightboxGallery, GalleryImage, GalleryThumbnail } from '$lib'
     import { flag, number, text } from '../params'
-    import type { GalleryArrowCharacter, ImagePreset } from '$lib/Types'
+    import type { GalleryArrowCharacter, ImagePreset, TransitionPreset } from '$lib/Types'
 
     const images = [1, 2, 3, 4]
 
@@ -10,6 +10,7 @@
 
     const params = $derived(page.url.searchParams)
     const imagePreset = $derived(text(params, 'imagePreset') as ImagePreset)
+    const transitionPreset = $derived(text(params, 'transitionPreset') as TransitionPreset)
     const arrowsConfig = $derived({
         color: text(params, 'arrowColor', 'black'),
         character: text(params, 'character') as GalleryArrowCharacter,
@@ -35,6 +36,7 @@
     title={text(params, 'title')}
     description={text(params, 'description')}
     {imagePreset}
+    {transitionPreset}
     {arrowsConfig}
     {swipeConfig}
     keepBodyScroll={flag(params, 'keepBodyScroll', false)}

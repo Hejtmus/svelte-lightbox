@@ -4,10 +4,12 @@
 
     interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onclick'> {
         onclick?: () => void,
+        // Exposed so a lightbox can grow its image out of the place this holds
+        element?: HTMLDivElement | null,
         children?: Snippet
     }
 
-    let { onclick, children, ...rest }: Props = $props()
+    let { onclick, element = $bindable(null), children, ...rest }: Props = $props()
 
     // The click sits on a plain element, so the keyboard has to be given the reach a button would have
     const handleKey = (event: KeyboardEvent) => {
@@ -18,7 +20,7 @@
     }
 </script>
 
-<div class="svelte-lightbox-thumbnail" aria-label="thumbnail" role="button" tabindex="0"
+<div bind:this={element} class="svelte-lightbox-thumbnail" aria-label="thumbnail" role="button" tabindex="0"
     {onclick} onkeydown={handleKey} {...rest}>
     {@render children?.()}
 </div>

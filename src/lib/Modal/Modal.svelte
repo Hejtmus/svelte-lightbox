@@ -14,7 +14,7 @@
 </script>
 
 <div class="svelte-lightbox-main" class:fullscreen={imagePreset === 'fullscreen'} class:scroll={imagePreset === 'scroll'}
-    transition:fade={{ duration: transitionDuration }} aria-label="Modal" role="presentation" {...rest}>
+    transition:fade|global={{ duration: transitionDuration }} aria-label="Modal" role="presentation" {...rest}>
     {@render children?.()}
 </div>
 

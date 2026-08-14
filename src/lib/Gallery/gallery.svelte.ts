@@ -1,4 +1,5 @@
 import { createContext } from 'svelte'
+import { SvelteMap } from 'svelte/reactivity'
 import type { GalleryArrowsConfig, GalleryImage, GallerySwipeConfig } from '$lib/Types'
 
 const DEFAULT_ARROWS_CONFIG: GalleryArrowsConfig = {
@@ -28,6 +29,7 @@ interface GallerySettings {
 class Gallery {
     #settings: GallerySettings
     #images: Array<GalleryImage> = $state([])
+    #thumbnails = new SvelteMap<number, Element>()
     #thumbnailCount = 0
 
     constructor (settings: GallerySettings) {
@@ -80,6 +82,17 @@ class Gallery {
 
     nextThumbnailId () {
         return this.#thumbnailCount++
+    }
+
+    // The place on the page an image grows out of, and shrinks back into on closing
+    thumbnailOf (imageId: number) {
+        return this.#thumbnails.get(imageId) ?? null
+    }
+
+    rememberThumbnail (imageId: number, thumbnail: Element) {
+        this.#thumbnails.set(imageId, thumbnail)
+
+        return () => this.#thumbnails.delete(imageId)
     }
 
     openImage (imageId: number) {

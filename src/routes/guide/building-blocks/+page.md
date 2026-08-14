@@ -66,17 +66,24 @@ part accepts too. That is what carries `onclick` to `<ModalCover>` and `<Modal>`
 
 ### `<BodyChild>`
 
-Moves its children to the end of `<body>` on mount and takes them away again on destroy. Nothing else. This is what keeps
-a lightbox out of the layout it was written in.
+Moves itself to the end of `<body>` on mount and takes itself away again on destroy. This is what keeps a lightbox out
+of the layout it was written in.
+
+Its children are rendered once that move is done rather than before it, which is why anything inside can measure itself
+and get an answer that holds. A lightbox written inside an element with a `transform` is laid out against that element
+until it is moved, and a flight measured then would aim at a place the image never goes. Nothing inside a `<BodyChild>`
+is rendered on the server for the same reason: the move belongs to the browser.
 
 ### `<ModalCover>`
 
-The full screen backdrop, carrying the `.svelte-lightbox-overlay` class. Fades in over `transitionDuration * 2`
-milliseconds and out over half of it.
+The full screen backdrop, carrying the `.svelte-lightbox-overlay` class. Darkens over `transitionDuration * 2`
+milliseconds and clears over half of it, unless it is told otherwise. What fades is its background colour rather than
+the element, so whatever stands on it keeps its own opacity, and overriding the colour in css keeps the fade.
 
 | prop | type | |
 | --- | --- | --- |
 | `transitionDuration` | `number` | Base duration the fade is calculated from |
+| `timing` | `TransitionTiming` | `{ enter, leave }` in milliseconds, replacing that calculation |
 
 ### `<Modal>`
 
@@ -110,6 +117,8 @@ image itself needs no styling of its own.
 | --- | --- | --- |
 | `imagePreset` | `ImagePreset` | Preset the body should follow |
 | `enableImageExpand` | `boolean` | Lets the image grow past its own resolution |
+| `expandFrom` | `ExpandOrigin` | The place to fly out of, see [growing out of a thumbnail](#growing-out-of-a-thumbnail) |
+| `transitionDuration` | `number` | Times that flight, and nothing else |
 | `element` | `HTMLDivElement` | Bindable reference to the body element |
 
 ### `<LightboxFooter>`
@@ -132,6 +141,7 @@ This is what `<Lightbox>` puts around the thumbnail.
 | prop | type | |
 | --- | --- | --- |
 | `onclick` | `() => void` | Called when the reader activates the thumbnail |
+| `element` | `HTMLDivElement` | Bindable reference to the thumbnail element |
 
 ## Gallery parts
 
@@ -234,6 +244,61 @@ The arrows themselves. Both call `onclick` and disable themselves at the edges o
 | `imageCount` | `number` | How many images there are, next arrow only |
 | `character` | `GalleryArrowCharacter` | `''`, `'hide'` or `'loop'` |
 | `onclick` | `() => void` | Called when the arrow is pressed |
+
+## Growing out of a thumbnail
+
+The [crossfade preset](/guide/lightbox/#transitionpreset) is one transition rather than two: `expand` measures the
+place another element holds on the page and flies the body out of it, keeping its opacity the whole way. Where that
+place is is asked for as the flight begins, so it is always measured as the page stands right then.
+
+```svelte title="Growing a hand composed lightbox out of its thumbnail"
+<script>
+    import { expand, arrivalOf, departureOf, LightboxThumbnail, LightboxBody } from 'svelte-lightbox'
+
+    let isVisible = $state(false)
+    let thumbnail = $state(null)
+</script>
+
+<LightboxThumbnail bind:element={thumbnail} onclick={() => { isVisible = true }}>
+    <img src="/img/cat-small.jpg" alt="A cat">
+</LightboxThumbnail>
+
+{#if isVisible}
+    ...
+    <LightboxBody imagePreset="" enableImageExpand={false} transitionDuration={300} expandFrom={() => thumbnail}>
+        <img src="/img/cat.jpg" alt="A cat">
+    </LightboxBody>
+    ...
+{/if}
+```
+
+The thumbnail stays exactly where it is throughout. The image lands on top of it rather than replacing it, which is
+why nothing has to be taken off the page and put back.
+
+The flight takes `transitionDuration` in each direction, because it covers the same ground whichever way it is going.
+That is not what a plain lightbox does: `fadeTiming` is the gentler arrival and brisk dismissal the cover keeps to on
+its own, `transitionDuration * 2` in and half of it out. `flightTiming` is the even pair the flight needs, and handing
+it to `<ModalCover>` as its `timing` is what keeps the cover underneath the image for exactly as long as the image is
+travelling.
+
+:::note[Measured where it lands]
+`<BodyChild>` holds its children back until it has moved, so a flight measured as the body mounts is measured against
+the place the body ends up in. Composing without `<BodyChild>` is fine; composing with one that renders its children
+before moving is what would send the image to the wrong place.
+
+Because of that wait, the parts inside declare their transitions `global`. A lightbox is always closed by a block
+somewhere above it rather than by the one holding the transition, and a local transition would simply be skipped.
+:::
+
+:::warning[Nothing may outlast the cover]
+The image travels inside `<ModalCover>`, so a flight longer than the cover's own fade would be taken off the page
+before it arrives. Sharing one `transitionDuration` is what keeps them together.
+:::
+
+:::note[Give it something to fly out of]
+`expandFrom` returning nothing is not an error, it simply means there is no flight and the lightbox arrives the plain
+way. `<Lightbox>` uses that on purpose whenever there is no thumbnail to grow out of.
+:::
 
 ## Changing the counter wording
 

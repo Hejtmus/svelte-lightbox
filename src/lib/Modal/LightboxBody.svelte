@@ -1,21 +1,38 @@
 <script lang="ts">
+    import { expand } from '$lib/transitions'
     import type { Snippet } from 'svelte'
     import type { HTMLAttributes } from 'svelte/elements'
     import type { ImagePreset } from '$lib/Types'
+    import type { ExpandOrigin } from '$lib/transitions'
 
     interface Props extends HTMLAttributes<HTMLDivElement> {
         imagePreset: ImagePreset,
         enableImageExpand: boolean,
+        // The place on the page the body grows out of and shrinks back into, if any
+        expandFrom?: ExpandOrigin | null,
+        // Only the flight is timed by this, the body has nothing else to animate, and it
+        // covers the same ground each way so it takes the same time in both directions
+        transitionDuration?: number,
         // Exposed so the area holding the images can be reached from outside
         element?: HTMLDivElement | null,
         children?: Snippet
     }
 
-    let { imagePreset, enableImageExpand, element = $bindable(null), children, ...rest }: Props = $props()
+    let {
+        imagePreset,
+        enableImageExpand,
+        expandFrom = null,
+        transitionDuration = 0,
+        element = $bindable(null),
+        children,
+        ...rest
+    }: Props = $props()
 </script>
 
 <div bind:this={element} class="svelte-lightbox-body" class:fullscreen={imagePreset === 'fullscreen'}
-    class:scroll={imagePreset === 'scroll'} class:expand={enableImageExpand} {...rest}>
+    class:scroll={imagePreset === 'scroll'} class:expand={enableImageExpand}
+    in:expand|global={{ from: expandFrom, duration: transitionDuration }}
+    out:expand|global={{ from: expandFrom, duration: transitionDuration }} {...rest}>
     {@render children?.()}
 </div>
 

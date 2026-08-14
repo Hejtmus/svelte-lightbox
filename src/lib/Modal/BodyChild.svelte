@@ -8,17 +8,24 @@
 
     let { children, ...rest }: Props = $props()
 
+    let host: HTMLDivElement | null = $state(null)
+
     // Kept at the end of the body, where no parent's overflow or stacking context can clip it
     const stackOnBody = (element: HTMLDivElement) => {
-        const host = document.createElement('div')
+        const stack = document.createElement('div')
 
-        document.body.appendChild(host)
-        host.appendChild(element)
+        document.body.appendChild(stack)
+        stack.appendChild(element)
+        host = stack
 
-        return () => host.remove()
+        return () => stack.remove()
     }
 </script>
 
 <div {@attach stackOnBody} {...rest}>
-    {@render children?.()}
+    <!-- Held back until the move is done, so that whatever mounts in here and measures itself
+         measures the place it is going to be seen in rather than the one it was written in -->
+    {#if host !== null}
+        {@render children?.()}
+    {/if}
 </div>

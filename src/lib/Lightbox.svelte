@@ -7,6 +7,7 @@
     import ModalCover from './Modal/ModalCover.svelte'
     import Modal from './Modal/Modal.svelte'
     import { lockBodyScroll } from './bodyScroll.svelte'
+    import { flightTiming } from './transitions'
     import type { Snippet } from 'svelte'
     import type { LightboxOptions } from '$lib/Types'
 
@@ -19,6 +20,7 @@
         title = '',
         description = '',
         imagePreset = '',
+        transitionPreset = '',
         customization = {},
         transitionDuration = 300,
         keepBodyScroll = false,
@@ -56,23 +58,34 @@
         modalClicked = true
     }
 
+    // The thumbnail stays where it is, since the image lands on top of it rather than replacing it
+    let thumbnailElement: HTMLDivElement | null = $state(null)
+
+    const hasThumbnail = $derived(thumbnail !== undefined || enableFallbackThumbnail)
+    const isGrowingOutOfThumbnail = $derived(transitionPreset === 'crossfade' && thumbnailElement !== null)
+    const expandFrom = $derived(isGrowingOutOfThumbnail ? () => thumbnailElement : null)
+    // Fading the modal on top of the flight would only dim the image on its way over
+    const modalTransitionDuration = $derived(isGrowingOutOfThumbnail ? 0 : transitionDuration)
+    // The image travels inside the cover, so the cover has to be there for exactly as long
+    const coverTiming = $derived(isGrowingOutOfThumbnail ? flightTiming(transitionDuration) : null)
+
     lockBodyScroll(() => isVisible && !keepBodyScroll)
 </script>
 
-{#if thumbnail || enableFallbackThumbnail}
-    <Thumbnail {...customization.thumbnailProps ?? {}} onclick={toggle}>
+{#if hasThumbnail}
+    <Thumbnail bind:element={thumbnailElement} {...customization.thumbnailProps ?? {}} onclick={toggle}>
         {@render (thumbnail ?? children)?.()}
     </Thumbnail>
 {/if}
 
 {#if isVisible}
     <BodyChild>
-        <ModalCover {transitionDuration} {...customization.coverProps ?? {}} onclick={coverClick}>
-            <Modal {imagePreset} {transitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
+        <ModalCover {transitionDuration} timing={coverTiming} {...customization.coverProps ?? {}} onclick={coverClick}>
+            <Modal {imagePreset} transitionDuration={modalTransitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                     {...customization.lightboxHeaderProps ?? {}} onclose={close}/>
 
-                <Body {imagePreset} {enableImageExpand}>
+                <Body {imagePreset} {enableImageExpand} {expandFrom} {transitionDuration}>
                     {@render children?.()}
                 </Body>
 

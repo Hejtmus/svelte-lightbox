@@ -14,8 +14,15 @@
     const gallery = getGallery()
     // Thumbnails stand for the images in the order they are written, unless they say otherwise
     const imageId = id ?? gallery.nextThumbnailId()
+
+    let element: HTMLDivElement | null = $state(null)
+
+    // Told where it sits, so the gallery can grow that image out of here and put it back
+    $effect(() => {
+        return element === null ? undefined : gallery.rememberThumbnail(imageId, element)
+    })
 </script>
 
-<LightboxThumbnail onclick={() => gallery.openImage(imageId)} {...rest}>
+<LightboxThumbnail bind:element onclick={() => gallery.openImage(imageId)} {...rest}>
     {@render children?.()}
 </LightboxThumbnail>

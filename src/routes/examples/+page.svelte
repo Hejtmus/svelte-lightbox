@@ -52,6 +52,23 @@
     </div>
 
     <section class="card">
+        <h2>Growing out of the thumbnail</h2>
+        <p>
+            With the crossfade preset the small thumbnail expands into the opened image and shrinks back into its
+            place on closing, rather than the image fading in over the page.
+        </p>
+        <div class="stage">
+            <Lightbox title="A wall of windows" transitionPreset="crossfade" transitionDuration={450}>
+                {#snippet thumbnail()}
+                    <img class="small" src="{base}/img/test4.jpg" alt="A wall of windows">
+                {/snippet}
+
+                <img src="{base}/img/test4.jpg" alt="A wall of windows">
+            </Lightbox>
+        </div>
+    </section>
+
+    <section class="card">
         <h2>Gallery with a thumbnail layout</h2>
         <p>Fullscreen preset, with swiping enabled. Drag an image sideways, or use the arrows and arrow keys.</p>
         <LightboxGallery imagePreset="fullscreen" swipeConfig={{ enabled: true }}>
@@ -156,6 +173,11 @@
     div.stage :global(img) {
         max-height: 15rem;
         width: auto;
+    }
+    /* Small enough that the growing is worth watching */
+    div.stage :global(img.small) {
+        max-height: 6rem;
+        border-radius: 0.5rem;
     }
     div.thumbnails {
         display: grid;

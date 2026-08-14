@@ -182,6 +182,50 @@ test.describe('per image title and description', () => {
     })
 })
 
+test.describe('crossfade preset', () => {
+    // Documented as: the image grows out of the thumbnail that was clicked, at its size
+    test('starts the flight at the thumbnail that was clicked', async ({ page }) => {
+        await page.goto(fixture({ transitionPreset: 'crossfade', transitionDuration: '10000' }))
+        await openAt(page, 2)
+
+        const thumbnail = await page.getByTestId('thumbnail-2').boundingBox()
+        const flying = await body(page).boundingBox()
+
+        // Barely under way, so the image should still be wearing the thumbnail's size and place
+        expect(Math.abs(flying.width - thumbnail.width)).toBeLessThan(thumbnail.width / 4)
+        expect(Math.abs(flying.x - thumbnail.x)).toBeLessThan(thumbnail.width / 4)
+    })
+
+    // Documented as: the thumbnails stay where they are, the image lands on top of one
+    test('leaves every thumbnail in its place', async ({ page }) => {
+        await page.goto(fixture({ transitionPreset: 'crossfade' }))
+        await openAt(page, 2)
+
+        await expect(page.locator('.svelte-lightbox-thumbnail')).toHaveCount(4)
+    })
+
+    test('moves nothing without the preset', async ({ page }) => {
+        await page.goto(fixture({ transitionDuration: '3000' }))
+        await openAt(page, 2)
+
+        await expect(body(page)).toHaveCSS('transform', 'none')
+    })
+
+    // Documented as: the image goes back into the thumbnail it is showing, not the one clicked
+    test('keeps navigating and closing intact', async ({ page }) => {
+        await page.goto(fixture({ transitionPreset: 'crossfade' }))
+        await openAt(page, 2)
+
+        await nextArrow(page).click()
+        await expectDisplayed(page, 3)
+
+        await page.keyboard.press('Escape')
+
+        await expect(overlay(page)).toBeHidden()
+        await expect(page.locator('.svelte-lightbox-thumbnail')).toHaveCount(4)
+    })
+})
+
 test.describe('swipe navigation', () => {
     // Documented as: enabled defaults to false, galleries keep behaving as before
     test('is off unless opted into', async ({ page }) => {

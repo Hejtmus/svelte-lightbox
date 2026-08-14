@@ -17,9 +17,13 @@ export { default as NextImageButton } from './Gallery/NextImageButton.svelte'
 // The state a hand composed gallery has to hold for its parts
 export { Gallery, createGallery, getGallery, DEFAULT_ARROWS_CONFIG, DEFAULT_SWIPE_CONFIG } from './Gallery/gallery.svelte'
 export { swipeNavigation } from './Gallery/swipeNavigation.svelte'
+// The transition growing an image out of the thumbnail it was opened from
+export { expand, dim, fadeTiming, flightTiming } from './transitions'
+export type { ExpandOrigin, ExpandParams, TransitionTiming } from './transitions'
 export type { GallerySettings } from './Gallery/gallery.svelte'
 export type {
     ImagePreset,
+    TransitionPreset,
     GalleryArrowCharacter,
     LightboxCustomization,
     LightboxOptions,

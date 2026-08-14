@@ -2,6 +2,7 @@ import type { Snippet } from 'svelte'
 import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements'
 
 type ImagePreset = '' | 'fullscreen' | 'scroll'
+type TransitionPreset = '' | 'crossfade'
 type GalleryArrowCharacter = '' | 'hide' | 'loop'
 
 // Html props handed to the element behind each part of a lightbox
@@ -44,6 +45,7 @@ interface LightboxOptions {
     title?: string,
     description?: string,
     imagePreset?: ImagePreset,
+    transitionPreset?: TransitionPreset,
     customization?: Partial<LightboxCustomization>,
     transitionDuration?: number,
     keepBodyScroll?: boolean,
@@ -57,6 +59,7 @@ interface LightboxOptions {
 
 export type {
     ImagePreset,
+    TransitionPreset,
     GalleryArrowCharacter,
     LightboxCustomization,
     LightboxOptions,

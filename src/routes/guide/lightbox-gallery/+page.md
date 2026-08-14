@@ -57,6 +57,15 @@ Type: `ImagePrest (string)`
 
 Same as [`<Lightbox>` imagePreset](/guide/lightbox/#imagepreset).
 
+### transitionPreset
+
+Type: `TransitionPreset (string)`
+
+Same as [`<Lightbox>` transitionPreset](/guide/lightbox/#transitionpreset). Every thumbnail says where it sits, so
+`'crossfade'` grows the image out of the thumbnail that was clicked. Walking through the gallery brings the pairing
+along, and closing sends the image back into the thumbnail of whichever image is displayed, not the one it was opened
+from.
+
 ### customization
 
 Type: `LightboxCustomization (object)`

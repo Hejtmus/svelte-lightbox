@@ -149,6 +149,18 @@ Select between these 3 presets:
 - `'scroll'` - Enables scrolling big image instead of making it smaller to fit into the screen.
 
 
+### transitionPreset `TransitionPreset (string)`
+
+Select between these 2 presets:
+
+- `''` - Default preset, the lightbox fades in over the page.
+
+- `'crossfade'` - The thumbnail expands into the opened image, and the image shrinks back into the thumbnail on closing.
+The image itself travels, at full opacity, rather than one image fading out while another fades in. The thumbnail stays
+where it is and the image lands on top of it. The flight takes `transitionDuration` in each direction, unlike the plain
+fade which arrives over twice that and leaves over half. The effect is worth the most where the thumbnail is small next
+to the image it opens.
+
 ### customization `LightboxCustomization (object)/CSS`
 
 #### Using `LightboxCustomization` object
@@ -170,8 +182,8 @@ If you'd like to change global styles, feel free to override these global CSS cl
 
 ### transitionDuration `number`
 
-Duration of lightbox toggle, in milliseconds. Based on this number are calculated transitions for lightbox cover. Default
-`300`.
+Duration of lightbox toggle, in milliseconds. Based on this number are calculated transitions for lightbox cover, and
+the flight of the image under the crossfade preset. Default `300`.
   
 ### keepBodyScroll `boolean`
 
@@ -230,6 +242,11 @@ specific image.
 ### imagePreset `ImagePrest (string)`
 
 Same as in `<Lightbox>`.
+
+### transitionPreset `TransitionPreset (string)`
+
+Same as in `<Lightbox>`. Every thumbnail says where it sits, so `'crossfade'` grows the image out of the thumbnail that
+was clicked, and sends it back into the thumbnail of whichever image is displayed on closing.
 
 ### customization `LightboxCustomization (object)`
 
@@ -357,8 +374,9 @@ Name says it all.
 
 #### `<BodyChild>`
 
-Makes its children a direct child of `<body>`, this can be especially useful when using CSS frameworks, which can break
-`z-index` effect in some cases (element with higher index is lower than element with lower index).
+Makes itself a direct child of `<body>`, this can be especially useful when using CSS frameworks, which can break
+`z-index` effect in some cases (element with higher index is lower than element with lower index). Its children are
+rendered after that move, so anything inside measuring itself measures the place it actually ends up in.
 
 #### `<ModalCover>`
 
@@ -385,10 +403,12 @@ Footer of lightbox modal, contains title, description of image and gallery count
 Layout with image space, left and right arrow, keyboard handling of gallery. It reads the gallery state created by
 `createGallery`.
 
-#### `createGallery` and `swipeNavigation`
+#### `createGallery`, `swipeNavigation`, `expand` and `dim`
 
 `createGallery` holds the state a gallery shares with its thumbnails and images, and shares it downwards.
 `swipeNavigation` is the attachment turning drags on the element holding the images into moves through the gallery.
+`expand` is the transition flying an image out of the place a thumbnail holds, and `dim` is the one darkening the page
+behind a lightbox by fading the backdrop colour rather than the element carrying it.
 
 #### `<PreviousImageButton>` and `<NextImageButton>`
 

@@ -202,6 +202,82 @@ test.describe('presets and styling', () => {
     })
 })
 
+test.describe('crossfade preset', () => {
+    // Documented as: the thumbnail expands into the opened image, so the flight starts at its size
+    test('starts the flight at the size of the thumbnail', async ({ page }) => {
+        // Inside a transformed ancestor, so the flight is only right if it is measured
+        // where the lightbox ends up rather than where it was written
+        await page.goto(fixture({ transitionPreset: 'crossfade', transitionDuration: '10000', clipped: 'true' }))
+        await openByThumbnail(page)
+
+        const thumbnail = await page.locator('.svelte-lightbox-thumbnail').boundingBox()
+        const flying = await page.locator('.svelte-lightbox-body').boundingBox()
+
+        // Barely under way, so the image should still be wearing the thumbnail's size and place
+        expect(Math.abs(flying.width - thumbnail.width)).toBeLessThan(thumbnail.width / 4)
+        expect(Math.abs(flying.x - thumbnail.x)).toBeLessThan(thumbnail.width / 4)
+        expect(Math.abs(flying.y - thumbnail.y)).toBeLessThan(thumbnail.height / 2)
+    })
+
+    // Documented as: the thumbnail stays where it is, the image lands on top of it
+    test('leaves the thumbnail in its place', async ({ page }) => {
+        await page.goto(fixture({ transitionPreset: 'crossfade' }))
+        await openByThumbnail(page)
+
+        await expect(page.locator('.svelte-lightbox-thumbnail')).toHaveCount(1)
+    })
+
+    // Documented as: '' keeps the plain fade, where nothing travels anywhere
+    test('moves nothing without the preset', async ({ page }) => {
+        await page.goto(fixture({ transitionDuration: '3000' }))
+        await openByThumbnail(page)
+
+        await expect(page.locator('.svelte-lightbox-body')).toHaveCSS('transform', 'none')
+    })
+
+    // Transitions are local by default, so an ancestor closing the lightbox would skip them
+    test('flies the image home rather than dropping it', async ({ page }) => {
+        await page.goto(fixture({ transitionPreset: 'crossfade', transitionDuration: '2000', clipped: 'true' }))
+        await openByThumbnail(page)
+        await page.waitForTimeout(2500)
+
+        const opened = await page.locator('.svelte-lightbox-body').boundingBox()
+        const thumbnail = await page.locator('.svelte-lightbox-thumbnail').boundingBox()
+
+        await page.keyboard.press('Escape')
+        await page.waitForTimeout(400)
+
+        // Still on its way, so neither gone already nor still sitting at its opened size
+        const returning = await page.locator('.svelte-lightbox-body').boundingBox()
+        expect(returning.width).toBeLessThan(opened.width)
+        expect(returning.width).toBeGreaterThan(thumbnail.width)
+    })
+
+    // The image lives inside the cover, so it would be taken away mid flight if it outlasted it
+    test('lands the image before the cover is gone', async ({ page }) => {
+        await page.goto(fixture({ transitionPreset: 'crossfade', transitionDuration: '600' }))
+        await openByThumbnail(page)
+        await page.waitForTimeout(1000)
+
+        await page.keyboard.press('Escape')
+        await page.waitForTimeout(900)
+
+        await expect(page.locator('.svelte-lightbox-overlay')).toHaveCount(0)
+        await expect(page.locator('.svelte-lightbox-body')).toHaveCount(0)
+    })
+
+    test('still opens and closes', async ({ page }) => {
+        await page.goto(fixture({ transitionPreset: 'crossfade' }))
+        await openByThumbnail(page)
+
+        await expect(modal(page)).toBeVisible()
+
+        await page.keyboard.press('Escape')
+
+        await expect(overlay(page)).toBeHidden()
+    })
+})
+
 test.describe('body scroll', () => {
     // Documented as: keepBodyScroll keeps body scroll while open, default false
     test('locks the page behind the lightbox', async ({ page }) => {

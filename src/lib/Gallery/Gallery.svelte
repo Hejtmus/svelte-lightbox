@@ -10,6 +10,7 @@
     import { createGallery, DEFAULT_ARROWS_CONFIG, DEFAULT_SWIPE_CONFIG } from './gallery.svelte'
     import { swipeNavigation } from './swipeNavigation.svelte'
     import { lockBodyScroll } from '$lib/bodyScroll.svelte'
+    import { flightTiming } from '$lib/transitions'
     import type { Snippet } from 'svelte'
     import type { GalleryArrowsConfig, GallerySwipeConfig, LightboxOptions } from '$lib/Types'
 
@@ -24,6 +25,7 @@
         title = '',
         description = '',
         imagePreset = '',
+        transitionPreset = '',
         customization = {},
         transitionDuration = 300,
         keepBodyScroll = false,
@@ -87,6 +89,14 @@
         modalClicked = true
     }
 
+    // The image travels to and from the thumbnail standing for it, which the reader can walk away from
+    const openedThumbnail = $derived(transitionPreset === 'crossfade' ? gallery.thumbnailOf(activeImage) : null)
+    const expandFrom = $derived(openedThumbnail === null ? null : () => gallery.thumbnailOf(activeImage))
+    // Fading the modal on top of the flight would only dim the image on its way over
+    const modalTransitionDuration = $derived(openedThumbnail === null ? transitionDuration : 0)
+    // The image travels inside the cover, so the cover has to be there for exactly as long
+    const coverTiming = $derived(openedThumbnail === null ? null : flightTiming(transitionDuration))
+
     const activeImageTitle = $derived(gallery.images[activeImage]?.title || title)
     const activeImageDescription = $derived(gallery.images[activeImage]?.description || description)
     const galleryState = $derived({ imageCount: gallery.imageCount, activeImage })
@@ -105,12 +115,12 @@
 
 {#if isVisible}
     <BodyChild>
-        <ModalCover {transitionDuration} {...customization.coverProps ?? {}} onclick={coverClick}>
-            <Modal {imagePreset} {transitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
+        <ModalCover {transitionDuration} timing={coverTiming} {...customization.coverProps ?? {}} onclick={coverClick}>
+            <Modal {imagePreset} transitionDuration={modalTransitionDuration} {...customization.lightboxProps ?? {}} onclick={modalClick}>
                 <Header {imagePreset} {showCloseButton} {enableEscapeToClose} closeButtonProps={customization.closeButtonProps}
                     {...customization.lightboxHeaderProps ?? {}} onclose={close}/>
 
-                <Body {imagePreset} {enableImageExpand} {...swipeSurface}>
+                <Body {imagePreset} {enableImageExpand} {expandFrom} {transitionDuration} {...swipeSurface}>
                     <GalleryController {gallery}>
                         {@render children?.()}
                     </GalleryController>

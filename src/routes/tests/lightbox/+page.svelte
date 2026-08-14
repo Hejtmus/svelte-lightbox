@@ -2,13 +2,16 @@
     import { page } from '$app/state'
     import { Lightbox } from '$lib'
     import { flag, number, text } from '../params'
-    import type { ImagePreset } from '$lib/Types'
+    import type { ImagePreset, TransitionPreset } from '$lib/Types'
 
     let lightbox: ReturnType<typeof Lightbox>
     let isVisible = $state(false)
 
     const params = $derived(page.url.searchParams)
     const imagePreset = $derived(text(params, 'imagePreset') as ImagePreset)
+    const transitionPreset = $derived(text(params, 'transitionPreset') as TransitionPreset)
+    // A transformed ancestor is what a fixed lightbox is measured against until it is moved out
+    const isClipped = $derived(flag(params, 'clipped', false))
 </script>
 
 <h1>Lightbox fixture</h1>
@@ -22,13 +25,14 @@
     <span data-testid="visible">{isVisible}</span>
 </div>
 
-<div style="height: 200vh">
+<div style="height: 200vh" class:clipped={isClipped}>
     <Lightbox
         bind:this={lightbox}
         bind:isVisible
         title={text(params, 'title')}
         description={text(params, 'description')}
         {imagePreset}
+        {transitionPreset}
         transitionDuration={number(params, 'transitionDuration', 300)}
         keepBodyScroll={flag(params, 'keepBodyScroll', false)}
         enableImageExpand={flag(params, 'enableImageExpand', false)}
@@ -45,5 +49,10 @@
     div.controls {
         position: relative;
         z-index: 1000001;
+    }
+    /* Any transform makes this the containing block of the fixed lightbox inside it */
+    div.clipped {
+        width: 300px;
+        transform: translateX(0);
     }
 </style>
