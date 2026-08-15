@@ -19,6 +19,10 @@
         height: auto;
         /* TODO: mitigate this hardcode by using flexbox in lightbox modal <Modal.svelte> */
         max-height: 80vh;
+        /* Gallery neighbours are positioned as a percentage of this box, so without
+           clipping they stay visible next to the active image whenever the box is
+           narrower than the viewport (e.g. a portrait image outside the fullscreen preset) */
+        overflow: hidden;
     }
     :global(div.svelte-lightbox-body > *) {
         max-width: 100%;
