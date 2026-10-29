@@ -43,7 +43,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.62.1",
 		"@sveltejs/adapter-vercel": "^6.3.4",
-		"@sveltejs/kit": "^2.70.2",
+		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/package": "^2.5.8",
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
 		"@sveltepress/theme-default": "^7.3.4",
